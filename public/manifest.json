@@ -1,0 +1,10 @@
+{
+  "short_name": "Luminous AI",
+  "name": "Luminous AI — Receptionist Services",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#8B6E3C",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary"
+}
