@@ -43,6 +43,8 @@ export default function LoginPage({ setPage }) {
       return;
     }
 
+    setDone(true);
+
     localStorage.setItem("token", data.session.access_token);
     localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -91,7 +93,13 @@ export default function LoginPage({ setPage }) {
               </div>
               <div className="flex justify-between items-center">
                 <label className="flex items-center gap-1.5 text-[11px] text-[#4E4439]/60 cursor-pointer"><input type="checkbox" className="w-3 h-3 accent-[#8B6E3C]" />Remember me</label>
-                <a className="text-[11px] text-[#8B6E3C] font-semibold cursor-pointer hover:underline">Forgot password?</a>
+                <button
+                  type="button"
+                  onClick={() => setPage("forgotpassword")}
+                  className="text-[11px] text-[#8B6E3C] font-semibold hover:underline"
+                >
+                  Forgot password?
+                </button>
               </div>
               <motion.button whileHover={{ scale: done ? 1 : 1.02 }} whileTap={{ scale: .97 }} type="submit"
                 className={`w-full py-2.5 font-syne font-bold text-[11px] uppercase tracking-[.1em] rounded-sm transition-colors ${done ? "bg-green-600 text-white" : "bg-[#8B6E3C] text-white hover:bg-[#6b5228]"}`}>
