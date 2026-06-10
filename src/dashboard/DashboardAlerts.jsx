@@ -11,7 +11,7 @@ export default function DashboardAlerts({ setActivePage }) {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("http://localhost:5000/api/me/alerts", {
+        const res = await axios.get("https://api.letconvo.live/api/me/alerts", {
           headers: {
             Authorization: `Bearer ${token}`
           }

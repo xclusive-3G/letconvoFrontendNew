@@ -170,10 +170,10 @@ const fetchBillingSummary = async () => {
   };
 
   const [summary, tx, plansRes, methods] = await Promise.all([
-    axios.get("http://localhost:5000/api/me/billing/summary", { headers }),
-    axios.get("http://localhost:5000/api/me/billing/transactions", { headers }),
-    axios.get("http://localhost:5000/api/plans"),
-    axios.get("http://localhost:5000/api/me/payment-methods", { headers })
+    axios.get("https://api.letconvo.live/api/me/billing/summary", { headers }),
+    axios.get("https://api.letconvo.live/api/me/billing/transactions", { headers }),
+    axios.get("https://api.letconvo.live/api/plans"),
+    axios.get("https://api.letconvo.live/api/me/payment-methods", { headers })
   ]);
 
   return {

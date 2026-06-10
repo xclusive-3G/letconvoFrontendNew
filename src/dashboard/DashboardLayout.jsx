@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NOTIFICATIONS } from "./data";
+import axios from "axios";
+import { supabase } from "../lib/supabase";
+
 
 const Pr = "#8B6E3C";
 const NAV_ITEMS = [
@@ -8,17 +11,77 @@ const NAV_ITEMS = [
   { id:"calls",        icon:"call",                    label:"Call Records"      },
   { id:"appointments", icon:"calendar_month",          label:"Appointments"      },
   { id:"analytics",    icon:"bar_chart",               label:"Analytics"         },
-  { id:"live",         icon:"sensors",                 label:"Live Calls"        },
+  // { id:"live",         icon:"sensors",                 label:"Live Callss"        },
   { id:"balance",      icon:"account_balance_wallet",  label:"Balance & Billing" },
   { id:"settings",     icon:"settings",                label:"Settings"          },
 ];
 
-export default function DashboardLayout({ children, activePage, setActivePage, setAppPage }) {
+export default function DashboardLayout({ children, activePage, setActivePage, setAppPage,client }) {
   // const [sidebarOpen, setSidebarOpen] = useState(false); // default closed on mobile
   const [desktopOpen, setDesktopOpen] = useState(true);  // desktop sidebar state
   const [notifOpen,   setNotifOpen]   = useState(false);
   const [mobileNav,   setMobileNav]   = useState(false); // mobile bottom sheet nav
   const unread = NOTIFICATIONS.filter(n => !n.read).length;
+
+
+  
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("client");
+
+      window.location.reload();
+
+      // OR
+      setAppPage("login");
+
+    } catch (err) {
+      console.log("Logout failed:", err);
+    }
+  };
+
+  
+
+  const [billingSummary, setBillingSummary] = useState(null);
+
+useEffect(() => {
+  const fetchBillingSummary = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        "http://localhost:5000/api/me/billing/summary",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      setBillingSummary(res.data.balance);
+    } catch (err) {
+      console.log("❌ Billing summary failed:", err.response?.data || err.message);
+    }
+  };
+
+  fetchBillingSummary();
+
+  const interval = setInterval(fetchBillingSummary, 10000);
+
+  return () => clearInterval(interval);
+}, []);
+
+// const { data: notifications } = useQuery({
+//   queryKey: ["notifications"],
+//   queryFn: async () => {
+//     const { data } = await api.get("/notifications");
+//     return data;
+//   },
+//   refetchInterval: 5000
+// });
+
 
   // On desktop we use desktopOpen; we detect via CSS classes
   const navTo = (id) => { setActivePage(id); setMobileNav(false); };
@@ -78,7 +141,9 @@ export default function DashboardLayout({ children, activePage, setActivePage, s
               {desktopOpen && (
                 <motion.span initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
                   style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:"0.06em", whiteSpace:"nowrap" }}>
-                  Back to Site
+                  <button onClick={handleLogout}>
+                    Sign Out
+                  </button>
                 </motion.span>
               )}
             </AnimatePresence>
@@ -117,16 +182,15 @@ export default function DashboardLayout({ children, activePage, setActivePage, s
               onMouseEnter={e=>e.currentTarget.style.background="rgba(139,110,60,0.16)"}
               onMouseLeave={e=>e.currentTarget.style.background="rgba(139,110,60,0.08)"}>
               <span className="material-symbols-outlined" style={{ fontSize:12, color:Pr }}>account_balance_wallet</span>
-              <span>278 min</span>
-              <span style={{ color:"rgba(139,110,60,0.45)", margin:"0 1px" }}>·</span>
-              <span>$47.50</span>
+                            <span style={{ fontSize: 10, fontFamily: "Syne,sans-serif", fontWeight: 700, color: Pr, letterSpacing: "0.06em" }}>{billingSummary?.minutesRemaining || 0} min</span>
+              <span style={{ fontSize: 10, color: "rgba(139,110,60,0.45)", margin: "0 2px" }}>·</span>
+              <span style={{ fontSize: 10, fontFamily: "Syne,sans-serif", fontWeight: 700, color: Pr }}>{Number(billingSummary?.dollarBalance || 0).toLocaleString()}</span>
             </button>
 
             {/* Live indicator — hidden on small mobile */}
-            <div className="hidden xs:flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-              style={{ background:"rgba(16,185,129,0.08)", border:"1px solid rgba(16,185,129,0.25)" }}>
-              <div style={{ width:5, height:5, borderRadius:"50%", background:"#10b981", animation:"pulse 1.5s ease infinite" }}/>
-              <span style={{ fontSize:10, fontFamily:"Syne,sans-serif", fontWeight:700, color:"#10b981", textTransform:"uppercase", letterSpacing:"0.08em" }}>Live</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 10px", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)", borderRadius: 100 }}>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981", animation: "pulse 1.5s ease infinite" }} />
+              <span style={{ fontSize: 10, fontFamily: "Syne,sans-serif", fontWeight: 700, color: "#10b981", textTransform: "uppercase", letterSpacing: "0.1em" }}>AI {client?.receptionist_mode}</span>
             </div>
 
             {/* Notifications */}
@@ -151,7 +215,7 @@ export default function DashboardLayout({ children, activePage, setActivePage, s
                         </span>
                         <div style={{ flex:1, minWidth:0 }}>
                           <div style={{ fontSize:11.5, color:"#1A1614", lineHeight:1.4 }}>{n.text}</div>
-                          <div style={{ fontSize:10, color:Pr, marginTop:2 }}>{n.time}</div>
+                          <div style={{ fontSize:10, color:Pr, marginTop:2 }}>{n.time}ss</div>
                         </div>
                         {!n.read && <div style={{ width:5, height:5, borderRadius:"50%", background:Pr, flexShrink:0, marginTop:5 }}/>}
                       </div>
@@ -164,10 +228,10 @@ export default function DashboardLayout({ children, activePage, setActivePage, s
             {/* Avatar */}
             <div style={{ display:"flex", alignItems:"center", gap:7, cursor:"pointer" }}>
               <div style={{ width:30, height:30, borderRadius:"50%", background:"linear-gradient(135deg,#8B6E3C,#0097A7)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                <span style={{ color:"#fff", fontSize:11, fontFamily:"Syne,sans-serif", fontWeight:700 }}>SA</span>
+                <span style={{ color:"#fff", fontSize:11, fontFamily:"Syne,sans-serif", fontWeight:700 }}>{client?.ownerName?.charAt(0) || "U"}</span>
               </div>
               <div className="hidden sm:flex flex-col">
-                <span style={{ fontSize:11, fontFamily:"Syne,sans-serif", fontWeight:700, color:"#1A1614", lineHeight:1.2 }}>Sarah A.</span>
+                {/* <span style={{ fontSize:11, fontFamily:"Syne,sans-serif", fontWeight:700, color:"#1A1614", lineHeight:1.2 }}>{client?.ownerName}</span> */}
                 <span style={{ fontSize:9, color:Pr, fontFamily:"Syne,sans-serif", fontWeight:600, textTransform:"uppercase", letterSpacing:"0.08em" }}>Admin</span>
               </div>
             </div>
@@ -245,7 +309,7 @@ export default function DashboardLayout({ children, activePage, setActivePage, s
                 <button onClick={() => navTo("balance")}
                   style={{ width:"100%", display:"flex", alignItems:"center", gap:8, padding:"9px 12px", background:"rgba(139,110,60,0.12)", border:"1px solid rgba(139,110,60,0.25)", borderRadius:6, cursor:"pointer" }}>
                   <span className="material-symbols-outlined" style={{ fontSize:15, color:"#c4a97a" }}>account_balance_wallet</span>
-                  <span style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#c4a97a" }}>278 min · $47.50</span>
+                  <span style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#c4a97a" }}>{billingSummary?.minutesRemaining || 0}min · {Number(billingSummary?.dollarBalance || 0).toLocaleString()}</span>
                 </button>
                 <button onClick={() => setAppPage("benefits")}
                   style={{ marginTop:8, width:"100%", display:"flex", alignItems:"center", gap:8, padding:"8px 12px", background:"transparent", border:"none", cursor:"pointer" }}>

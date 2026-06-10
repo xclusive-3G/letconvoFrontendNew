@@ -142,13 +142,13 @@ export default function BenefitsPage({ setPage }) {
       <S bg="rgba(253,248,243,0.97)">
         <Reveal className="mb-7 sm:mb-8">
           <Label>The Difference</Label>
-          <H2>Traditional vs. Luminous</H2>
-          <p className="text-[#4E4439]/65 text-[12.5px] mt-2 leading-relaxed">See exactly what changes when you deploy Luminous AI.</p>
+          <H2>Traditional vs. Letconvo</H2>
+          <p className="text-[#4E4439]/65 text-[12.5px] mt-2 leading-relaxed">See exactly what changes when you deploy Letconvo AI.</p>
         </Reveal>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           <Reveal delay={.08}>
             <div className="rounded-sm border border-red-200/60 p-5 sm:p-8" style={{ background:"rgba(254,242,242,0.45)" }}>
-              <h3 className="font-syne font-bold text-[11px] sm:text-[12px] uppercase tracking-[.1em] text-red-700 mb-4 sm:mb-5">❌ Without Luminous</h3>
+              <h3 className="font-syne font-bold text-[11px] sm:text-[12px] uppercase tracking-[.1em] text-red-700 mb-4 sm:mb-5">❌ Without Letconvo</h3>
               {WITHOUT.map(r=>(
                 <div key={r} className="flex items-center gap-2.5 py-2 sm:py-2.5 border-b border-red-100/50 last:border-0 text-[12px] sm:text-[13px] text-[#4E4439]">
                   <span className="material-symbols-outlined text-red-400 text-[14px] sm:text-[15px] flex-shrink-0">close</span>{r}
@@ -158,7 +158,7 @@ export default function BenefitsPage({ setPage }) {
           </Reveal>
           <Reveal delay={.16}>
             <div className="rounded-sm border border-amber-300/50 p-5 sm:p-8" style={{ background:"rgba(255,251,235,0.45)" }}>
-              <h3 className="font-syne font-bold text-[11px] sm:text-[12px] uppercase tracking-[.1em] text-[#8B6E3C] mb-4 sm:mb-5">✓ With Luminous</h3>
+              <h3 className="font-syne font-bold text-[11px] sm:text-[12px] uppercase tracking-[.1em] text-[#8B6E3C] mb-4 sm:mb-5">✓ With Letconvo</h3>
               {WITH.map(r=>(
                 <div key={r} className="flex items-center gap-2.5 py-2 sm:py-2.5 border-b border-amber-100/50 last:border-0 text-[12px] sm:text-[13px] text-[#4E4439]">
                   <span className="material-symbols-outlined text-[#8B6E3C] text-[14px] sm:text-[15px] flex-shrink-0">check_circle</span>{r}
@@ -216,9 +216,9 @@ export default function BenefitsPage({ setPage }) {
           </div>
           <motion.button whileHover={{ scale:1.04 }} whileTap={{ scale:.97 }} onClick={() => setPage("getstarted")}
             className="bg-[#8B6E3C] text-white font-syne font-bold uppercase tracking-[.12em] px-8 sm:px-12 py-3.5 sm:py-4 hover:bg-[#6b5228] transition-colors text-[11px] sm:text-[12px] w-full sm:w-auto">
-            Activate Luminous AI
+            Activate Letconvo AI
           </motion.button>
-          <p className="text-[10.5px] text-[#4E4439]/45 mt-4">14-day free trial · No credit card required</p>
+          <p className="text-[10.5px] text-[#4E4439]/45 mt-4">500 credits free trial · No credit card required</p>
         </Reveal>
       </S>
 

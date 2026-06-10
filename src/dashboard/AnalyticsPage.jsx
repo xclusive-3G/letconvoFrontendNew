@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    `http://localhost:5000/api/me/analytics?period=${period}`,
+    `https://api.letconvo.live/api/me/analytics?period=${period}`,
     {
       headers: {
         Authorization: `Bearer ${token}`

@@ -174,9 +174,9 @@ function Step2({ data, setData, onNext }) {
         ]}
       />
       <Textarea
-        label="Greeting Message"
+        label="Tell us about your business "
         required
-        placeholder={"e.g. \"Welcome to Elite Fade, you've reached our automated receptionist. How can I help you?\""}
+        placeholder={"e.g. \"We are a leading healthcare provider dedicated to delivering exceptional care.\""}
         value={data.greetingMessage}
         onChange={set("greetingMessage")}
       />
@@ -245,7 +245,7 @@ function Step3({ data, setData, onNext }) {
           {data.plan === "premium" && ["3,000+ minutes/month","Multi-location","Custom AI voice","White-label dashboard"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          <p className="text-[10px] text-[#8B7060] mt-1.5">14-day free trial · No credit card required</p>
+          <p className="text-[10px] text-[#8B7060] mt-1.5">500 credits free trial · No credit card required</p>
         </motion.div>
       )}
       <NextBtn disabled={!valid}>Continue →</NextBtn>
@@ -408,7 +408,7 @@ export default function GetStartedPage({ setPage }) {
 
             <div className="font-syne font-black text-[#8B6E3C] tracking-[.1em] uppercase text-[13px] mb-1">Luminous AI</div>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#f7f2ec] border border-[#d4c8b8]/60 text-[9px] font-syne font-bold uppercase tracking-[.1em] text-[#8B6E3C] mb-5 rounded-sm w-fit">
-              🎉 14-day free trial
+              🎉 500 credits free trial
             </span>
 
             <h2 className="font-syne font-black text-[16px] uppercase tracking-tight text-[#1A1614] leading-tight mb-2">
