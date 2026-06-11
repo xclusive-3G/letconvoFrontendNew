@@ -52,7 +52,7 @@ useEffect(() => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/me/billing/summary",
+        "https://api.letconvo.live/api/me/billing/summary",
         {
           headers: {
             Authorization: `Bearer ${token}`

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api";
+const API = "https://api.letconvo.live/api";
 
 export const fetchDashboardStats = async () => {
   const token = localStorage.getItem("token");
@@ -37,7 +37,7 @@ export const fetchCalls = async () => {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    "http://localhost:5000/api/me/calls",
+    "https://api.letconvo.live/api/me/calls",
     {
       headers: {
         Authorization: `Bearer ${token}`

@@ -61,7 +61,7 @@ const fetchSettings = async () => {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    "http://localhost:5000/api/me/settings",
+    "https://api.letconvo.live/api/me/settings",
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -76,7 +76,7 @@ const fetchPhoneSetup = async () => {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    "http://localhost:5000/api/me/phone-setup",
+    "https://api.letconvo.live/api/me/phone-setup",
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -181,7 +181,7 @@ const [subscription, setSubscription] = useState(null);
       const token = localStorage.getItem("token");
 
       await axios.put(
-        "http://localhost:5000/api/me/settings",
+        "https://api.letconvo.live/api/me/settings",
         {
           businessName,
           businessAddress,
@@ -224,7 +224,7 @@ const [subscription, setSubscription] = useState(null);
 //     const token = localStorage.getItem("token");
 
 //     const res = await axios.post(
-//       "http://localhost:5000/api/me/phone-setup/verify",
+//       "https://api.letconvo.live/api/me/phone-setup/verify",
 //       {},
 //       {
 //         headers: {
