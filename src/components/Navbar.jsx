@@ -20,13 +20,13 @@ export default function Navbar({ page, setPage }) {
   const go = p => { setPage(p); setOpen(false); window.scrollTo({top:0}); };
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-[#d4c8b8]/40 ${solid ? "bg-white/98 shadow-sm" : "bg-white/88 backdrop-blur-md"}`}>
+    <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-[#d4c8b8]/40 ${solid ? "bg-white/80 shadow-sm" : "bg-white backdrop-blur-md"}`}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-[52px] flex items-center justify-between">
 
         {/* Logo */}
         <button onClick={() => go("benefits")}
-          className="font-syne font-black text-[#8B6E3C] tracking-[.12em] uppercase text-[13px] sm:text-[14px] hover:opacity-75 transition-opacity flex-shrink-0">
-          Luminous AI
+          className="font-syne font-black text-[#d19836] tracking-[.12em] uppercase text-[13px] sm:text-[14px] hover:opacity-75 transition-opacity flex-shrink-0">
+          letconvo
         </button>
 
         {/* Desktop centre nav */}
@@ -34,10 +34,10 @@ export default function Navbar({ page, setPage }) {
           {NAV_LINKS.map(({ id, label }) => (
             <button key={label} onClick={() => go(id)}
               className={`relative font-syne font-semibold text-[11.5px] uppercase tracking-[.08em] pb-0.5 transition-colors duration-200 ${
-                page === id ? "text-[#8B6E3C]" : "text-[#4E4439]/60 hover:text-[#8B6E3C]"
+                page === id ? "text-[#d9951f]" : "text-[#4E4439]/60 hover:text-[#8B6E3C]"
               }`}>
               {label}
-              {page === id && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#8B6E3C] rounded-full" />}
+              {page === id && <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#dbcaac] rounded-full" />}
             </button>
           ))}
         </nav>
@@ -50,7 +50,7 @@ export default function Navbar({ page, setPage }) {
           </button>
           <motion.button whileHover={{ scale:1.04 }} whileTap={{ scale:.97 }}
             onClick={() => go("getstarted")}
-            className="bg-[#8B6E3C] text-white font-syne font-bold text-[11px] uppercase tracking-[.08em] px-4 py-2 rounded-sm hover:bg-[#6b5228] transition-colors">
+            className="bg-[#c4a775] text-white font-syne font-bold text-[11px] uppercase tracking-[.08em] px-4 py-2 rounded-sm hover:bg-[#6b5228] transition-colors">
             Get Started
           </motion.button>
         </div>

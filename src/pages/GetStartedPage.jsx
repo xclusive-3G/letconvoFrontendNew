@@ -372,7 +372,7 @@ export default function GetStartedPage({ setPage }) {
   const handleSubmit = async () => {
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/register-business",
+      "https://api.letconvo.live/api/register-business",
       formData
     );
 
