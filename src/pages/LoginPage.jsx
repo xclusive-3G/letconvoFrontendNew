@@ -50,7 +50,7 @@ export default function LoginPage({ setPage }) {
           className="relative z-10 w-full max-w-[360px] bg-white border border-[#d4c8b8]/60 rounded-sm shadow-[0_20px_50px_rgba(0,0,0,.18)]">
           <div className="p-8">
             <div className="text-center mb-6">
-              <div className="font-syne font-black text-[#8B6E3C] tracking-[.12em] uppercase text-[13px] mb-0.5">Luminous AI</div>
+              <div className="font-syne font-black text-[#8B6E3C] tracking-[.12em] uppercase text-[13px] mb-0.5">Letconvo AI</div>
               <div className="text-[10.5px] text-[#4E4439]/50">The Future of Receptionist Services</div>
             </div>
             <h2 className="font-syne font-black text-[18px] uppercase tracking-tight text-[#1A1614] mb-5">Welcome Back</h2>

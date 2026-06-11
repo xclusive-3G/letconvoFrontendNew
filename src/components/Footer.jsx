@@ -3,8 +3,8 @@ export default function Footer({ setPage }) {
     <footer className="relative z-10 bg-white border-t border-[#d4c8b8]/40 py-7 px-5 sm:px-8">
       <div className="max-w-5xl mx-auto flex flex-col sm:flex-row flex-wrap justify-between items-center gap-4 sm:gap-5">
         <div className="text-center sm:text-left">
-          <div className="font-syne font-black text-[#8B6E3C] tracking-[.1em] uppercase text-[13px]">Luminous AI</div>
-          <div className="text-[11px] text-[#4E4439]/50 mt-0.5">© 2025 Luminous AI. Excellence in reception automation.</div>
+          <div className="font-syne font-black text-[#8B6E3C] tracking-[.1em] uppercase text-[13px]">Letconvo AI</div>
+          <div className="text-[11px] text-[#4E4439]/50 mt-0.5">© 2025 Letconvo AI. Excellence in reception automation.</div>
         </div>
         <nav className="flex flex-wrap justify-center gap-4 sm:gap-5">
           {["Compliance","Terms","Integration","Support"].map(l=>(

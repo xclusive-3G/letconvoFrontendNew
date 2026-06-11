@@ -11,11 +11,11 @@ import GetStartedPage from "./pages/GetStartedPage";
 import DashboardPage  from "./dashboard/DashboardPage";
 
 const PUBLIC_PAGES = {
-  benefits:   { comp: BenefitsPage,   title: "Luminous AI | Never Miss a Lead Again"  },
-  pricing:    { comp: PricingPage,    title: "Pricing — Luminous AI"                  },
-  contact:    { comp: ContactPage,    title: "Contact — Luminous AI"                  },
-  login:      { comp: LoginPage,      title: "Login — Luminous AI"                    },
-  getstarted: { comp: GetStartedPage, title: "Get Started Free — Luminous AI"         },
+  benefits:   { comp: BenefitsPage,   title: "Letconvo AI | Never Miss a Lead Again"  },
+  pricing:    { comp: PricingPage,    title: "Pricing — Letconvo AI"                  },
+  contact:    { comp: ContactPage,    title: "Contact — Letconvo AI"                  },
+  login:      { comp: LoginPage,      title: "Login — Letconvo AI"                    },
+  getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI"         },
 };
 
 const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard"]);
@@ -44,7 +44,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.title = page === "dashboard" ? "Dashboard — Luminous AI" : (PUBLIC_PAGES[page]?.title ?? "Luminous AI");
+    document.title = page === "dashboard" ? "Dashboard — Letconvo AI" : (PUBLIC_PAGES[page]?.title ?? "Letconvo AI");
   }, [page]);
 
   if (page === "dashboard") {

@@ -406,7 +406,7 @@ export default function GetStartedPage({ setPage }) {
           <div className="p-8 border-r border-[#d4c8b8]/40 flex flex-col"
             style={{ background:"linear-gradient(150deg,rgba(255,247,237,.98),rgba(240,248,255,.6))" }}>
 
-            <div className="font-syne font-black text-[#8B6E3C] tracking-[.1em] uppercase text-[13px] mb-1">Luminous AI</div>
+            <div className="font-syne font-black text-[#8B6E3C] tracking-[.1em] uppercase text-[13px] mb-1">Letconvo AI</div>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#f7f2ec] border border-[#d4c8b8]/60 text-[9px] font-syne font-bold uppercase tracking-[.1em] text-[#8B6E3C] mb-5 rounded-sm w-fit">
               🎉 500 credits free trial
             </span>
