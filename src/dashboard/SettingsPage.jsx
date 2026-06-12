@@ -97,20 +97,7 @@ const fetchPhoneSetup = async () => {
 
 export default function SettingsPage() {
 
-//   const {
-//   data: settingsData,
-//   isLoading
-// } = useQuery({
-//   queryKey: ["settings"],
-//   queryFn: fetchSettings,
-
-//   staleTime: 10 * 60 * 1000,
-//   gcTime: 20 * 60 * 1000,
-
-//   refetchOnWindowFocus: false,
-//   refetchOnReconnect: false,
-//   refetchOnMount: false
-// });
+  const API_URL = "https://api.letconvo.live";
 
 const {
   data: settingsData,
@@ -312,10 +299,10 @@ if (isLoading) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
         <div>
           <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 18, color: "#1A1614", textTransform: "uppercase", letterSpacing: "-0.01em" }}>Settings</h1>
-          <p style={{ fontSize: 12, color: "#8B7060", marginTop: 2 }}>Configure your Luminous AI receptionist</p>
+          <p style={{ fontSize: 12, color: "#8B7060", marginTop: 2 }}>Configure your Letconvo AI receptionist</p>
         </div>
         <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }} onClick={handleSave}
-          style={{ padding: "8px 20px", borderRadius: 5, border: "none", cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", background: saved ? "#10b981" : Pr, color: "#fff", transition: "background 0.2s" }}>
+          style={{ padding: "8px 20px", borderRadius: 5, border: "none", cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", background: saved ? "#10b981" : "#8B6E3C", color: "#fff", transition: "background 0.2s" }}>
           {saved ? "✓ Saved!" : "Save Changes"}
         </motion.button>
       </div>
@@ -335,13 +322,32 @@ if (isLoading) {
         <>
           <Sec title="Calendar Integration" icon="calendar_month">
             <Toggle value={calendarSync} onChange={setCalendarSync} label="Google Calendar Sync" sub="AI automatically books appointments into your calendar." />
-            {calendarSync && <div style={{ marginTop: 10, padding: "12px 14px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 7, display: "flex", alignItems: "center", gap: 8 }}><span className="material-symbols-outlined" style={{ fontSize: 16, color: "#10b981" }}>check_circle</span><span style={{ fontSize: 12, color: "#065f46" }}>Connected: apex-health@gmail.com · Last sync 2 min ago</span></div>}
-            <div style={{ marginTop: 12, display: "flex", gap: 10 }}>
-              {[["Google Calendar", "calendar_month", "#4285F4"], ["Outlook", "mail", "#0078d4"], ["Calendly", "event", "#006BFF"]].map(([name, ic, c]) => (
-                <button key={name} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", border: `1px solid ${c}30`, borderRadius: 6, background: `${c}08`, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 11, color: "#1A1614" }}>
-                  <span className="material-symbols-outlined" style={{ fontSize: 14, color: c }}>{ic}</span>{name}
-                </button>
-              ))}
+            {calendarSync && (
+  <div style={{ marginTop: 10, padding: "12px 14px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 7, display: "flex", alignItems: "center", gap: 8 }}>
+    <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#10b981" }}>check_circle</span>
+    <span style={{ fontSize: 12, color: "#065f46" }}>Connected: apex-health@gmail.com · Last sync 2 min ago</span>
+  </div>
+)}
+<div style={{ marginTop: 12, display: "flex", gap: 10 }}>
+  {[["Google Calendar", "calendar_month", "#4285F4"], ["Outlook", "mail", "#0078d4"], ["Calendly", "event", "#006BFF"]].map(([name, ic, c]) => (
+    <button
+      key={name}
+      onClick={name === "Google Calendar" ? () => window.location.href = `${API_URL}/integrations/google` : undefined}
+      style={{
+        display: "flex", alignItems: "center", gap: 6,
+        padding: "8px 14px", border: `1px solid ${c}30`,
+        borderRadius: 6, background: `${c}08`,
+        cursor: name === "Google Calendar" ? "pointer" : "not-allowed",
+        fontFamily: "Syne,sans-serif", fontWeight: 600,
+        fontSize: 11, color: "#1A1614",
+        opacity: name === "Google Calendar" ? 1 : 0.5,
+      }}
+    >
+      <span className="material-symbols-outlined" style={{ fontSize: 14, color: c }}>{ic}</span>
+      {name}
+    </button>
+  ))}
+
             </div>
           </Sec>
           <Sec title="CRM Integration" icon="contacts">
