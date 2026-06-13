@@ -332,7 +332,7 @@ if (isLoading) {
   {[["Google Calendar", "calendar_month", "#4285F4"], ["Outlook", "mail", "#0078d4"], ["Calendly", "event", "#006BFF"]].map(([name, ic, c]) => (
     <button
       key={name}
-      onClick={name === "Google Calendar" ? () => window.location.href = `${API_URL}/integrations/google` : undefined}
+      onClick={name === "Google Calendar" ? () => window.location.href = `${API_URL}/api/auth/google/:userId` : undefined}
       style={{
         display: "flex", alignItems: "center", gap: 6,
         padding: "8px 14px", border: `1px solid ${c}30`,
