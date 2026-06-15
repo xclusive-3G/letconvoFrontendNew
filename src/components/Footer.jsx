@@ -16,6 +16,12 @@ export default function Footer({ setPage }) {
           >
             Terms
           </span>
+          <span
+            onClick={() => setPage("privacy")}
+            className="text-[11.5px] text-[#4E4439]/50 hover:text-[#8B6E3C] transition-colors cursor-pointer"
+          >
+            Privacy
+          </span>
         </nav>
         <div className="flex gap-2">
           {["share", "hub"].map(ic => (

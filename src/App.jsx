@@ -87,6 +87,8 @@ import LoginPage      from "./pages/LoginPage";
 import GetStartedPage from "./pages/GetStartedPage";
 import DashboardPage  from "./dashboard/DashboardPage";
 import TermsPage      from "./pages/termsPage"; // ← fix casing
+import PrivacyPage    from "./pages/privacyPage";
+
 
 const PUBLIC_PAGES = {
   benefits:   { comp: BenefitsPage,   title: "Letconvo AI | Never Miss a Lead Again"  },
@@ -95,6 +97,7 @@ const PUBLIC_PAGES = {
   terms:      { comp: TermsPage,      title: "Terms — Letconvo AI"                    },
   login:      { comp: LoginPage,      title: "Login — Letconvo AI"                    },
   getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI"         },
+  privacy:    { comp: PrivacyPage,    title: "Privacy — Letconvo AI"                  },
 };
 
 const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard"]);
