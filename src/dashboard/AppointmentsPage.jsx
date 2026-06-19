@@ -131,7 +131,7 @@ export default function AppointmentsPage() {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:20 }}>
         <div>
           <h1 style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:18, color:"#1A1614", textTransform:"uppercase", letterSpacing:"-0.01em" }}>Appointments</h1>
-          <p style={{ fontSize:12, color:"#8B7060", marginTop:2 }}>{APPOINTMENTS.length} upcoming appointments booked by Luminous AI</p>
+          <p style={{ fontSize:12, color:"#8B7060", marginTop:2 }}>{APPOINTMENTS.length} upcoming appointments booked by Letconvo AI</p>
         </div>
         <div style={{ display:"flex", gap:8 }}>
           <div style={{ display:"flex", background:"#fff", border:"1px solid #e8e2d8", borderRadius:6, overflow:"hidden" }}>

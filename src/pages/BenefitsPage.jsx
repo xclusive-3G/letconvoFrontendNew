@@ -9,7 +9,7 @@ import Footer    from "../components/Footer";
 const BENEFITS = [
   { icon:"contact_emergency", title:"Maximize Revenue",   desc:"No more voicemails. Every caller speaks to a polished AI ready to qualify and convert." },
   { icon:"calendar_month",    title:"Automated Booking",  desc:"Direct integration with your calendar allows the AI to manage schedules autonomously." },
-  { icon:"phone_disabled",    title:"Eternal Uptime",     desc:"24/7/365 availability. Luminous maintains your professional image round the clock." },
+  { icon:"phone_disabled",    title:"Eternal Uptime",     desc:"24/7/365 availability. Letconvo maintains your professional image round the clock." },
   { icon:"payments",          title:"Optimized Overhead", desc:"Drastically reduce staffing costs while increasing output and response times." },
 ];
 
@@ -21,8 +21,8 @@ const STATS = [
 ];
 
 const TESTS = [
-  { q:"Within 2 weeks, our missed call rate dropped to zero and bookings were up 42%. Luminous paid for itself on day one.", name:"Dr. Sarah Okonkwo", role:"Medical Director, Apex Health",  grad:"from-amber-600 to-cyan-600" },
-  { q:"The ROI was immediate. My receptionist now focuses on in-office experience while Luminous handles every inbound call.", name:"Marcus Adebayo",   role:"Principal, Adebayo Law Group", grad:"from-slate-600 to-amber-600" },
+  { q:"Within 2 weeks, our missed call rate dropped to zero and bookings were up 42%. Letconvo paid for itself on day one.", name:"Dr. Sarah Okonkwo", role:"Medical Director, Apex Health",  grad:"from-amber-600 to-cyan-600" },
+  { q:"The ROI was immediate. My receptionist now focuses on in-office experience while Letconvo handles every inbound call.", name:"Marcus Adebayo",   role:"Principal, Adebayo Law Group", grad:"from-slate-600 to-amber-600" },
   { q:"Setup took under 15 minutes. The AI voice is indistinguishable from human — clients love it.",                        name:"Chioma Eze",       role:"CEO, Lagos Growth Partners",   grad:"from-cyan-600 to-slate-600" },
 ];
 
@@ -49,14 +49,14 @@ export default function BenefitsPage({ setPage }) {
     <main style={{ position:"relative", zIndex:10 }}>
       <PageHero chip="Corporate Intelligence" title="Never Miss a Lead Again."
         hlWord="Lead"
-        sub="Luminous AI captures every call, books appointments, and greets your customers with corporate precision."
+        sub="Letconvo AI captures every call, books appointments, and greets your customers with corporate precision."
         primaryBtn="Deploy AI Now"   primaryAction={() => setPage("getstarted")}
         secondaryBtn="View Demo"     secondaryAction={() => setPage("pricing")} />
 
       {/* Benefits */}
       <S bg="rgba(255,255,255,0.97)">
         <Reveal className="mb-8 sm:mb-10">
-          <Label>Why Luminous AI</Label>
+          <Label>Why Letconvo AI</Label>
           <H2>Corporate Precision</H2>
           <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-lg leading-relaxed">We've engineered a receptionist that integrates seamlessly with your existing professional workflow.</p>
         </Reveal>
@@ -117,7 +117,7 @@ export default function BenefitsPage({ setPage }) {
               <div className="absolute inset-0 bg-gradient-to-t from-white/97 via-white/55 to-transparent"/>
               <div className="absolute bottom-0 left-0 p-4 sm:p-6">
                 <h3 className="font-syne font-black text-[#1A1614] uppercase tracking-tight mb-1 text-[13px] sm:text-[14px]">Seamless Transition</h3>
-                <p className="text-[#4E4439]/75 max-w-sm text-[11.5px] sm:text-[12.5px] leading-relaxed">Luminous identifies high-value opportunities for immediate human intervention.</p>
+                <p className="text-[#4E4439]/75 max-w-sm text-[11.5px] sm:text-[12.5px] leading-relaxed">Letconvo identifies high-value opportunities for immediate human intervention.</p>
               </div>
             </div>
           </Reveal>

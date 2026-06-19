@@ -126,7 +126,7 @@ function AddCardModal({ onClose }) {
         <div style={{ padding: "18px 20px" }}>
           <div style={{ background: "linear-gradient(135deg,#2d2416,#8B6E3C)", borderRadius: 10, padding: "18px 20px", marginBottom: 18, color: "#fff", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: "rgba(255,255,255,0.06)" }} />
-            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 11, letterSpacing: "0.14em", opacity: .6, marginBottom: 16 }}>LUMINOUS AI</div>
+            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 11, letterSpacing: "0.14em", opacity: .6, marginBottom: 16 }}>LETCONVO AI</div>
             <div style={{ fontFamily: "monospace", fontSize: 16, letterSpacing: "0.15em", marginBottom: 14 }}>{(num || "•••• •••• •••• ••••").padEnd(19, "•").slice(0, 19)}</div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
               <div><div style={{ fontSize: 8, opacity: .55, marginBottom: 2 }}>CARD HOLDER</div><div style={{ fontSize: 11, fontWeight: 600 }}>{name || "YOUR NAME"}</div></div>

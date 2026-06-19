@@ -105,7 +105,7 @@ useEffect(() => {
             {desktopOpen && (
               <motion.span initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-10}} transition={{duration:0.2}}
                 style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:12, color:Pr, letterSpacing:"0.1em", textTransform:"uppercase", whiteSpace:"nowrap" }}>
-                Luminous AI
+                Letconvo AI
               </motion.span>
             )}
           </AnimatePresence>
@@ -287,7 +287,7 @@ useEffect(() => {
                   <div style={{ width:30, height:30, background:Pr, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                     <span style={{ color:"#fff", fontSize:13, fontFamily:"Syne,sans-serif", fontWeight:900 }}>L</span>
                   </div>
-                  <span style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:12, color:Pr, letterSpacing:"0.1em", textTransform:"uppercase" }}>Luminous AI</span>
+                  <span style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:12, color:Pr, letterSpacing:"0.1em", textTransform:"uppercase" }}>Letconvo AI</span>
                 </div>
                 <button onClick={() => setMobileNav(false)} style={{ background:"none", border:"none", cursor:"pointer", color:"rgba(255,255,255,0.4)", fontSize:20 }}>✕</button>
               </div>

@@ -119,7 +119,7 @@ function LiveTranscriptPanel({ call }) {
             style={{ display:"flex", justifyContent:msg.role==="ai"?"flex-start":"flex-end" }}>
             <div style={{ maxWidth:"75%", padding:"8px 12px", lineHeight:1.5, borderRadius:msg.role==="ai"?"4px 12px 12px 4px":"12px 4px 4px 12px", background:msg.role==="ai"?"#fdf9f5":Pr, color:msg.role==="ai"?"#4E4439":"#fff", fontSize:12 }}>
               <div style={{ fontSize:9, fontFamily:"Syne,sans-serif", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", opacity:0.6, marginBottom:3 }}>
-                {msg.role==="ai"?"Luminous AI":call.caller}
+                {msg.role==="ai"?"Letconvo AI":call.caller}
               </div>
               {msg.text}
             </div>

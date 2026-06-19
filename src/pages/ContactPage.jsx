@@ -4,7 +4,7 @@ import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
 
-const INFO=[{icon:"mail",label:"Email",val:"hello@luminousai.com"},{icon:"call",label:"Phone",val:"+1 (800) 555-LUMI"},{icon:"schedule",label:"Response Time",val:"Within 2 business hours"},{icon:"support_agent",label:"Support Hours",val:"24/7 for active clients"}];
+const INFO=[{icon:"mail",label:"Email",val:"hello@letconvo.live"},{icon:"call",label:"Phone",val:"+1 (800) 555-Letconvo"},{icon:"schedule",label:"Response Time",val:"Within 2 business hours"},{icon:"support_agent",label:"Support Hours",val:"24/7 for active clients"}];
 const OFFICES=[{tag:"Headquarters",city:"San Francisco, CA",addr:["100 Market Street, Suite 800","San Francisco, CA 94105","United States"]},{tag:"EMEA",city:"London, UK",addr:["30 St Mary Axe, Level 12","London EC3A 8BF","United Kingdom"]},{tag:"Africa",city:"Lagos, Nigeria",addr:["Victoria Island Business Hub","Adeola Odeku Street","Lagos, Nigeria"]}];
 const INTERESTS=["General information","Starter plan","Growth plan","Enterprise / Agency","Custom demo"];
 const inputCls="text-[12.5px] text-[#1A1614] bg-white border border-[#d4c8b8]/70 rounded-sm px-3 py-2 w-full focus:outline-none focus:border-[#8B6E3C] transition-colors";
@@ -26,7 +26,7 @@ export default function ContactPage({setPage}) {
           <Reveal>
             <p className="font-syne font-semibold text-[9px] uppercase tracking-[.18em] text-[#8B6E3C]/60 mb-1.5">Contact Us</p>
             <h3 className="font-syne font-black uppercase tracking-tight text-[#1A1614] mb-2 leading-tight" style={{fontSize:"clamp(18px,2.8vw,24px)"}}>We'd Love to Hear From You</h3>
-            <p className="text-[12.5px] text-[#4E4439]/70 leading-relaxed mb-6 max-w-xs">Questions about Luminous AI? Our team typically responds within 2 business hours.</p>
+            <p className="text-[12.5px] text-[#4E4439]/70 leading-relaxed mb-6 max-w-xs">Questions about Letconvo AI? Our team typically responds within 2 business hours.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4">
               {INFO.map(({icon,label,val})=>(
                 <div key={label} className="flex items-start gap-3">
