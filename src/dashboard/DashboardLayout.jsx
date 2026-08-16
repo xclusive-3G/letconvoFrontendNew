@@ -1,11 +1,33 @@
 import { useState,useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NOTIFICATIONS } from "./data";
 import axios from "axios";
-import { supabase } from "../lib/supabase";
+import { API_BASE } from "../config/apiBase";
 
 
 const Pr = "#8B6E3C";
+
+const NOTIF_ICON = {
+  call: "call",
+  appointment: "calendar_month",
+  alert: "warning",
+  info: "notifications"
+};
+
+function timeAgo(dateStr) {
+  if (!dateStr) return "";
+
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diffMs / 60000);
+
+  if (mins < 1) return "Just now";
+  if (mins < 60) return `${mins} min ago`;
+
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} hr${hrs > 1 ? "s" : ""} ago`;
+
+  const days = Math.floor(hrs / 24);
+  return `${days} day${days > 1 ? "s" : ""} ago`;
+}
 const NAV_ITEMS = [
   { id:"overview",     icon:"dashboard",               label:"Overview"          },
   { id:"calls",        icon:"call",                    label:"Call Records"      },
@@ -16,34 +38,16 @@ const NAV_ITEMS = [
   { id:"settings",     icon:"settings",                label:"Settings"          },
 ];
 
-export default function DashboardLayout({ children, activePage, setActivePage, setAppPage,client }) {
+export default function DashboardLayout({ children, activePage, setActivePage, setAppPage, client, logoutUser }) {
   // const [sidebarOpen, setSidebarOpen] = useState(false); // default closed on mobile
   const [desktopOpen, setDesktopOpen] = useState(true);  // desktop sidebar state
   const [notifOpen,   setNotifOpen]   = useState(false);
   const [mobileNav,   setMobileNav]   = useState(false); // mobile bottom sheet nav
-  const unread = NOTIFICATIONS.filter(n => !n.read).length;
+  const [notifications, setNotifications] = useState([]);
+  const unread = notifications.filter(n => !n.is_read).length;
 
 
   
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-
-      localStorage.removeItem("token");
-      localStorage.removeItem("client");
-
-      window.location.reload();
-
-      // OR
-      setAppPage("login");
-
-    } catch (err) {
-      console.log("Logout failed:", err);
-    }
-  };
-
-  
-
   const [billingSummary, setBillingSummary] = useState(null);
 
 useEffect(() => {
@@ -52,7 +56,7 @@ useEffect(() => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "https://api.letconvo.live/api/me/billing/summary",
+        `${API_BASE}/me/billing/summary`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -73,14 +77,72 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, []);
 
-// const { data: notifications } = useQuery({
-//   queryKey: ["notifications"],
-//   queryFn: async () => {
-//     const { data } = await api.get("/notifications");
-//     return data;
-//   },
-//   refetchInterval: 5000
-// });
+useEffect(() => {
+  const fetchNotifications = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        `${API_BASE}/me/notifications`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      setNotifications(res.data.notifications || []);
+    } catch (err) {
+      console.log("❌ Notifications fetch failed:", err.response?.data || err.message);
+    }
+  };
+
+  fetchNotifications();
+
+  const interval = setInterval(fetchNotifications, 15000);
+
+  return () => clearInterval(interval);
+}, []);
+
+const markNotificationRead = async (id) => {
+  setNotifications(ns => ns.map(n => n.id === id ? { ...n, is_read: true } : n));
+
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.patch(
+      `${API_BASE}/me/notifications/${id}/read`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  } catch (err) {
+    console.log("❌ Mark notification read failed:", err.response?.data || err.message);
+  }
+};
+
+const markAllNotificationsRead = async () => {
+  setNotifications(ns => ns.map(n => ({ ...n, is_read: true })));
+
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.patch(
+      `${API_BASE}/me/notifications/read-all`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+  } catch (err) {
+    console.log("❌ Mark all notifications read failed:", err.response?.data || err.message);
+  }
+};
 
 
   // On desktop we use desktopOpen; we detect via CSS classes
@@ -141,9 +203,19 @@ useEffect(() => {
               {desktopOpen && (
                 <motion.span initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
                   style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:"0.06em", whiteSpace:"nowrap" }}>
-                  <button onClick={handleLogout}>
-                    Sign Out
-                  </button>
+                  Back to Site
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
+          <motion.button whileHover={{x:2}} onClick={logoutUser}
+            style={{ display:"flex", alignItems:"center", gap:12, width:"100%", padding:"9px 16px", background:"transparent", border:"none", cursor:"pointer", overflow:"hidden" }}>
+            <span className="material-symbols-outlined" style={{ fontSize:17, color:"rgba(255,255,255,0.35)", flexShrink:0 }}>logout</span>
+            <AnimatePresence>
+              {desktopOpen && (
+                <motion.span initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
+                  style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:"0.06em", whiteSpace:"nowrap" }}>
+                  Sign Out
                 </motion.span>
               )}
             </AnimatePresence>
@@ -206,18 +278,22 @@ useEffect(() => {
                     style={{ position:"fixed", right:8, top:56, width:"min(320px, calc(100vw - 16px))", background:"#fff", border:"1px solid #e8e2d8", borderRadius:8, boxShadow:"0 12px 32px rgba(0,0,0,0.12)", zIndex:100, overflow:"hidden" }}>
                     <div style={{ padding:"11px 14px", borderBottom:"1px solid #f0ebe4", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
                       <span style={{ fontFamily:"Syne,sans-serif", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:"0.08em", color:"#1A1614" }}>Notifications</span>
-                      <span style={{ fontSize:10, color:Pr, fontWeight:600, cursor:"pointer" }} onClick={() => setNotifOpen(false)}>Mark all read</span>
+                      <span style={{ fontSize:10, color:Pr, fontWeight:600, cursor:"pointer" }} onClick={markAllNotificationsRead}>Mark all read</span>
                     </div>
-                    {NOTIFICATIONS.map(n => (
-                      <div key={n.id} style={{ padding:"9px 14px", borderBottom:"1px solid #f7f2ec", display:"flex", gap:9, alignItems:"flex-start", background:n.read?"transparent":"rgba(139,110,60,0.04)" }}>
+                    {notifications.length === 0 && (
+                      <div style={{ padding:"20px 14px", textAlign:"center", fontSize:11, color:"#8B7060" }}>No notifications yet</div>
+                    )}
+                    {notifications.map(n => (
+                      <div key={n.id} onClick={() => !n.is_read && markNotificationRead(n.id)}
+                        style={{ padding:"9px 14px", borderBottom:"1px solid #f7f2ec", display:"flex", gap:9, alignItems:"flex-start", background:n.is_read?"transparent":"rgba(139,110,60,0.04)", cursor:n.is_read?"default":"pointer" }}>
                         <span className="material-symbols-outlined" style={{ fontSize:14, color:Pr, marginTop:1, flexShrink:0 }}>
-                          {n.type==="call"?"call":n.type==="appointment"?"calendar_month":n.type==="lead"?"person_add":n.type==="transfer"?"call_made":"warning"}
+                          {NOTIF_ICON[n.type] || "notifications"}
                         </span>
                         <div style={{ flex:1, minWidth:0 }}>
-                          <div style={{ fontSize:11.5, color:"#1A1614", lineHeight:1.4 }}>{n.text}</div>
-                          <div style={{ fontSize:10, color:Pr, marginTop:2 }}>{n.time}ss</div>
+                          <div style={{ fontSize:11.5, color:"#1A1614", lineHeight:1.4 }}>{n.message || n.title}</div>
+                          <div style={{ fontSize:10, color:Pr, marginTop:2 }}>{timeAgo(n.created_at)}</div>
                         </div>
-                        {!n.read && <div style={{ width:5, height:5, borderRadius:"50%", background:Pr, flexShrink:0, marginTop:5 }}/>}
+                        {!n.is_read && <div style={{ width:5, height:5, borderRadius:"50%", background:Pr, flexShrink:0, marginTop:5 }}/>}
                       </div>
                     ))}
                   </motion.div>

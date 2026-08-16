@@ -24,7 +24,7 @@ export default function PricingPage({setPage}) {
         sub="Scalable solutions for solo practitioners to global enterprises. All plans include neural voice processing." />
 
       {/* Plans — stacked mobile, 3-col desktop */}
-      <S bg="rgba(253,248,242,0.98)">
+      <S bg="rgb(253,248,242)">
         <Reveal className="text-center mb-8 sm:mb-10">
           <h2 className="font-syne font-black uppercase tracking-tight text-[#1A1614] leading-tight" style={{fontSize:"clamp(20px,3.2vw,30px)"}}>
             Firm <span style={{color:"#8B6E3C"}}>Investment</span>
@@ -69,7 +69,7 @@ export default function PricingPage({setPage}) {
       </S>
 
       {/* Feature table — scrollable on mobile */}
-      <S bg="rgba(247,243,239,0.98)">
+      <S bg="rgb(247,243,239)">
         <Reveal className="mb-6 sm:mb-7">
           <h2 className="font-syne font-black text-[20px] sm:text-[26px] uppercase tracking-tight text-[#1A1614]">What's Included</h2>
         </Reveal>
@@ -101,7 +101,7 @@ export default function PricingPage({setPage}) {
       </S>
 
       {/* FAQ — 1-col mobile, 2-col md */}
-      <S bg="rgba(255,255,255,0.97)">
+      <S bg="rgb(255,255,255)">
         <Reveal className="mb-6 sm:mb-7">
           <h2 className="font-syne font-black text-[20px] sm:text-[26px] uppercase tracking-tight text-[#1A1614]">Common Questions</h2>
         </Reveal>

@@ -1,11 +1,13 @@
-// import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { APPOINTMENTS, AGENTS } from "./data";
+import { fetchAppointments } from "../api/appointmentsApi";
+import { reconcileCalls } from "../api/dashboardApi";
+import { API_BASE } from "../config/apiBase";
 
 
-const API = "https://api.letconvo.live/api";
+const API = API_BASE;
 
 const authHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -131,7 +133,7 @@ export default function OverviewPage({ setActivePage, client }) {
 const fetchLiveCalls = async () => {
   const token = localStorage.getItem("token");
 
-  const res = await axios.get("https://api.letconvo.live/api/me/live-calls", {
+  const res = await axios.get(`${API}/me/live-calls`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -143,7 +145,8 @@ const fetchLiveCalls = async () => {
   const {
   data,
   isLoading,
-  error
+  error,
+  refetch
 } = useQuery({
   queryKey: ["overview"],
   queryFn: fetchOverviewData,
@@ -152,6 +155,16 @@ const fetchLiveCalls = async () => {
   refetchOnWindowFocus: false
 });
 
+// Backfill anything Retell's push webhook missed, once per page visit, then
+// refetch so stats reflect it immediately instead of waiting for the next
+// 10s poll. Not on the poll interval itself — that would hit Retell's API
+// every 10s for no benefit once everything's already caught up.
+useEffect(() => {
+  reconcileCalls().then((result) => {
+    if (result?.backfilled) refetch();
+  });
+}, [refetch]);
+
 const { data: liveCallsData } = useQuery({
   queryKey: ["live-calls"],
   queryFn: fetchLiveCalls,
@@ -159,14 +172,17 @@ const { data: liveCallsData } = useQuery({
   refetchOnWindowFocus: false
 });
 
+const { data: APPOINTMENTS = [] } = useQuery({
+  queryKey: ["appointments"],
+  queryFn: fetchAppointments,
+  staleTime: 30000,
+  refetchOnWindowFocus: false
+});
+
 const activeCount = liveCallsData?.activeCount || 0;
 
 const dashboardData = data?.dashboardData;
 const callHistory = data?.callHistory || [];
-  <p style={{ fontSize: 12, color: "#8B7060", marginTop: 2 }}>
-  {callHistory.length} calls recorded · {activeCount} active caller
-  {activeCount !== 1 ? "s" : ""} live
-</p>
 
 const performanceData = data?.performanceData;
 
@@ -215,6 +231,9 @@ if (error) {
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 20, color: "#1A1614", textTransform: "uppercase", letterSpacing: "-0.01em" }}>Dashboard Overview</h1>
         <p style={{ fontSize: 12, color: "#8B7060", marginTop: 3 }}>{currentDate} · Letconvo AI is active and handling calls</p>
+        <p style={{ fontSize: 12, color: "#8B7060", marginTop: 2 }}>
+          {callHistory.length} calls recorded · {activeCount} active caller{activeCount !== 1 ? "s" : ""} live
+        </p>
       </div>
 
       {/* Live banner */}
@@ -389,19 +408,22 @@ if (error) {
           style={{ background: "#fff", borderRadius: 8, border: "1px solid #e8e2d8", padding: "20px" }}>
           <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1A1614", display: "block", marginBottom: 16 }}>Agent Status</span>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {AGENTS.map(a => {
-              const sc = a.status === "active" ? "#10b981" : a.status === "online" ? "#3b82f6" : a.status === "busy" ? "#f59e0b" : "#9ca3af";
+            {(() => {
+              const status = dashboardData?.stats?.status || "active";
+              const sc = status === "active" ? "#10b981" : status === "paused" ? "#f59e0b" : "#9ca3af";
+              const calls = dashboardData?.stats?.totalCalls || 0;
+              const satisfaction = dashboardData?.stats?.satisfactionScore || 0;
               return (
-                <div key={a.name} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: "#fdf9f5", borderRadius: 6, border: "1px solid #f0ebe4" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", background: "#fdf9f5", borderRadius: 6, border: "1px solid #f0ebe4" }}>
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: sc, flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, fontFamily: "Syne,sans-serif", fontWeight: 600, color: "#1A1614" }}>{a.name}</div>
-                    <div style={{ fontSize: 10, color: "#8B7060", marginTop: 1 }}>{a.calls} calls · {a.satisfaction}/5 ★</div>
+                    <div style={{ fontSize: 12, fontFamily: "Syne,sans-serif", fontWeight: 600, color: "#1A1614" }}>AI Receptionist</div>
+                    <div style={{ fontSize: 10, color: "#8B7060", marginTop: 1 }}>{calls} calls · {satisfaction}/5 ★</div>
                   </div>
-                  <span style={{ fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: sc }}>{a.status}</span>
+                  <span style={{ fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: sc }}>{status}</span>
                 </div>
               );
-            })}
+            })()}
           </div>
           <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid #f0ebe4" }}>
             <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em", color: "#8B7060", marginBottom: 10 }}>Today's Performance</div>

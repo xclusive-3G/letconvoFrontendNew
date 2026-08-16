@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { API_BASE, API_ROOT } from "../config/apiBase";
 
 const Pr = "#8B6E3C";
 
@@ -61,7 +62,7 @@ const fetchSettings = async () => {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    "https://api.letconvo.live/api/me/settings",
+    `${API_BASE}/me/settings`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -76,7 +77,7 @@ const fetchPhoneSetup = async () => {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    "https://api.letconvo.live/api/me/phone-setup",
+    `${API_BASE}/me/phone-setup`,
     {
       headers: {
         Authorization: `Bearer ${token}`
@@ -95,9 +96,9 @@ const fetchPhoneSetup = async () => {
 
 
 
-export default function SettingsPage() {
+export default function SettingsPage({ client }) {
 
-  const API_URL = "https://api.letconvo.live";
+  const API_URL = API_ROOT;
 
 const {
   data: settingsData,
@@ -105,11 +106,12 @@ const {
 } = useQuery({
   queryKey: ["settings"],
   queryFn: fetchSettings,
-  staleTime: Infinity,
-  gcTime: Infinity,
-  refetchOnWindowFocus: false,
-  refetchOnReconnect: false,
-  refetchOnMount: false,
+  staleTime: 10000,
+  gcTime: 10 * 60 * 1000,
+  refetchInterval: 15000,
+  refetchOnWindowFocus: true,
+  refetchOnReconnect: true,
+  refetchOnMount: true,
   retry: false
 });
 
@@ -168,7 +170,7 @@ const [subscription, setSubscription] = useState(null);
       const token = localStorage.getItem("token");
 
       await axios.put(
-        "https://api.letconvo.live/api/me/settings",
+        `${API_BASE}/me/settings`,
         {
           businessName,
           businessAddress,
@@ -332,7 +334,7 @@ if (isLoading) {
   {[["Google Calendar", "calendar_month", "#4285F4"], ["Outlook", "mail", "#0078d4"], ["Calendly", "event", "#006BFF"]].map(([name, ic, c]) => (
     <button
       key={name}
-      onClick={name === "Google Calendar" ? () => window.location.href = `${API_URL}/api/auth/google/:userId` : undefined}
+      onClick={name === "Google Calendar" ? () => window.location.href = `${API_URL}/api/auth/google/${client?.id}` : undefined}
       style={{
         display: "flex", alignItems: "center", gap: 6,
         padding: "8px 14px", border: `1px solid ${c}30`,

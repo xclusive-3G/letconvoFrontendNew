@@ -54,7 +54,7 @@ export default function BenefitsPage({ setPage }) {
         secondaryBtn="View Demo"     secondaryAction={() => setPage("pricing")} />
 
       {/* Benefits */}
-      <S bg="rgba(255,255,255,0.97)">
+      <S bg="rgb(255,255,255)">
         <Reveal className="mb-8 sm:mb-10">
           <Label>Why Letconvo AI</Label>
           <H2>Corporate Precision</H2>
@@ -77,7 +77,7 @@ export default function BenefitsPage({ setPage }) {
       </S>
 
       {/* Bento grid — stacked on mobile, 12-col on md */}
-      <S bg="rgba(236,231,224,0.97)" className="py-8 sm:py-10">
+      <S bg="rgb(236,231,224)" className="py-8 sm:py-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
           <Reveal className="md:col-span-8">
             <div className="relative overflow-hidden bg-[#e2ddd6] border border-[#ccc5ba]/50 p-6 sm:p-9 flex flex-col justify-end" style={{ minHeight:180 }}>
@@ -125,7 +125,7 @@ export default function BenefitsPage({ setPage }) {
       </S>
 
       {/* Stats — 2-col on mobile, 4-col on md */}
-      <div className="relative py-10 sm:py-12 px-4 sm:px-6 border-y border-[#ccc5ba]/50" style={{ background:"rgba(255,252,248,0.97)", zIndex:10, position:"relative" }}>
+      <div className="relative py-10 sm:py-12 px-4 sm:px-6 border-y border-[#ccc5ba]/50" style={{ background:"rgb(255,252,248)", zIndex:10, position:"relative" }}>
         <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-0 sm:divide-x sm:divide-[#ccc5ba]/50">
           {STATS.map((s,i)=>(
             <Reveal key={s.lbl} delay={i*.08} className={`sm:px-6 sm:first:pl-0`}>
@@ -139,7 +139,7 @@ export default function BenefitsPage({ setPage }) {
       </div>
 
       {/* Comparison — stacked on mobile, 2-col on md */}
-      <S bg="rgba(253,248,243,0.97)">
+      <S bg="rgb(253,248,243)">
         <Reveal className="mb-7 sm:mb-8">
           <Label>The Difference</Label>
           <H2>Traditional vs. Letconvo</H2>
@@ -170,7 +170,7 @@ export default function BenefitsPage({ setPage }) {
       </S>
 
       {/* Testimonials — stacked on mobile, 3-col on md */}
-      <S bg="rgba(255,255,255,0.97)">
+      <S bg="rgb(255,255,255)">
         <Reveal className="mb-7 sm:mb-8">
           <Label>Social Proof</Label>
           <H2>Trusted Worldwide</H2>
@@ -195,7 +195,7 @@ export default function BenefitsPage({ setPage }) {
       </S>
 
       {/* CTA */}
-      <S bg="rgba(255,255,255,0.97)" className="py-16 sm:py-20 text-center">
+      <S bg="rgb(255,255,255)" className="py-16 sm:py-20 text-center">
         <Reveal>
           <Label>Get Started</Label>
           <h2 className="font-syne font-black uppercase tracking-[-0.02em] text-[#1A1614] leading-[1.0] mb-5 sm:mb-6" style={{ fontSize:"clamp(28px,5.5vw,52px)" }}>

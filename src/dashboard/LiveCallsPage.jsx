@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import { API_BASE } from "../config/apiBase";
 
 const Pr = "#8B6E3C";
 
@@ -189,7 +190,7 @@ const [liveCalls, setLiveCalls] = useState([]);
     const token = localStorage.getItem("token");
 
     await axios.post(
-      "https://api.letconvo.live/api/calls/outbound",
+      `${API_BASE}/calls/outbound`,
       {
         to: phoneNumber
       },
@@ -218,7 +219,7 @@ const fetchLiveCalls = async () => {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      "http://localhost:5000/api/me/live-calls",
+      `${API_BASE}/me/live-calls`,
       {
         headers: {
           Authorization: `Bearer ${token}`

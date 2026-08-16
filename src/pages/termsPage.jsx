@@ -283,7 +283,7 @@ export default function TermsPage({ setPage }) {
       </section>
 
       {/* Body */}
-      <section className="relative z-10 px-4 sm:px-6 py-10 sm:py-14" style={{ background:"rgba(255,255,255,0.98)" }}>
+      <section className="relative z-10 px-4 sm:px-6 py-10 sm:py-14" style={{ background:"rgb(255,255,255)" }}>
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-8 lg:gap-14 items-start">
 

@@ -21,7 +21,7 @@ export default function ContactPage({setPage}) {
         sub="Whether you're ready to deploy or just exploring, our team guides you through every step." />
 
       {/* Form + Info — stacked mobile, side-by-side md */}
-      <S bg="rgba(255,255,255,0.97)">
+      <S bg="rgb(255,255,255)">
         <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-8 sm:gap-12 items-start">
           <Reveal>
             <p className="font-syne font-semibold text-[9px] uppercase tracking-[.18em] text-[#8B6E3C]/60 mb-1.5">Contact Us</p>
@@ -90,7 +90,7 @@ export default function ContactPage({setPage}) {
       </S>
 
       {/* Offices — stacked mobile, 3-col md */}
-      <S bg="rgba(247,243,239,0.98)">
+      <S bg="rgb(247,243,239)">
         <Reveal className="mb-6 sm:mb-7">
           <h2 className="font-syne font-black uppercase tracking-tight text-[#1A1614]" style={{fontSize:"clamp(18px,2.5vw,24px)"}}>Global Presence</h2>
         </Reveal>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { APPOINTMENTS } from "./data";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchAppointments, updateAppointment } from "../api/appointmentsApi";
 
 const Pr = "#8B6E3C";
 
@@ -42,8 +43,8 @@ function AppointmentCard({ appt, onClick }) {
   );
 }
 
-function AppointmentDrawer({ appt, onClose }) {
-  const [status, setStatus] = useState(appt.status);
+function AppointmentDrawer({ appt, onClose, onSave, saving }) {
+  const [status, setStatus] = useState(appt.rawStatus);
   const [notes, setNotes] = useState(appt.notes||"");
   return (
     <motion.div initial={{x:"100%"}} animate={{x:0}} exit={{x:"100%"}} transition={{duration:0.28,ease:[0.16,1,0.3,1]}}
@@ -112,7 +113,7 @@ function AppointmentDrawer({ appt, onClose }) {
         </div>
       </div>
       <div style={{ padding:"14px 20px", borderTop:"1px solid #f0ebe4", display:"flex", gap:8, flexShrink:0 }}>
-        <button onClick={onClose} style={{ flex:1, padding:"9px", background:Pr, color:"#fff", border:"none", borderRadius:5, cursor:"pointer", fontFamily:"Syne,sans-serif", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:"0.08em" }}>Save Changes</button>
+        <button disabled={saving} onClick={()=>onSave(appt.id, { status, notes })} style={{ flex:1, padding:"9px", background:Pr, color:"#fff", border:"none", borderRadius:5, cursor:saving?"default":"pointer", opacity:saving?0.6:1, fontFamily:"Syne,sans-serif", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:"0.08em" }}>{saving?"Saving…":"Save Changes"}</button>
         <button onClick={onClose} style={{ padding:"9px 14px", background:"#f7f2ec", color:"#4E4439", border:"1px solid #e8e2d8", borderRadius:5, cursor:"pointer", fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11 }}>Cancel</button>
       </div>
     </motion.div>
@@ -123,8 +124,39 @@ export default function AppointmentsPage() {
   const [selected, setSelected] = useState(null);
   const [view, setView] = useState("list");
   const [filter, setFilter] = useState("all");
+  const [saving, setSaving] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: APPOINTMENTS = [], isLoading, error } = useQuery({
+    queryKey: ["appointments"],
+    queryFn: fetchAppointments,
+    staleTime: 30000,
+    refetchOnWindowFocus: false,
+  });
+
+  const handleSave = async (id, updates) => {
+    setSaving(true);
+    try {
+      await updateAppointment(id, updates);
+      await queryClient.invalidateQueries({ queryKey: ["appointments"] });
+      setSelected(null);
+    } catch (err) {
+      console.error("Failed to update appointment:", err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const dates = [...new Set(APPOINTMENTS.map(a=>a.date))];
   const filtered = APPOINTMENTS.filter(a=>filter==="all"||a.status===filter);
+
+  if (isLoading) {
+    return <div style={{ padding:24, fontSize:13, color:"#8B7060" }}>Loading appointments…</div>;
+  }
+
+  if (error) {
+    return <div style={{ padding:24, fontSize:13, color:"#ef4444" }}>Couldn't load appointments. Please refresh.</div>;
+  }
 
   return (
     <div style={{ padding:"24px", maxWidth:1400, margin:"0 auto" }}>
@@ -173,10 +205,19 @@ export default function AppointmentsPage() {
         );
       })}
 
-      {view==="calendar" && (
+      {view==="calendar" && (()=>{
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const monthLabel = now.toLocaleDateString("en-US",{ month:"long", year:"numeric" });
+        const daysInMonth = new Date(year, month+1, 0).getDate();
+        const firstWeekday = new Date(year, month, 1).getDay();
+        const todayDate = now.getDate();
+        const dateKey = (d) => `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+        return (
         <div style={{ background:"#fff", border:"1px solid #e8e2d8", borderRadius:8, padding:"24px" }}>
           <div style={{ textAlign:"center", marginBottom:20 }}>
-            <div style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:16, color:"#1A1614", textTransform:"uppercase" }}>May 2025</div>
+            <div style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:16, color:"#1A1614", textTransform:"uppercase" }}>{monthLabel}</div>
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2, marginBottom:8 }}>
             {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>(
@@ -184,14 +225,15 @@ export default function AppointmentsPage() {
             ))}
           </div>
           <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:2 }}>
-            {Array.from({length:4},(_,i)=><div key={`e${i}`}/>)}
-            {Array.from({length:31},(_,i)=>{
+            {Array.from({length:firstWeekday},(_,i)=><div key={`e${i}`}/>)}
+            {Array.from({length:daysInMonth},(_,i)=>{
               const day=i+1;
-              const hasAppt=APPOINTMENTS.some(a=>a.date.includes(`${day} May`)||(day===1&&a.date==="Today")||(day===2&&a.date==="Tomorrow"));
+              const isToday = day===todayDate;
+              const hasAppt=APPOINTMENTS.some(a=>a.raw_date===dateKey(day));
               return (
-                <div key={day} style={{ aspectRatio:"1", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", borderRadius:6, cursor:hasAppt?"pointer":"default", background:day===1?Pr:hasAppt?`${Pr}12`:"transparent", border:hasAppt&&day!==1?`1px solid ${Pr}30`:"1px solid transparent" }}>
-                  <span style={{ fontSize:12, fontFamily:"Syne,sans-serif", fontWeight:day===1?800:500, color:day===1?"#fff":hasAppt?Pr:"#4E4439" }}>{day}</span>
-                  {hasAppt&&day!==1&&<div style={{ width:4, height:4, borderRadius:"50%", background:Pr, marginTop:1 }}/>}
+                <div key={day} style={{ aspectRatio:"1", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", borderRadius:6, cursor:hasAppt?"pointer":"default", background:isToday?Pr:hasAppt?`${Pr}12`:"transparent", border:hasAppt&&!isToday?`1px solid ${Pr}30`:"1px solid transparent" }}>
+                  <span style={{ fontSize:12, fontFamily:"Syne,sans-serif", fontWeight:isToday?800:500, color:isToday?"#fff":hasAppt?Pr:"#4E4439" }}>{day}</span>
+                  {hasAppt&&!isToday&&<div style={{ width:4, height:4, borderRadius:"50%", background:Pr, marginTop:1 }}/>}
                 </div>
               );
             })}
@@ -210,14 +252,15 @@ export default function AppointmentsPage() {
             ))}
           </div>
         </div>
-      )}
+        );
+      })()}
 
       <AnimatePresence>
         {selected&&(
           <>
             <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={()=>setSelected(null)}
               style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.25)", zIndex:150 }}/>
-            <AppointmentDrawer appt={selected} onClose={()=>setSelected(null)}/>
+            <AppointmentDrawer appt={selected} onClose={()=>setSelected(null)} onSave={handleSave} saving={saving}/>
           </>
         )}
       </AnimatePresence>

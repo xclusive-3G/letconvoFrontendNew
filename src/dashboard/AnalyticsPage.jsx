@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { API_BASE } from "../config/apiBase";
 
 
 const Pr = "#8B6E3C";
@@ -44,7 +45,7 @@ function DonutChart({ data, size = 120 }) {
       {segments.map((s, i) => (
         <circle key={s.label} cx={cx} cy={cy} r={r} fill="none" stroke={s.color} strokeWidth={14}
           strokeDasharray={`${s.dash} ${s.gap}`}
-          strokeDashoffset={-((s.off - s.value) / total) * circumference + circumference * 0.25}
+          strokeDashoffset={-(s.rot / 360) * circumference}
           transform={`rotate(-90 ${cx} ${cy})`} />
       ))}
       <text x={cx} y={cy} textAnchor="middle" dominantBaseline="central" style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 18, fill: "#1A1614" }}>{total}</text>
@@ -59,7 +60,7 @@ export default function AnalyticsPage() {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    `https://api.letconvo.live/api/me/analytics?period=${period}`,
+    `${API_BASE}/me/analytics?period=${period}`,
     {
       headers: {
         Authorization: `Bearer ${token}`

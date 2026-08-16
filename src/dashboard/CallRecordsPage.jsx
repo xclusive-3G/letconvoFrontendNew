@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchCalls } from "../api/dashboardApi";
+import { fetchCalls, reconcileCalls } from "../api/dashboardApi";
 import { motion, AnimatePresence } from "framer-motion";
 // import axios from "axios";
 
@@ -326,7 +326,17 @@ export default function CallRecordsPage() {
     refetchOnMount: true
   });
 
-  
+  // Backfill anything Retell's push webhook missed, once per page visit —
+  // then refetch so the newly-synced calls show up without waiting for the
+  // next poll cycle. Not on the poll interval itself; that would hammer
+  // Retell's API every 5s for no benefit once everything's caught up.
+  useEffect(() => {
+    reconcileCalls().then((result) => {
+      if (result?.backfilled) refetch();
+    });
+  }, [refetch]);
+
+
 
 
   // const startOutboundCall = async () => {

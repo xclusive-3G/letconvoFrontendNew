@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../config/apiBase";
 
 const Pr = "#8B6E3C";
 
@@ -11,7 +12,7 @@ export default function DashboardAlerts({ setActivePage }) {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await axios.get("https://api.letconvo.live/api/me/alerts", {
+        const res = await axios.get(`${API_BASE}/me/alerts`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

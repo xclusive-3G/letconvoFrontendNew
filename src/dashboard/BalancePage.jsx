@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { API_BASE } from "../config/apiBase";
 
 const Pr = "#8B6E3C";
 
@@ -170,10 +171,10 @@ const fetchBillingSummary = async () => {
   };
 
   const [summary, tx, plansRes, methods] = await Promise.all([
-    axios.get("https://api.letconvo.live/api/me/billing/summary", { headers }),
-    axios.get("https://api.letconvo.live/api/me/billing/transactions", { headers }),
-    axios.get("https://api.letconvo.live/api/plans"),
-    axios.get("https://api.letconvo.live/api/me/payment-methods", { headers })
+    axios.get(`${API_BASE}/me/billing/summary`, { headers }),
+    axios.get(`${API_BASE}/me/billing/transactions`, { headers }),
+    axios.get(`${API_BASE}/plans`),
+    axios.get(`${API_BASE}/me/payment-methods`, { headers })
   ]);
 
   return {
@@ -414,9 +415,12 @@ export default function BalancePage({ setActivePage }) {
       {/* Plan comparison */}
       <Section title="Plan Comparison" icon="workspace_premium">
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
-          {plans.map((p, i) => (
-            <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff" }}>
+          {plans.map((p, i) => {
+            const available = p.slug === "starter";
+            return (
+            <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff", opacity: available ? 1 : 0.6 }}>
               {p.current && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: Pr, color: "#fff", fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>Current Plan</div>}
+              {!available && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: "#8B7060", color: "#fff", fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>Coming Soon</div>}
               <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 14, color: p.current ? Pr : "#1A1614", marginBottom: 4 }}>{p.name}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 3, marginBottom: 8 }}>
                 <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 26, color: "#1A1614" }}>${p.price}</span>
@@ -429,9 +433,17 @@ export default function BalancePage({ setActivePage }) {
                   <span style={{ fontSize: 11, color: "#4E4439" }}>{f}</span>
                 </div>
               ))}
-              {!p.current && <button style={{ marginTop: 12, width: "100%", padding: "7px", border: `1.5px solid ${Pr}`, background: "transparent", color: Pr, borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>{i < 1 ? "Downgrade" : "Upgrade →"}</button>}
+              {!p.current && (
+                available ? (
+                  <button style={{ marginTop: 12, width: "100%", padding: "7px", border: `1.5px solid ${Pr}`, background: "transparent", color: Pr, borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>{i < 1 ? "Downgrade" : "Upgrade →"}</button>
+                ) : (
+                  <button disabled title="This plan is still under build and isn't available yet"
+                    style={{ marginTop: 12, width: "100%", padding: "7px", border: "1.5px solid #d4c8b8", background: "#f7f2ec", color: "#8B7060", borderRadius: 5, cursor: "not-allowed", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>Coming Soon</button>
+                )
+              )}
             </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
 

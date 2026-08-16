@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_BASE } from "../config/apiBase";
 
-const API = "https://api.letconvo.live/api";
+const API = API_BASE;
 
 export const fetchDashboardStats = async () => {
   const token = localStorage.getItem("token");
@@ -33,11 +34,31 @@ export const fetchAnalytics = async (period) => {
 };
 
 
+// Pulls this client's call history directly from Retell and backfills
+// anything the push webhook failed to deliver. Safe to call repeatedly —
+// the backend skips calls it's already logged. Failures are swallowed since
+// this is a best-effort sync, not something that should block page loads.
+export const reconcileCalls = async () => {
+  const token = localStorage.getItem("token");
+
+  try {
+    const { data } = await axios.post(
+      `${API}/me/reconcile-calls`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return data;
+  } catch (err) {
+    console.error("Call reconciliation failed:", err.response?.data || err.message);
+    return null;
+  }
+};
+
 export const fetchCalls = async () => {
   const token = localStorage.getItem("token");
 
   const res = await axios.get(
-    "https://api.letconvo.live/api/me/calls",
+    `${API}/me/calls`,
     {
       headers: {
         Authorization: `Bearer ${token}`

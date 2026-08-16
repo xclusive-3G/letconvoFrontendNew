@@ -75,7 +75,7 @@
 // }
 
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import AnimatedBg     from "./components/AnimatedBg";
@@ -88,6 +88,7 @@ import GetStartedPage from "./pages/GetStartedPage";
 import DashboardPage  from "./dashboard/DashboardPage";
 import TermsPage      from "./pages/termsPage"; // ← fix casing
 import PrivacyPage    from "./pages/privacyPage";
+import { supabase }   from "./lib/supabase";
 
 
 const PUBLIC_PAGES = {
@@ -110,20 +111,39 @@ function getInitialPage() {
 export default function App() {
   const [page, setPage] = useState(getInitialPage);
 
-  const changePage = (p) => {
+  const changePage = useCallback((p) => {
     const nextPage = VALID_PAGES.has(p) ? p : "benefits";
     window.location.hash = nextPage === "benefits" ? "" : nextPage;
     setTimeout(() => {
       setPage(nextPage);
       window.scrollTo({ top: 0, behavior: "instant" }); // ← after mount
     }, 60);
-  };
+  }, []);
 
   useEffect(() => {
     const onHashChange = () => setPage(getInitialPage());
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
+
+  // Picks up the session after a Google OAuth redirect. LoginPage sets
+  // oauth_intent="login" before sending the user to Google; GetStartedPage
+  // sets it to "signup" and handles resuming the wizard itself, so this
+  // only auto-navigates for the login case.
+  useEffect(() => {
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" || !session?.access_token) return;
+
+      const intent = localStorage.getItem("oauth_intent");
+      if (intent !== "login") return;
+
+      localStorage.setItem("token", session.access_token);
+      localStorage.setItem("user", JSON.stringify(session.user));
+      localStorage.removeItem("oauth_intent");
+      changePage("dashboard");
+    });
+    return () => data.subscription.unsubscribe();
+  }, [changePage]);
 
   useEffect(() => {
     document.title =

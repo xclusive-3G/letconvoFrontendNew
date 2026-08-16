@@ -26,3 +26,7 @@ yarn-error.log*
 
 # Testing
 /coverage
+
+#agent 
+CLAUDE.md
+.claude

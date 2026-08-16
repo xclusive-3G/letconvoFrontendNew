@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-// import { supabase } from '../lib/supabase';
+import { API_BASE } from "../config/apiBase";
+import { supabase } from "../lib/supabase";
+
+const GoogleIcon = () => <svg width="13" height="13" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" /><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" /><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" /><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" /></svg>;
+
+const DRAFT_KEY = "getstarted_draft";
 
 // const Pr = "#8B6E3C";
 
 /* ── Static data ── */
 const PLANS = [
-  { id:"starter",  name:"Starter",  price:"$149/mo", desc:"Perfect for solo practices" },
-  { id:"growth",   name:"Growth",   price:"$349/mo", desc:"For growing businesses"     },
-  { id:"premium",  name:"Premium",  price:"$699+/mo",desc:"Enterprise & agencies"      },
+  { id:"starter",  name:"Starter",  price:"$149/mo", desc:"Perfect for solo practices",   available:true  },
+  { id:"growth",   name:"Growth",   price:"$349/mo", desc:"For growing businesses",       available:false },
+  { id:"premium",  name:"Premium",  price:"$699+/mo",desc:"Enterprise & agencies",        available:false },
 ];
 
 const PERKS = [
@@ -38,11 +43,11 @@ const STEP_SUBS = [
 const inputCls = "text-[12.5px] text-[#1A1614] bg-white border border-[#d4c8b8]/70 rounded-sm px-3 py-2 w-full focus:outline-none focus:border-[#8B6E3C] transition-colors placeholder:text-[#aaa8a5]";
 const labelCls = "font-syne font-bold text-[9px] uppercase tracking-[.12em] text-[#4E4439]/55 mb-1 block";
 
-const Inp = ({ label, type = "text", placeholder, required = false, value, onChange }) => (
+const Inp = ({ label, type = "text", placeholder, required = false, value, onChange, disabled = false }) => (
   <div className="flex flex-col">
     <label className={labelCls}>{label}{required && <span className="text-[#8B6E3C] ml-0.5">*</span>}</label>
-    <input type={type} placeholder={placeholder} required={required} value={value} onChange={onChange}
-      className={inputCls} />
+    <input type={type} placeholder={placeholder} required={required} value={value} onChange={onChange} disabled={disabled}
+      className={inputCls + (disabled ? " bg-[#f7f2ec] text-[#8B7060] cursor-not-allowed" : "")} />
   </div>
 );
 
@@ -213,19 +218,35 @@ function Step3({ data, setData, onNext }) {
           {PLANS.map(p => (
             <motion.label
               key={p.id}
-              whileHover={{ x: 2 }}
-              className={`flex items-center gap-3 px-4 py-3 border rounded-sm cursor-pointer transition-all ${data.plan === p.id ? "border-[#8B6E3C] bg-[#8B6E3C]/05" : "border-[#d4c8b8]/60 hover:border-[#8B6E3C]/40"}`}
+              whileHover={p.available ? { x: 2 } : {}}
+              title={p.available ? undefined : "This plan is still under build and isn't available yet"}
+              className={`flex items-center gap-3 px-4 py-3 border rounded-sm transition-all ${
+                !p.available
+                  ? "cursor-not-allowed opacity-55 border-[#d4c8b8]/40 bg-[#f7f2ec]/60"
+                  : data.plan === p.id
+                    ? "cursor-pointer border-[#8B6E3C] bg-[#8B6E3C]/05"
+                    : "cursor-pointer border-[#d4c8b8]/60 hover:border-[#8B6E3C]/40"
+              }`}
             >
               <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${data.plan === p.id ? "border-[#8B6E3C]" : "border-[#d4c8b8]"}`}>
                 {data.plan === p.id && <div className="w-2 h-2 rounded-full bg-[#8B6E3C]" />}
               </div>
-              <input type="radio" name="plan" value={p.id} checked={data.plan === p.id}
-                onChange={() => setData(d => ({ ...d, plan: p.id }))} className="sr-only" />
+              <input type="radio" name="plan" value={p.id} checked={data.plan === p.id} disabled={!p.available}
+                onChange={() => p.available && setData(d => ({ ...d, plan: p.id }))} className="sr-only" />
               <div className="flex-1">
-                <div className="font-syne font-bold text-[12px] text-[#1A1614]">{p.name}</div>
-                <div className="text-[10.5px] text-[#8B7060] mt-0.5">{p.desc}</div>
+                <div className="flex items-center gap-1.5">
+                  <div className="font-syne font-bold text-[12px] text-[#1A1614]">{p.name}</div>
+                  {!p.available && (
+                    <span className="font-syne font-bold text-[8px] uppercase tracking-[.08em] text-[#8B6E3C] bg-[#8B6E3C]/10 border border-[#8B6E3C]/25 rounded-sm px-1.5 py-0.5">
+                      Coming Soon
+                    </span>
+                  )}
+                </div>
+                <div className="text-[10.5px] text-[#8B7060] mt-0.5">
+                  {p.available ? p.desc : "Still under build — not available yet"}
+                </div>
               </div>
-              <div className="font-syne font-black text-[13px] text-[#8B6E3C] flex-shrink-0">{p.price}</div>
+              <div className="font-syne font-black text-[13px] text-[#8B6E3C] flex-shrink-0">{p.available ? p.price : "—"}</div>
             </motion.label>
           ))}
         </div>
@@ -254,18 +275,22 @@ function Step3({ data, setData, onNext }) {
 }
 
 /* ── Step 4: Owner Info ── */
-function Step4({ data, setData, onNext, handleSubmit }) {
+function Step4({ data, setData, onNext, handleSubmit, oauthSession, onGoogleSignup }) {
   const set = k => e => setData(p => ({ ...p, [k]: e.target.value }));
   const [showPw, setShowPw] = useState(false);
   const [agree, setAgree] = useState(false);
-  const valid = data.ownerName && data.ownerEmail && data.password && agree;
+  const [submitting, setSubmitting] = useState(false);
+  const valid = oauthSession
+    ? !!(data.ownerName && data.ownerEmail && agree)
+    : !!(data.ownerName && data.ownerEmail && data.password && agree);
   return (
     <form
   onSubmit={async (e) => {
     e.preventDefault();
 
-    if (!valid) return;
+    if (!valid || submitting) return;
 
+    setSubmitting(true);
     try {
       const result = await handleSubmit();
 
@@ -275,43 +300,67 @@ function Step4({ data, setData, onNext, handleSubmit }) {
     } catch (err) {
       console.error("❌ Error:", err.response?.data || err.message);
       alert("Registration failed");
+    } finally {
+      setSubmitting(false);
     }
   }}
   className="flex flex-col gap-3.5"
 >
       <SectionDivider number="4" title="Owner Info" />
-      <Inp label="Owner Name" placeholder="Sarah Adeyemi" required value={data.ownerName} onChange={set("ownerName")} />
-      <Inp label="Owner Email" type="email" placeholder="sarah@apexhealth.com" required value={data.ownerEmail} onChange={set("ownerEmail")} />
-      <div className="flex flex-col">
-        <label className={labelCls}>Password<span className="text-[#8B6E3C] ml-0.5">*</span></label>
-        <div className="relative">
-          <input
-            type={showPw ? "text" : "password"}
-            placeholder="Min. 8 characters"
-            required
-            value={data.password}
-            onChange={set("password")}
-            className={inputCls + " pr-10"}
-          />
-          <button type="button" onClick={() => setShowPw(!showPw)}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8B7060] hover:text-[#8B6E3C] transition-colors">
-            <span className="material-symbols-outlined text-[16px]">{showPw ? "visibility_off" : "visibility"}</span>
-          </button>
-        </div>
-        {data.password && (
-          <div className="flex gap-1 mt-1.5">
-            {["Length","Uppercase","Number"].map((req, i) => {
-              const ok = i === 0 ? data.password.length >= 8 : i === 1 ? /[A-Z]/.test(data.password) : /\d/.test(data.password);
-              return (
-                <div key={req} className={`flex items-center gap-1 text-[9.5px] ${ok ? "text-green-600" : "text-[#c4a97a]"}`}>
-                  <span className="material-symbols-outlined text-[10px]">{ok ? "check_circle" : "radio_button_unchecked"}</span>
-                  {req}
-                </div>
-              );
-            })}
+
+      {!oauthSession && (
+        <>
+          <motion.button type="button" onClick={onGoogleSignup} whileHover={{ scale: 1.02 }} whileTap={{ scale: .98 }}
+            className="w-full flex items-center justify-center gap-2 py-2.5 border border-[#d4c8b8]/70 rounded-sm font-syne font-semibold text-[11px] text-[#1A1614] hover:border-[#8B6E3C]/40 transition-colors bg-white">
+            <GoogleIcon /> Continue with Google
+          </motion.button>
+          <div className="flex items-center gap-3 text-[10px] text-[#4E4439]/40">
+            <div className="flex-1 h-px bg-[#d4c8b8]/60" /><span>or create with email</span><div className="flex-1 h-px bg-[#d4c8b8]/60" />
           </div>
-        )}
-      </div>
+        </>
+      )}
+
+      {oauthSession && (
+        <div className="flex items-center gap-2.5 px-3 py-2.5 border border-[#8B6E3C]/30 bg-[#8B6E3C]/05 rounded-sm">
+          <span className="material-symbols-outlined text-[#8B6E3C] text-[16px]">check_circle</span>
+          <span className="text-[11.5px] text-[#4E4439]">Connected as <strong>{oauthSession.user.email}</strong> via Google</span>
+        </div>
+      )}
+
+      <Inp label="Owner Name" placeholder="Sarah Adeyemi" required value={data.ownerName} onChange={set("ownerName")} />
+      <Inp label="Owner Email" type="email" placeholder="sarah@apexhealth.com" required value={data.ownerEmail} onChange={set("ownerEmail")} disabled={!!oauthSession} />
+      {!oauthSession && (
+        <div className="flex flex-col">
+          <label className={labelCls}>Password<span className="text-[#8B6E3C] ml-0.5">*</span></label>
+          <div className="relative">
+            <input
+              type={showPw ? "text" : "password"}
+              placeholder="Min. 8 characters"
+              required
+              value={data.password}
+              onChange={set("password")}
+              className={inputCls + " pr-10"}
+            />
+            <button type="button" onClick={() => setShowPw(!showPw)}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#8B7060] hover:text-[#8B6E3C] transition-colors">
+              <span className="material-symbols-outlined text-[16px]">{showPw ? "visibility_off" : "visibility"}</span>
+            </button>
+          </div>
+          {data.password && (
+            <div className="flex gap-1 mt-1.5">
+              {["Length","Uppercase","Number"].map((req, i) => {
+                const ok = i === 0 ? data.password.length >= 8 : i === 1 ? /[A-Z]/.test(data.password) : /\d/.test(data.password);
+                return (
+                  <div key={req} className={`flex items-center gap-1 text-[9.5px] ${ok ? "text-green-600" : "text-[#c4a97a]"}`}>
+                    <span className="material-symbols-outlined text-[10px]">{ok ? "check_circle" : "radio_button_unchecked"}</span>
+                    {req}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
       {/* T&C */}
       <label className="flex items-start gap-2.5 cursor-pointer mt-0.5">
         <div
@@ -324,7 +373,7 @@ function Step4({ data, setData, onNext, handleSubmit }) {
           I agree to the <button type="button" className="text-[#8B6E3C] font-semibold hover:underline">Terms of Service</button> and <button type="button" className="text-[#8B6E3C] font-semibold hover:underline">Privacy Policy</button>.
         </span>
       </label>
-      <NextBtn disabled={!valid}>Create Account →</NextBtn>
+      <NextBtn disabled={!valid || submitting}>{submitting ? "Creating Account…" : "Create Account →"}</NextBtn>
     </form>
   );
 }
@@ -342,7 +391,7 @@ function StepSuccess({ data, onDone }) {
       <p className="text-[12.5px] text-[#4E4439]/65 leading-relaxed mb-1 max-w-[240px] mx-auto">
         Welcome, <strong>{data.ownerName || "there"}</strong>. <strong>{data.businessName}</strong> is ready to go.
       </p>
-      <p className="text-[11.5px] text-[#8B6E3C] mb-6">Check your email to verify your account.</p>
+      {data.password && <p className="text-[11.5px] text-[#8B6E3C] mb-6">Check your email to verify your account.</p>}
       <motion.button whileHover={{ scale:1.04 }} whileTap={{ scale:.97 }} onClick={onDone}
         className="bg-[#8B6E3C] text-white font-syne font-bold text-[11px] uppercase tracking-[.12em] px-8 py-3 rounded-sm hover:bg-[#6b5228] transition-colors">
         Go to Dashboard →
@@ -362,18 +411,72 @@ export default function GetStartedPage({ setPage }) {
     /* Section 2 */
     receptionistMode: "", greetingMessage: "", openTime: "08:00", closeTime: "18:00",
     /* Section 3 */
-    plan: "growth",
+    plan: "starter",
     /* Section 4 */
     ownerName: "", ownerEmail: "", password: "",
   });
 
+  const [oauthSession, setOauthSession] = useState(null);
 
+  // Resumes the wizard after a Google OAuth redirect: restores whatever the
+  // user had filled in before leaving, pre-fills owner name/email from the
+  // Google profile, and jumps back to the owner-info step.
+  useEffect(() => {
+    if (localStorage.getItem("oauth_intent") !== "signup") return;
+
+    supabase.auth.getSession().then(({ data }) => {
+      const session = data?.session;
+      if (!session) return;
+
+      localStorage.removeItem("oauth_intent");
+
+      const draftRaw = localStorage.getItem(DRAFT_KEY);
+      const draft = draftRaw ? JSON.parse(draftRaw) : {};
+      localStorage.removeItem(DRAFT_KEY);
+
+      setFormData(p => ({
+        ...p,
+        ...draft,
+        ownerName: draft.ownerName || session.user.user_metadata?.full_name || session.user.user_metadata?.name || "",
+        ownerEmail: session.user.email || "",
+      }));
+      setOauthSession(session);
+
+      // Only skip ahead to Owner Info if there's an actual draft to resume
+      // (i.e. this is a real mid-wizard OAuth redirect). Arriving here with
+      // no draft — e.g. from the dashboard's "Complete Business Setup"
+      // prompt — means business info was never collected, so start at step 1.
+      if (draft.businessName) {
+        setStep(4);
+      }
+    });
+  }, []);
+
+  const handleGoogleSignup = async () => {
+    localStorage.setItem("oauth_intent", "signup");
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(formData));
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin + "/#getstarted" }
+    });
+
+    if (error) {
+      localStorage.removeItem("oauth_intent");
+      localStorage.removeItem(DRAFT_KEY);
+      alert(error.message);
+    }
+  };
 
   const handleSubmit = async () => {
   try {
+    const { password, ...rest } = formData;
+    const payload = oauthSession ? rest : formData;
+
     const res = await axios.post(
-      "https://api.letconvo.live/api/register-business",
-      formData
+      `${API_BASE}/register-business`,
+      payload,
+      oauthSession ? { headers: { Authorization: `Bearer ${oauthSession.access_token}` } } : undefined
     );
 
     console.log("✅ Registered:", res.data);
@@ -468,7 +571,7 @@ export default function GetStartedPage({ setPage }) {
                 {step === 1 && <Step1 data={formData} setData={setFormData} onNext={next} />}
                 {step === 2 && <Step2 data={formData} setData={setFormData} onNext={next} />}
                 {step === 3 && <Step3 data={formData} setData={setFormData} onNext={next} />}
-                {step === 4 && <Step4 data={formData} setData={setFormData} onNext={next} handleSubmit={handleSubmit}/>}
+                {step === 4 && <Step4 data={formData} setData={setFormData} onNext={next} handleSubmit={handleSubmit} oauthSession={oauthSession} onGoogleSignup={handleGoogleSignup}/>}
                 {step === 5 && <StepSuccess data={formData} onDone={() => setPage("dashboard")} />}
               </motion.div>
             </AnimatePresence>

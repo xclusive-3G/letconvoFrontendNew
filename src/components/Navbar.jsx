@@ -10,6 +10,7 @@ const NAV_LINKS = [
 export default function Navbar({ page, setPage }) {
   const [solid, setSolid] = useState(false);
   const [open,  setOpen]  = useState(false);
+  const [isLoggedIn] = useState(() => !!localStorage.getItem("token"));
 
   useEffect(() => {
     const fn = () => setSolid(window.scrollY > 30);
@@ -44,9 +45,9 @@ export default function Navbar({ page, setPage }) {
 
         {/* Desktop actions */}
         <div className="hidden md:flex items-center gap-4">
-          <button onClick={() => go("login")}
+          <button onClick={() => go(isLoggedIn ? "dashboard" : "login")}
             className="font-syne font-semibold text-[11.5px] uppercase tracking-[.08em] text-[#4E4439]/55 hover:text-[#8B6E3C] transition-colors">
-            Login
+            {isLoggedIn ? "Dashboard" : "Login"}
           </button>
           <motion.button whileHover={{ scale:1.04 }} whileTap={{ scale:.97 }}
             onClick={() => go("getstarted")}
@@ -57,9 +58,9 @@ export default function Navbar({ page, setPage }) {
 
         {/* Mobile: Login link + hamburger */}
         <div className="flex md:hidden items-center gap-3">
-          <button onClick={() => go("login")}
+          <button onClick={() => go(isLoggedIn ? "dashboard" : "login")}
             className="font-syne font-semibold text-[11px] uppercase tracking-[.08em] text-[#4E4439]/55 hover:text-[#8B6E3C] transition-colors">
-            Login
+            {isLoggedIn ? "Dashboard" : "Login"}
           </button>
           <button className="p-1.5 text-[#8B6E3C]" onClick={() => setOpen(!open)} aria-label="Menu">
             <div className={`w-[18px] h-[1.5px] bg-current mb-[4px] transition-all origin-center ${open ? "rotate-45 translate-y-[5.5px]" : ""}`} />
