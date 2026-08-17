@@ -34,17 +34,26 @@ function Toggle({ value, onChange }) {
   );
 }
 
-function TopUpModal({ onClose, onConfirm }) {
+function TopUpModal({ onClose, onCheckout }) {
   const [amount, setAmount] = useState(100);
   const [custom, setCustom] = useState("");
   const [step, setStep] = useState(1);
+  const [error, setError] = useState(null);
   const presets = [50, 100, 200, 500];
   const finalAmt = custom ? parseFloat(custom) : amount;
   const mins = Math.round(finalAmt / 0.22);
 
-  const doConfirm = () => {
+  const doConfirm = async () => {
+    setError(null);
     setStep(2);
-    setTimeout(() => { setStep(3); onConfirm(finalAmt); }, 1400);
+    try {
+      await onCheckout(finalAmt);
+      // onCheckout redirects the whole page to Stripe on success, so no
+      // further local state change is needed here if it resolves.
+    } catch (err) {
+      setStep(1);
+      setError(err?.response?.data?.error || "Couldn't start checkout. Please try again.");
+    }
   };
 
   return (
@@ -54,17 +63,7 @@ function TopUpModal({ onClose, onConfirm }) {
       <motion.div initial={{ opacity: 0, scale: .94, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: .94 }}
         transition={{ duration: .28, ease: [.16, 1, .3, 1] }}
         style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "#fff", borderRadius: 10, width: 380, boxShadow: "0 20px 60px rgba(0,0,0,.18)", zIndex: 400, overflow: "hidden" }}>
-        {step === 3 ? (
-          <motion.div initial={{ opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} style={{ padding: "40px 24px", textAlign: "center" }}>
-            <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
-              <span className="material-symbols-outlined" style={{ fontSize: 28, color: "#10b981", fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-            </div>
-            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 17, color: "#1A1614", marginBottom: 6 }}>Top-up Successful!</div>
-            <div style={{ fontSize: 12, color: "#8B7060", marginBottom: 20 }}>${finalAmt.toFixed(2)} added · ~{mins} extra minutes available</div>
-            <button onClick={onClose} style={{ padding: "9px 28px", background: Pr, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>Done</button>
-          </motion.div>
-        ) : (
-          <>
+        <>
             <div style={{ padding: "15px 20px", borderBottom: "1px solid #f0ebe4", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 14, color: "#1A1614" }}>Top Up Balance</div>
               <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer" }}><span className="material-symbols-outlined" style={{ fontSize: 19, color: "#8B7060" }}>close</span></button>
@@ -89,19 +88,19 @@ function TopUpModal({ onClose, onConfirm }) {
                 <span style={{ fontSize: 12, color: "#4E4439" }}>Estimated minutes added</span>
                 <span style={{ fontSize: 13, fontFamily: "Syne,sans-serif", fontWeight: 700, color: Pr }}>~{mins} min</span>
               </div>
-              <div style={{ fontSize: 10, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8B7060", marginBottom: 6 }}>Charge To</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: "#f7f2ec", borderRadius: 6, border: "1px solid #e8e2d8", marginBottom: 18 }}>
-                <span className="material-symbols-outlined" style={{ fontSize: 18, color: Pr }}>credit_card</span>
-                <span style={{ fontSize: 12, color: "#4E4439" }}>Visa ending in 4242</span>
-                <span style={{ marginLeft: "auto", fontSize: 10, fontFamily: "Syne,sans-serif", fontWeight: 600, color: "#10b981" }}>Default</span>
+              <div style={{ fontSize: 11, color: "#8B7060", marginBottom: 14, display: "flex", alignItems: "center", gap: 6 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 14, color: Pr }}>lock</span>
+                You'll enter payment details securely on Stripe's checkout page
               </div>
+              {error && (
+                <div style={{ marginBottom: 14, padding: "9px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: 11.5, color: "#b91c1c" }}>{error}</div>
+              )}
               <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: .97 }} onClick={doConfirm} disabled={step === 2}
                 style={{ width: "100%", padding: "11px", background: step === 2 ? "#c4a97a" : Pr, color: "#fff", border: "none", borderRadius: 6, cursor: step === 2 ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.08em", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                {step === 2 ? (<><motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: .8, ease: "linear" }} className="material-symbols-outlined" style={{ fontSize: 15 }}>autorenew</motion.span>Processing…</>) : `Confirm Top Up — $${finalAmt.toFixed(2)}`}
+                {step === 2 ? (<><motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: .8, ease: "linear" }} className="material-symbols-outlined" style={{ fontSize: 15 }}>autorenew</motion.span>Redirecting to checkout…</>) : `Continue to Checkout — $${finalAmt.toFixed(2)}`}
               </motion.button>
             </div>
           </>
-        )}
       </motion.div>
     </>
   );
@@ -188,7 +187,21 @@ const fetchBillingSummary = async () => {
   };
 };
 
+// Starts real Stripe Checkout for either a subscription (mode: "subscription",
+// planSlug) or a one-time top-up (mode: "topup", amount), then redirects the
+// whole page there — we never collect card details ourselves. Throws on
+// failure so callers can show the error inline instead of navigating away.
+const startCheckout = async (mode, extra = {}) => {
+  const token = localStorage.getItem("token");
 
+  const res = await axios.post(
+    `${API_BASE}/billing/checkout`,
+    { mode, ...extra },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+
+  window.location.href = res.data.url;
+};
 
 export default function BalancePage({ setActivePage }) {
 
@@ -196,7 +209,7 @@ export default function BalancePage({ setActivePage }) {
     data: billingData,
     isLoading,
     error,
-    // refetch
+    refetch
   } = useQuery({
     queryKey: ["billing"],
     queryFn: fetchBillingSummary,
@@ -232,6 +245,44 @@ export default function BalancePage({ setActivePage }) {
   const [filterType, setFilterType] = useState("all");
   const [balance, setBalance] = useState(0);
   const [minutes, setMinutes] = useState(0);
+
+  const [checkoutNotice, setCheckoutNotice] = useState(null);
+  const [subscribingPlan, setSubscribingPlan] = useState(null);
+  const [planError, setPlanError] = useState(null);
+
+  // Stripe redirects back to ?checkout=success|cancel#dashboard after
+  // checkout (kept in the query string, not the hash, so App.jsx's exact
+  // hash-match router still resolves #dashboard correctly). Pick that up
+  // once, refresh billing data, then strip it so a page refresh doesn't
+  // re-show the notice.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const result = params.get("checkout");
+    if (!result) return;
+
+    setCheckoutNotice(result === "success" ? "success" : "cancel");
+    if (result === "success") refetch();
+
+    params.delete("checkout");
+    const newSearch = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleSubscribe = async (planSlug) => {
+    setPlanError(null);
+    setSubscribingPlan(planSlug);
+    try {
+      await startCheckout("subscription", { planSlug });
+    } catch (err) {
+      setSubscribingPlan(null);
+      setPlanError(err?.response?.data?.error || "Couldn't start checkout for that plan.");
+    }
+  };
 
   // useEffect(() => {
   //   fetchBilling();
@@ -279,7 +330,6 @@ export default function BalancePage({ setActivePage }) {
     transactions.filter(
       t => filterType === "all" || t.type === filterType
     );
-  const handleTopUp = amt => { setBalance(b => +(b + parseFloat(amt)).toFixed(2)); setMinutes(m => m + Math.round(parseFloat(amt) / 0.22)); };
   const txIcon = { usage: "call", topup: "add_circle", payment: "credit_card", invoice: "receipt", refund: "undo" };
   const txColor = { usage: "#ef4444", topup: "#10b981", payment: "#3b82f6", invoice: "#8B6E3C", refund: "#8b5cf6" };
 
@@ -297,6 +347,49 @@ export default function BalancePage({ setActivePage }) {
           <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add_circle</span>Top Up Balance
         </motion.button>
       </div>
+
+      {checkoutNotice && (
+        <div style={{
+          display: "flex", alignItems: "center", gap: 10, marginBottom: 14, padding: "11px 16px", borderRadius: 7,
+          background: checkoutNotice === "success" ? "#ecfdf5" : "#f7f2ec",
+          border: `1px solid ${checkoutNotice === "success" ? "#a7f3d0" : "#e8e2d8"}`
+        }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 17, color: checkoutNotice === "success" ? "#10b981" : "#8B7060" }}>
+            {checkoutNotice === "success" ? "check_circle" : "info"}
+          </span>
+          <span style={{ fontSize: 12.5, color: "#1A1614", flex: 1 }}>
+            {checkoutNotice === "success" ? "Payment successful — your balance has been updated." : "Checkout was canceled — no charge was made."}
+          </span>
+          <button onClick={() => setCheckoutNotice(null)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 15, color: "#8B7060" }}>close</span>
+          </button>
+        </div>
+      )}
+
+      {balanceData?.needsSubscription && (
+        <div style={{
+          display: "flex", alignItems: "center", gap: 14, marginBottom: 14, padding: "16px 20px", borderRadius: 8,
+          background: "linear-gradient(135deg,#1a1410 0%,#2d2010 100%)", border: `1px solid ${Pr}40`
+        }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 24, color: "#c4a97a" }}>lock_clock</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 13, color: "#fff", marginBottom: 2 }}>Your free trial has ended</div>
+            <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.55)" }}>
+              Subscribe to the {balanceData.planName} plan (${balanceData.planPrice}/mo) to keep your AI receptionist active.
+            </div>
+          </div>
+          <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: .97 }}
+            onClick={() => handleSubscribe(balanceData.planSlug)}
+            disabled={subscribingPlan === balanceData.planSlug}
+            style={{ padding: "9px 18px", background: Pr, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+            {subscribingPlan === balanceData.planSlug ? "Redirecting…" : "Subscribe Now"}
+          </motion.button>
+        </div>
+      )}
+
+      {planError && (
+        <div style={{ marginBottom: 14, padding: "10px 16px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 7, fontSize: 12, color: "#b91c1c" }}>{planError}</div>
+      )}
 
       {/* Top 3 cards */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 14 }}>
@@ -415,12 +508,13 @@ export default function BalancePage({ setActivePage }) {
       {/* Plan comparison */}
       <Section title="Plan Comparison" icon="workspace_premium">
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12 }}>
-          {plans.map((p, i) => {
-            const available = p.slug === "starter";
+          {plans.map((p) => {
+            const currentPlan = plans.find(x => x.current);
+            const isDowngrade = currentPlan && p.price < currentPlan.price;
+            const busy = subscribingPlan === p.slug;
             return (
-            <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff", opacity: available ? 1 : 0.6 }}>
+            <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff" }}>
               {p.current && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: Pr, color: "#fff", fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>Current Plan</div>}
-              {!available && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: "#8B7060", color: "#fff", fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>Coming Soon</div>}
               <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 14, color: p.current ? Pr : "#1A1614", marginBottom: 4 }}>{p.name}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 3, marginBottom: 8 }}>
                 <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 26, color: "#1A1614" }}>${p.price}</span>
@@ -434,12 +528,10 @@ export default function BalancePage({ setActivePage }) {
                 </div>
               ))}
               {!p.current && (
-                available ? (
-                  <button style={{ marginTop: 12, width: "100%", padding: "7px", border: `1.5px solid ${Pr}`, background: "transparent", color: Pr, borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>{i < 1 ? "Downgrade" : "Upgrade →"}</button>
-                ) : (
-                  <button disabled title="This plan is still under build and isn't available yet"
-                    style={{ marginTop: 12, width: "100%", padding: "7px", border: "1.5px solid #d4c8b8", background: "#f7f2ec", color: "#8B7060", borderRadius: 5, cursor: "not-allowed", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>Coming Soon</button>
-                )
+                <button onClick={() => handleSubscribe(p.slug)} disabled={busy}
+                  style={{ marginTop: 12, width: "100%", padding: "7px", border: `1.5px solid ${Pr}`, background: "transparent", color: Pr, borderRadius: 5, cursor: busy ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  {busy ? "Redirecting…" : isDowngrade ? "Downgrade" : "Upgrade →"}
+                </button>
               )}
             </div>
             );
@@ -498,7 +590,7 @@ export default function BalancePage({ setActivePage }) {
       </Section>
 
       <AnimatePresence>
-        {showTopUp && <TopUpModal onClose={() => setShowTopUp(false)} onConfirm={handleTopUp} />}
+        {showTopUp && <TopUpModal onClose={() => setShowTopUp(false)} onCheckout={(amt) => startCheckout("topup", { amount: amt })} />}
         {showCard && <AddCardModal onClose={() => setShowCard(false)} />}
       </AnimatePresence>
     </div>

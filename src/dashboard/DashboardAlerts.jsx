@@ -22,6 +22,19 @@ export default function DashboardAlerts({ setActivePage }) {
 
         const hasSeenNumberPopup = localStorage.getItem("number_popup_seen");
 
+        // Trial ran out — takes priority over the generic low-credit alert
+        // below, since a trial client can't just top up, they need to
+        // actually subscribe to the plan they picked at signup.
+        if (a.needsSubscription) {
+          setAlert({
+            type: "needsSubscription",
+            title: "Your Free Trial Has Ended",
+            message: a.needsSubscriptionMessage,
+            button: "Subscribe Now"
+          });
+          return;
+        }
+
         if (a.lowCredit) {
           setAlert({
             type: "lowCredit",
@@ -57,6 +70,8 @@ export default function DashboardAlerts({ setActivePage }) {
   if (!alert) return null;
 
   const isLowCredit = alert.type === "lowCredit";
+  const isNeedsSubscription = alert.type === "needsSubscription";
+  const hasAction = isLowCredit || isNeedsSubscription;
 
   return (
     <div
@@ -84,7 +99,7 @@ export default function DashboardAlerts({ setActivePage }) {
             width: 48,
             height: 48,
             borderRadius: "50%",
-            background: isLowCredit ? "#fef2f2" : "#ecfdf5",
+            background: hasAction ? "#fef2f2" : "#ecfdf5",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -95,10 +110,10 @@ export default function DashboardAlerts({ setActivePage }) {
             className="material-symbols-outlined"
             style={{
               fontSize: 28,
-              color: isLowCredit ? "#ef4444" : "#10b981"
+              color: hasAction ? "#ef4444" : "#10b981"
             }}
           >
-            {isLowCredit ? "warning" : "check_circle"}
+            {isNeedsSubscription ? "lock_clock" : isLowCredit ? "warning" : "check_circle"}
           </span>
         </div>
 
@@ -126,7 +141,7 @@ export default function DashboardAlerts({ setActivePage }) {
         </p>
 
         <div style={{ display: "flex", gap: 10 }}>
-          {isLowCredit && (
+          {hasAction && (
             <button
               onClick={() => {
                 setAlert(null);
@@ -146,7 +161,7 @@ export default function DashboardAlerts({ setActivePage }) {
                 textTransform: "uppercase"
               }}
             >
-              Top Up Now
+              {alert.button}
             </button>
           )}
 
@@ -166,7 +181,7 @@ export default function DashboardAlerts({ setActivePage }) {
               textTransform: "uppercase"
             }}
           >
-            {isLowCredit ? "Later" : "Okay"}
+            {hasAction ? "Later" : "Okay"}
           </button>
         </div>
       </div>
