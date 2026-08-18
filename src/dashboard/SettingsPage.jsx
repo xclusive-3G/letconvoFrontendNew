@@ -148,6 +148,7 @@ const forwardingVerified = phoneSetup?.forwarding_verified || false;
   const [emailNotif, setEmailNotif] = useState(true);
   const [smsNotif, setSmsNotif] = useState(true);
   const [missedAlerts, setMissedAlerts] = useState(true);
+  const [appointmentReminders, setAppointmentReminders] = useState(true);
   const [reportFreq, setReportFreq] = useState("daily");
   const [reportEmail, setReportEmail] = useState("admin@apexhealth.com");
   const [adminName, setAdminName] = useState("Sarah Adeyemi");
@@ -184,6 +185,7 @@ const [subscription, setSubscription] = useState(null);
           emailNotif,
           smsNotif,
           missedAlerts,
+          appointmentReminders,
           reportFreq,
           reportEmail
         },
@@ -285,6 +287,7 @@ useEffect(() => {
   setEmailNotif(settingsData.emailNotif);
   setSmsNotif(settingsData.smsNotif);
   setMissedAlerts(settingsData.missedAlerts);
+  setAppointmentReminders(settingsData.appointmentReminders);
   setReportFreq(settingsData.reportFreq || "daily");
   setReportEmail(settingsData.reportEmail || "");
 }, [settingsData]);
@@ -381,6 +384,9 @@ if (isLoading) {
             <Toggle value={emailNotif} onChange={setEmailNotif} label="Email Notifications" sub="Receive call summaries and alerts via email." />
             <Toggle value={smsNotif} onChange={setSmsNotif} label="SMS Notifications" sub="Get real-time SMS alerts for missed calls and new leads." />
             <Toggle value={missedAlerts} onChange={setMissedAlerts} label="Missed Call Alerts" sub="Immediate notification when a caller disconnects before being helped." />
+          </Sec>
+          <Sec title="Appointment Reminders" icon="event_available">
+            <Toggle value={appointmentReminders} onChange={setAppointmentReminders} label="Call Customers Before Appointments" sub="AI calls the customer 20 minutes before their appointment to confirm they're still coming — uses call credits like any other AI call." />
           </Sec>
           <Sec title="Reports" icon="summarize">
             <Sel label="Report Frequency" value={reportFreq} onChange={setReportFreq}
