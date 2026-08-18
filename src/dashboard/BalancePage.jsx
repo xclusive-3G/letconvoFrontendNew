@@ -48,7 +48,7 @@ function TopUpModal({ onClose, onCheckout }) {
     setStep(2);
     try {
       await onCheckout(finalAmt);
-      // onCheckout redirects the whole page to Stripe on success, so no
+      // onCheckout redirects the whole page to Paystack on success, so no
       // further local state change is needed here if it resolves.
     } catch (err) {
       setStep(1);
@@ -90,7 +90,7 @@ function TopUpModal({ onClose, onCheckout }) {
               </div>
               <div style={{ fontSize: 11, color: "#8B7060", marginBottom: 14, display: "flex", alignItems: "center", gap: 6 }}>
                 <span className="material-symbols-outlined" style={{ fontSize: 14, color: Pr }}>lock</span>
-                You'll enter payment details securely on Stripe's checkout page
+                You'll enter payment details securely on Paystack's checkout page
               </div>
               {error && (
                 <div style={{ marginBottom: 14, padding: "9px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: 11.5, color: "#b91c1c" }}>{error}</div>
@@ -187,7 +187,7 @@ const fetchBillingSummary = async () => {
   };
 };
 
-// Starts real Stripe Checkout for either a subscription (mode: "subscription",
+// Starts real Paystack Checkout for either a subscription (mode: "subscription",
 // planSlug) or a one-time top-up (mode: "topup", amount), then redirects the
 // whole page there — we never collect card details ourselves. Throws on
 // failure so callers can show the error inline instead of navigating away.
@@ -264,26 +264,50 @@ export default function BalancePage({ setActivePage }) {
   const [subscribingPlan, setSubscribingPlan] = useState(null);
   const [planError, setPlanError] = useState(null);
 
-  // Stripe redirects back to ?checkout=success|cancel#dashboard after
-  // checkout (kept in the query string, not the hash, so App.jsx's exact
-  // hash-match router still resolves #dashboard correctly). Pick that up
-  // once, refresh billing data, then strip it so a page refresh doesn't
-  // re-show the notice.
+  // Paystack redirects back to ?checkout=verify&reference=...#dashboard
+  // after checkout (kept in the query string, not the hash, so App.jsx's
+  // exact hash-match router still resolves #dashboard correctly) —
+  // unlike Stripe, Paystack has one callback_url for every outcome, so we
+  // don't know success vs. cancel until we ask via /billing/verify. Pick
+  // that up once, then strip the query params so a page refresh doesn't
+  // re-run it.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const result = params.get("checkout");
     if (!result) return;
 
+    const reference = params.get("reference") || params.get("trxref");
+
+    const cleanUp = () => {
+      params.delete("checkout");
+      params.delete("reference");
+      params.delete("trxref");
+      const newSearch = params.toString();
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash
+      );
+    };
+
+    if (result === "verify" && reference) {
+      const token = localStorage.getItem("token");
+      axios.get(`${API_BASE}/billing/verify`, {
+        params: { reference },
+        headers: { Authorization: `Bearer ${token}` }
+      }).then((res) => {
+        const ok = res.data?.status === "success";
+        setCheckoutNotice(ok ? "success" : "cancel");
+        if (ok) refetch();
+      }).catch(() => {
+        setCheckoutNotice("cancel");
+      }).finally(cleanUp);
+      return;
+    }
+
     setCheckoutNotice(result === "success" ? "success" : "cancel");
     if (result === "success") refetch();
-
-    params.delete("checkout");
-    const newSearch = params.toString();
-    window.history.replaceState(
-      null,
-      "",
-      window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash
-    );
+    cleanUp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

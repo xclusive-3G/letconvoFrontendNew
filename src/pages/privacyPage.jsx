@@ -113,7 +113,7 @@ const SECTIONS = [
         heading: "Service providers (data processors):",
         items: [
           "Cloud hosting and infrastructure providers (e.g. AWS, Google Cloud)",
-          "Payment processors (e.g. Stripe, Paystack) — they handle card data under their own PCI-DSS compliance",
+          "Payment processors (e.g. Paystack) — they handle card data under their own PCI-DSS compliance",
           "SMS/communication providers for sending confirmation messages",
           "Analytics tools for aggregated, anonymised usage statistics",
         ],
