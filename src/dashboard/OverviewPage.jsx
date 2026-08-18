@@ -51,9 +51,15 @@ function StatCard({ icon, label, value, sub, color = Pr, delay = 0 }) {
   );
 }
 
+const CHART_SERIES = [
+  { key: "calls", color: Pr },
+  { key: "booked", color: "#10b981" },
+  { key: "missed", color: "#ef4444" }
+];
+
 function MiniBarChart({ data }) {
   const max = Math.max(
-    ...data.map((d) => Number(d.calls) || 0),
+    ...data.flatMap((d) => CHART_SERIES.map((s) => Number(d[s.key]) || 0)),
     1
   );
 
@@ -88,22 +94,30 @@ function MiniBarChart({ data }) {
             {d.calls}
           </div>
 
-          <motion.div
-            initial={{ height: 0 }}
-            animate={{
-              height: `${Math.max((d.calls / max) * 70, d.calls > 0 ? 8 : 2)}px`
-            }}
-            transition={{
-              delay: i * 0.05,
-              duration: 0.6
-            }}
-            style={{
-              width: "100%",
-              background: Pr,
-              borderRadius: "3px 3px 0 0",
-              minHeight: d.calls > 0 ? 8 : 2
-            }}
-          />
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 2, width: "100%" }}>
+            {CHART_SERIES.map((s) => {
+              const value = Number(d[s.key]) || 0;
+              return (
+                <motion.div
+                  key={s.key}
+                  initial={{ height: 0 }}
+                  animate={{
+                    height: `${Math.max((value / max) * 70, value > 0 ? 8 : 2)}px`
+                  }}
+                  transition={{
+                    delay: i * 0.05,
+                    duration: 0.6
+                  }}
+                  style={{
+                    flex: 1,
+                    background: s.color,
+                    borderRadius: "3px 3px 0 0",
+                    minHeight: value > 0 ? 8 : 2
+                  }}
+                />
+              );
+            })}
+          </div>
 
           <span
             style={{
@@ -187,13 +201,13 @@ const callHistory = data?.callHistory || [];
 const performanceData = data?.performanceData;
 
   const weeklyData = dashboardData?.weeklyData || [
-    { day: "Sun", calls: 0 },
-    { day: "Mon", calls: 0 },
-    { day: "Tue", calls: 0 },
-    { day: "Wed", calls: 0 },
-    { day: "Thu", calls: 0 },
-    { day: "Fri", calls: 0 },
-    { day: "Sat", calls: 0 }
+    { day: "Sun", calls: 0, booked: 0, missed: 0 },
+    { day: "Mon", calls: 0, booked: 0, missed: 0 },
+    { day: "Tue", calls: 0, booked: 0, missed: 0 },
+    { day: "Wed", calls: 0, booked: 0, missed: 0 },
+    { day: "Thu", calls: 0, booked: 0, missed: 0 },
+    { day: "Fri", calls: 0, booked: 0, missed: 0 },
+    { day: "Sat", calls: 0, booked: 0, missed: 0 }
   ];
 
   const weeklyTotal = weeklyData.reduce(
