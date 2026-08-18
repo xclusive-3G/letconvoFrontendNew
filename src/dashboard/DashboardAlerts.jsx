@@ -6,6 +6,8 @@ const Pr = "#8B6E3C";
 
 export default function DashboardAlerts({ setActivePage }) {
   const [alert, setAlert] = useState(null);
+  const [subscribing, setSubscribing] = useState(false);
+  const [checkoutError, setCheckoutError] = useState(null);
 
   useEffect(() => {
     const fetchAlerts = async () => {
@@ -30,7 +32,8 @@ export default function DashboardAlerts({ setActivePage }) {
             type: "needsSubscription",
             title: "Your Free Trial Has Ended",
             message: a.needsSubscriptionMessage,
-            button: "Subscribe Now"
+            button: "Subscribe Now",
+            planSlug: a.subscriptionPlanSlug
           });
           return;
         }
@@ -72,6 +75,32 @@ export default function DashboardAlerts({ setActivePage }) {
   const isLowCredit = alert.type === "lowCredit";
   const isNeedsSubscription = alert.type === "needsSubscription";
   const hasAction = isLowCredit || isNeedsSubscription;
+
+  // Trial-ended goes straight to Paystack checkout for the plan picked at
+  // signup — low-credit just opens the balance page, since a top-up needs
+  // the user to pick an amount there first.
+  const handlePrimaryAction = async () => {
+    if (isNeedsSubscription && alert.planSlug) {
+      setCheckoutError(null);
+      setSubscribing(true);
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.post(
+          `${API_BASE}/billing/checkout`,
+          { mode: "subscription", planSlug: alert.planSlug },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        window.location.href = res.data.url;
+      } catch (err) {
+        setSubscribing(false);
+        setCheckoutError(err.response?.data?.error || "Couldn't start checkout. Please try again.");
+      }
+      return;
+    }
+
+    setAlert(null);
+    setActivePage("balance");
+  };
 
   return (
     <div
@@ -140,13 +169,27 @@ export default function DashboardAlerts({ setActivePage }) {
           {alert.message}
         </p>
 
+        {checkoutError && (
+          <div
+            style={{
+              marginBottom: 14,
+              padding: "9px 12px",
+              background: "#fef2f2",
+              border: "1px solid #fecaca",
+              borderRadius: 6,
+              fontSize: 11.5,
+              color: "#b91c1c"
+            }}
+          >
+            {checkoutError}
+          </div>
+        )}
+
         <div style={{ display: "flex", gap: 10 }}>
           {hasAction && (
             <button
-              onClick={() => {
-                setAlert(null);
-                setActivePage("balance");
-              }}
+              onClick={handlePrimaryAction}
+              disabled={subscribing}
               style={{
                 flex: 1,
                 padding: "10px 14px",
@@ -154,14 +197,14 @@ export default function DashboardAlerts({ setActivePage }) {
                 color: "#fff",
                 border: "none",
                 borderRadius: 6,
-                cursor: "pointer",
+                cursor: subscribing ? "wait" : "pointer",
                 fontFamily: "Syne,sans-serif",
                 fontWeight: 700,
                 fontSize: 11,
                 textTransform: "uppercase"
               }}
             >
-              {alert.button}
+              {subscribing ? "Redirecting…" : alert.button}
             </button>
           )}
 
