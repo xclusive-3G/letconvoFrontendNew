@@ -203,6 +203,16 @@ const startCheckout = async (mode, extra = {}) => {
   window.location.href = res.data.url;
 };
 
+const saveAutoTopUp = async ({ enabled, threshold, amount }) => {
+  const token = localStorage.getItem("token");
+
+  await axios.put(
+    `${API_BASE}/me/billing/auto-topup`,
+    { enabled, threshold, amount },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
 export default function BalancePage({ setActivePage }) {
 
   const {
@@ -241,6 +251,10 @@ export default function BalancePage({ setActivePage }) {
   const [autoTopUp, setAutoTopUp] = useState(false);
   const [threshold, setThreshold] = useState(100);
   const [topUpAmt, setTopUpAmt] = useState(50);
+  const [autoTopUpSynced, setAutoTopUpSynced] = useState(false);
+  const [savingAutoTopUp, setSavingAutoTopUp] = useState(false);
+  const [autoTopUpSaved, setAutoTopUpSaved] = useState(false);
+  const [autoTopUpError, setAutoTopUpError] = useState(null);
 
   const [filterType, setFilterType] = useState("all");
   const [balance, setBalance] = useState(0);
@@ -282,6 +296,43 @@ export default function BalancePage({ setActivePage }) {
       setSubscribingPlan(null);
       setPlanError(err?.response?.data?.error || "Couldn't start checkout for that plan.");
     }
+  };
+
+  // Only pull the server's auto top-up settings into local state once —
+  // this page polls billing data every 15s, and re-syncing on every poll
+  // would clobber whatever the user is mid-typing in the threshold/amount
+  // inputs below.
+  useEffect(() => {
+    if (autoTopUpSynced || !balanceData) return;
+
+    setAutoTopUp(!!balanceData.autoTopUp);
+    setThreshold(balanceData.autoTopUpThreshold ?? 100);
+    setTopUpAmt(balanceData.autoTopUpAmount ?? 50);
+    setAutoTopUpSynced(true);
+  }, [balanceData, autoTopUpSynced]);
+
+  const persistAutoTopUp = async ({ enabled, thresholdVal, amountVal }) => {
+    setAutoTopUpError(null);
+    setSavingAutoTopUp(true);
+    setAutoTopUpSaved(false);
+    try {
+      await saveAutoTopUp({ enabled, threshold: thresholdVal, amount: amountVal });
+      setAutoTopUpSaved(true);
+      setTimeout(() => setAutoTopUpSaved(false), 2500);
+    } catch (err) {
+      setAutoTopUpError(err?.response?.data?.error || "Couldn't save auto top-up settings.");
+    } finally {
+      setSavingAutoTopUp(false);
+    }
+  };
+
+  const handleAutoTopUpToggle = (next) => {
+    setAutoTopUp(next);
+    persistAutoTopUp({ enabled: next, thresholdVal: threshold, amountVal: topUpAmt });
+  };
+
+  const handleSaveAutoTopUpSettings = () => {
+    persistAutoTopUp({ enabled: autoTopUp, thresholdVal: threshold, amountVal: topUpAmt });
   };
 
   // useEffect(() => {
@@ -461,7 +512,7 @@ export default function BalancePage({ setActivePage }) {
 
       {/* Auto top-up + Payment methods */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
-        <Section title="Auto Top-Up" icon="autorenew" action={<Toggle value={autoTopUp} onChange={setAutoTopUp} />}>
+        <Section title="Auto Top-Up" icon="autorenew" action={<Toggle value={autoTopUp} onChange={handleAutoTopUpToggle} />}>
           <p style={{ fontSize: 12, color: "#8B7060", marginBottom: 14, lineHeight: 1.55 }}>Automatically top up when minutes fall below threshold. Never let your AI go offline.</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, opacity: autoTopUp ? 1 : .4, pointerEvents: autoTopUp ? "all" : "none", transition: "opacity 0.2s" }}>
             {[["Trigger Threshold (mins)", "min", threshold, setThreshold], ["Top-Up Amount ($)", "$", topUpAmt, setTopUpAmt]].map(([lbl, pre, val, set]) => (
@@ -474,7 +525,19 @@ export default function BalancePage({ setActivePage }) {
               </div>
             ))}
           </div>
-          {autoTopUp && <div style={{ marginTop: 12, padding: "9px 12px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 6, fontSize: 11, color: "#065f46" }}>✓ Will auto top-up <strong>${topUpAmt}</strong> (~{Math.round(topUpAmt / 0.22)} min) when below <strong>{threshold} minutes</strong></div>}
+          {autoTopUp && (
+            <>
+              <div style={{ marginTop: 12, padding: "9px 12px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 6, fontSize: 11, color: "#065f46" }}>✓ Will auto top-up <strong>${topUpAmt}</strong> (~{Math.round(topUpAmt / 0.22)} min) when below <strong>{threshold} minutes</strong></div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12 }}>
+                <button onClick={handleSaveAutoTopUpSettings} disabled={savingAutoTopUp}
+                  style={{ padding: "6px 14px", background: Pr, color: "#fff", border: "none", borderRadius: 5, cursor: savingAutoTopUp ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  {savingAutoTopUp ? "Saving…" : "Save"}
+                </button>
+                {autoTopUpSaved && <span style={{ fontSize: 11, color: "#10b981" }}>Saved ✓</span>}
+              </div>
+            </>
+          )}
+          {autoTopUpError && <div style={{ marginTop: 10, padding: "8px 12px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 6, fontSize: 11, color: "#b91c1c" }}>{autoTopUpError}</div>}
         </Section>
 
         <Section title="Payment Methods" icon="credit_card"

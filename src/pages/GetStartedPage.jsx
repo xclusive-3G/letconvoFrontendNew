@@ -481,6 +481,20 @@ export default function GetStartedPage({ setPage }) {
 
     console.log("✅ Registered:", res.data);
 
+    // Email/password signups create the Supabase session entirely
+    // server-side, so the browser's own Supabase client doesn't know about
+    // it yet. Without this, DashboardPage's supabase.auth.getSession() call
+    // on mount falls back to whatever session was already active in this
+    // browser (e.g. a different logged-in account) and overwrites the
+    // correct token with it. Google sign-in already has a client-side
+    // session from supabase.auth.signInWithOAuth, so skip this there.
+    if (!oauthSession && res.data.refresh_token) {
+      await supabase.auth.setSession({
+        access_token: res.data.access_token,
+        refresh_token: res.data.refresh_token
+      });
+    }
+
     localStorage.setItem("token", res.data.access_token);
     localStorage.setItem("user", JSON.stringify(res.data.user));
 
