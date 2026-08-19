@@ -372,6 +372,22 @@ export default function BalancePage({ setActivePage }) {
     persistAutoTopUp({ enabled: autoTopUp, thresholdVal: threshold, amountVal: topUpAmt });
   };
 
+  // Threshold (mins) and top-up amount ($) are kept in sync via the
+  // credits/minute rate whenever one is edited by hand — e.g. entering a
+  // 3-minute threshold fills in the $ amount that actually buys 3 minutes,
+  // so the two fields can't silently drift out of proportion.
+  const handleThresholdInput = (val) => {
+    setThreshold(val);
+    const mins = Number(val);
+    if (Number.isFinite(mins)) setTopUpAmt(Math.round(mins * CREDITS_PER_MINUTE));
+  };
+
+  const handleTopUpAmtInput = (val) => {
+    setTopUpAmt(val);
+    const dollars = Number(val);
+    if (Number.isFinite(dollars)) setThreshold(Math.round((dollars / CREDITS_PER_MINUTE) * 10) / 10);
+  };
+
   // useEffect(() => {
   //   fetchBilling();
   // }, []);
@@ -552,7 +568,7 @@ export default function BalancePage({ setActivePage }) {
         <Section title="Auto Top-Up" icon="autorenew" action={<Toggle value={autoTopUp} onChange={handleAutoTopUpToggle} />}>
           <p style={{ fontSize: 12, color: "#8B7060", marginBottom: 14, lineHeight: 1.55 }}>Automatically top up when minutes fall below threshold. Never let your AI go offline.</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, opacity: autoTopUp ? 1 : .4, pointerEvents: autoTopUp ? "all" : "none", transition: "opacity 0.2s" }}>
-            {[["Trigger Threshold (mins)", "min", threshold, setThreshold], ["Top-Up Amount ($)", "$", topUpAmt, setTopUpAmt]].map(([lbl, pre, val, set]) => (
+            {[["Trigger Threshold (mins)", "min", threshold, handleThresholdInput], ["Top-Up Amount ($)", "$", topUpAmt, handleTopUpAmtInput]].map(([lbl, pre, val, set]) => (
               <div key={lbl}>
                 <label style={{ display: "block", fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8B7060", marginBottom: 5 }}>{lbl}</label>
                 <div style={{ display: "flex", alignItems: "center", border: "1px solid #e8e2d8", borderRadius: 5, overflow: "hidden" }}>
