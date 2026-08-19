@@ -5,7 +5,7 @@ import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
 
 const PLANS=[
-  {tier:"Starter",price:"$149",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings"],dim:["CRM Integration","Voice Cloning"],featured:false,cta:"Select Protocol",target:"getstarted"},
+  {tier:"Starter",price:"$120",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings"],dim:["CRM Integration","Voice Cloning"],featured:false,cta:"Select Protocol",target:"getstarted"},
   {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","1,000 Minutes Included","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:true,cta:"Initiate Growth",target:"getstarted"},
   {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","3,000+ Minutes Included","Multi-Practice Support","Custom AI Voice Cloning","White-label Dashboard","API & Automations"],dim:[],featured:false,cta:"Contact Sales",target:"contact"},
 ];
