@@ -15,6 +15,13 @@ const Pr = "#8B6E3C";
 // convert at this boundary rather than anywhere else.
 const CREDITS_PER_MINUTE = 30;
 
+// 1 credit = $0.01 (100 credits per dollar) — anchored to the Starter plan:
+// $120/mo = 12,000 credits = 400 minutes. Must match CREDITS_PER_DOLLAR in
+// backend/service/billing.js. Real minutes-per-dollar is therefore
+// CREDITS_PER_MINUTE / CREDITS_PER_DOLLAR, not CREDITS_PER_MINUTE itself.
+const CREDITS_PER_DOLLAR = 100;
+const DOLLARS_PER_MINUTE = CREDITS_PER_MINUTE / CREDITS_PER_DOLLAR;
+
 function Section({ title, icon, children, action }) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -48,7 +55,7 @@ function TopUpModal({ onClose, onCheckout }) {
   const [error, setError] = useState(null);
   const presets = [50, 100, 200, 500];
   const finalAmt = custom ? parseFloat(custom) : amount;
-  const mins = Math.round(finalAmt / 0.22);
+  const mins = Math.round(finalAmt / DOLLARS_PER_MINUTE);
 
   const doConfirm = async () => {
     setError(null);
@@ -379,13 +386,13 @@ export default function BalancePage({ setActivePage }) {
   const handleThresholdInput = (val) => {
     setThreshold(val);
     const mins = Number(val);
-    if (Number.isFinite(mins)) setTopUpAmt(Math.round(mins * CREDITS_PER_MINUTE));
+    if (Number.isFinite(mins)) setTopUpAmt(Math.round(mins * DOLLARS_PER_MINUTE * 100) / 100);
   };
 
   const handleTopUpAmtInput = (val) => {
     setTopUpAmt(val);
     const dollars = Number(val);
-    if (Number.isFinite(dollars)) setThreshold(Math.round((dollars / CREDITS_PER_MINUTE) * 10) / 10);
+    if (Number.isFinite(dollars)) setThreshold(Math.round((dollars / DOLLARS_PER_MINUTE) * 10) / 10);
   };
 
   // useEffect(() => {
@@ -580,7 +587,7 @@ export default function BalancePage({ setActivePage }) {
           </div>
           {autoTopUp && (
             <>
-              <div style={{ marginTop: 12, padding: "9px 12px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 6, fontSize: 11, color: "#065f46" }}>✓ Will auto top-up <strong>${topUpAmt}</strong> (~{Math.round((Number(topUpAmt || 0) / CREDITS_PER_MINUTE) * 10) / 10} min) when below <strong>{threshold} minutes</strong></div>
+              <div style={{ marginTop: 12, padding: "9px 12px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 6, fontSize: 11, color: "#065f46" }}>✓ Will auto top-up <strong>${topUpAmt}</strong> (~{Math.round((Number(topUpAmt || 0) / DOLLARS_PER_MINUTE) * 10) / 10} min) when below <strong>{threshold} minutes</strong></div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12 }}>
                 <button onClick={handleSaveAutoTopUpSettings} disabled={savingAutoTopUp}
                   style={{ padding: "6px 14px", background: Pr, color: "#fff", border: "none", borderRadius: 5, cursor: savingAutoTopUp ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>
