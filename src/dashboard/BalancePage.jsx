@@ -474,7 +474,7 @@ export default function BalancePage({ setActivePage }) {
           <div style={{ fontSize: 10, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(196,169,122,0.8)", marginBottom: 6 }}>Dollar Balance</div>
           <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 36, color: "#c4a97a", letterSpacing: "-0.02em", lineHeight: 1 }}>${balance.toFixed(2)}</div>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>Available credit</div>
-          {balance < 20 && <div style={{ marginTop: 10, padding: "5px 10px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 5, display: "inline-flex", alignItems: "center", gap: 5 }}><span className="material-symbols-outlined" style={{ fontSize: 12, color: "#ef4444" }}>warning</span><span style={{ fontSize: 10, color: "#ef4444", fontFamily: "Syne,sans-serif", fontWeight: 600 }}>Low balance</span></div>}
+          {balance <= 0 && <div style={{ marginTop: 10, padding: "5px 10px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 5, display: "inline-flex", alignItems: "center", gap: 5 }}><span className="material-symbols-outlined" style={{ fontSize: 12, color: "#ef4444" }}>warning</span><span style={{ fontSize: 10, color: "#ef4444", fontFamily: "Syne,sans-serif", fontWeight: 600 }}>Low balance</span></div>}
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .07 }}
