@@ -218,7 +218,7 @@ export default function BenefitsPage({ setPage }) {
             className="bg-[#8B6E3C] text-white font-syne font-bold uppercase tracking-[.12em] px-8 sm:px-12 py-3.5 sm:py-4 hover:bg-[#6b5228] transition-colors text-[11px] sm:text-[12px] w-full sm:w-auto">
             Activate Letconvo AI
           </motion.button>
-          <p className="text-[10.5px] text-[#4E4439]/45 mt-4">500 credits free trial · No credit card required</p>
+          <p className="text-[10.5px] text-[#4E4439]/45 mt-4">450 credits free trial · No credit card required</p>
         </Reveal>
       </S>
 

@@ -5,11 +5,11 @@ import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
 
 const PLANS=[
-  {tier:"Starter",price:"$149",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","300 Minutes Included","Professional Greetings"],dim:["CRM Integration","Voice Cloning"],featured:false,cta:"Select Protocol",target:"getstarted"},
+  {tier:"Starter",price:"$149",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings"],dim:["CRM Integration","Voice Cloning"],featured:false,cta:"Select Protocol",target:"getstarted"},
   {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","1,000 Minutes Included","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:true,cta:"Initiate Growth",target:"getstarted"},
   {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","3,000+ Minutes Included","Multi-Practice Support","Custom AI Voice Cloning","White-label Dashboard","API & Automations"],dim:[],featured:false,cta:"Contact Sales",target:"contact"},
 ];
-const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","300","1,000","3,000+"],["SMS follow-up","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Voice cloning","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
+const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","400","1,000","3,000+"],["SMS follow-up","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Voice cloning","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
 const FAQS=[["Can I change plans anytime?","Yes. Upgrade or downgrade at any time from your dashboard. Changes take effect at the next billing cycle."],["What if I exceed my minutes?","Additional minutes are $0.09/min Starter, $0.07/min Growth, $0.05/min Enterprise."],["Is there a free trial?","Every plan includes a 14-day free trial with full feature access. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","Letconvo works with any existing number via call forwarding. No hardware changes required."],["What integrations are supported?","Salesforce, HubSpot, Google Calendar, Outlook, Zapier (2,000+ apps), and full API on Enterprise."]];
 
 function S({children,bg,className=""}) {
