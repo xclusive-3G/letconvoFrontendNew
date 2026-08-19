@@ -14,7 +14,7 @@ const authHeaders = () => ({
 });
 
 const fetchOverviewData = async () => {
-  const [statsRes, callsRes, performanceRes] = await Promise.all([
+  const [statsRes, callsRes, performanceRes, billingRes] = await Promise.all([
     axios.get(`${API}/me/dashboard-stats`, {
       headers: authHeaders()
     }),
@@ -23,13 +23,17 @@ const fetchOverviewData = async () => {
     }),
     axios.get(`${API}/me/todays-performance`, {
       headers: authHeaders()
+    }),
+    axios.get(`${API}/me/billing/summary`, {
+      headers: authHeaders()
     })
   ]);
 
   return {
     dashboardData: statsRes.data,
     callHistory: callsRes.data.calls || [],
-    performanceData: performanceRes.data.performance || null
+    performanceData: performanceRes.data.performance || null,
+    balanceData: billingRes.data.balance || null
   };
 };
 
@@ -199,6 +203,8 @@ const dashboardData = data?.dashboardData;
 const callHistory = data?.callHistory || [];
 
 const performanceData = data?.performanceData;
+const balanceData = data?.balanceData;
+const isPaused = dashboardData?.stats?.status === "paused";
 
   const weeklyData = dashboardData?.weeklyData || [
     { day: "Sun", calls: 0, booked: 0, missed: 0 },
@@ -244,31 +250,50 @@ if (error) {
     <div style={{ padding: "24px", maxWidth: 1400, margin: "0 auto" }}>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 20, color: "#1A1614", textTransform: "uppercase", letterSpacing: "-0.01em" }}>Dashboard Overview</h1>
-        <p style={{ fontSize: 12, color: "#8B7060", marginTop: 3 }}>{currentDate} · Letconvo AI is active and handling calls</p>
+        <p style={{ fontSize: 12, color: "#8B7060", marginTop: 3 }}>{currentDate} · Letconvo AI is {isPaused ? "paused — low credits" : "active and handling calls"}</p>
         <p style={{ fontSize: 12, color: "#8B7060", marginTop: 2 }}>
           {callHistory.length} calls recorded · {activeCount} active caller{activeCount !== 1 ? "s" : ""} live
         </p>
       </div>
 
-      {/* Live banner */}
+      {/* Live / paused banner */}
       <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
-        style={{ background: "linear-gradient(90deg,#1a1410,#2d2010)", borderRadius: 8, padding: "14px 20px", marginBottom: 24, display: "flex", alignItems: "center", gap: 14, border: "1px solid rgba(139,110,60,0.3)" }}>
-        <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#10b981", flexShrink: 0, boxShadow: "0 0 0 3px rgba(16,185,129,0.25)", animation: "pulse 1.2s ease infinite" }} />
-        <div style={{ flex: 1 }}>
-          <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 12, color: "#c4a97a", textTransform: "uppercase", letterSpacing: "0.1em" }}>AI Receptionist Live </span>
+        style={{ background: "linear-gradient(90deg,#1a1410,#2d2010)", borderRadius: 8, padding: "14px 20px", marginBottom: 24, display: "flex", alignItems: "center", gap: 14, border: `1px solid ${isPaused ? "rgba(239,68,68,0.35)" : "rgba(139,110,60,0.3)"}`, flexWrap: "wrap" }}>
+        <div style={{ width: 10, height: 10, borderRadius: "50%", background: isPaused ? "#ef4444" : "#10b981", flexShrink: 0, boxShadow: isPaused ? "0 0 0 3px rgba(239,68,68,0.25)" : "0 0 0 3px rgba(16,185,129,0.25)", animation: isPaused ? "none" : "pulse 1.2s ease infinite" }} />
+        <div style={{ flex: 1, minWidth: 200 }}>
+          <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 12, color: isPaused ? "#f87171" : "#c4a97a", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            {isPaused ? "AI Receptionist Paused " : "AI Receptionist Live "}
+          </span>
           <span style={{ fontSize: 12, color: "rgba(255,255,255,.7)" }}>
-  Currently handling
-
-  <strong style={{ color: "#c4a97a", marginLeft: 5 }}>
-    {activeCount} active caller
-    {activeCount !== 1 ? "s" : ""}
-  </strong>
-</span>
+            {isPaused ? (
+              "Low credits — top up or subscribe to resume service."
+            ) : (
+              <>
+                Currently handling
+                <strong style={{ color: "#c4a97a", marginLeft: 5 }}>
+                  {activeCount} active caller
+                  {activeCount !== 1 ? "s" : ""}
+                </strong>
+              </>
+            )}
+          </span>
         </div>
-        {/* <button onClick={() => setActivePage("live")}
-          style={{ background: "#10b981", border: "none", borderRadius: 5, padding: "6px 14px", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, color: "#fff", cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
-          View Live →
-        </button> */}
+        <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
+          <div style={{ padding: "6px 12px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, textAlign: "center" }}>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,.5)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Credits</div>
+            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 13, color: isPaused ? "#f87171" : "#c4a97a" }}>{Math.round(balanceData?.creditsRemaining ?? 0)}</div>
+          </div>
+          <div style={{ padding: "6px 12px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, textAlign: "center" }}>
+            <div style={{ fontSize: 9, color: "rgba(255,255,255,.5)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Min Left</div>
+            <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 13, color: "#c4a97a" }}>{Math.round(balanceData?.minutesRemaining ?? 0)}</div>
+          </div>
+        </div>
+        {isPaused && (
+          <button onClick={() => setActivePage("balance")}
+            style={{ background: "#ef4444", border: "none", borderRadius: 5, padding: "8px 14px", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, color: "#fff", cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+            Top Up →
+          </button>
+        )}
       </motion.div>
 
       {/* Stats grid */}
