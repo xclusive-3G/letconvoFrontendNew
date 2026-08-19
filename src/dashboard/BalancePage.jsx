@@ -8,6 +8,13 @@ import { API_BASE } from "../config/apiBase";
 
 const Pr = "#8B6E3C";
 
+// Must match CREDITS_PER_MINUTE in backend/middleware/me.js and
+// CREDITS_PER_SECOND (0.5) in backend/service/retellCallProcessor.js.
+// auto_topup_threshold is stored and compared server-side in raw credits,
+// but shown here in minutes since that's what's meaningful to a caller —
+// convert at this boundary rather than anywhere else.
+const CREDITS_PER_MINUTE = 30;
+
 function Section({ title, icon, children, action }) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -249,7 +256,7 @@ export default function BalancePage({ setActivePage }) {
   const [showCard, setShowCard] = useState(false);
 
   const [autoTopUp, setAutoTopUp] = useState(false);
-  const [threshold, setThreshold] = useState(100);
+  const [threshold, setThreshold] = useState(3);
   const [topUpAmt, setTopUpAmt] = useState(50);
   const [autoTopUpSynced, setAutoTopUpSynced] = useState(false);
   const [savingAutoTopUp, setSavingAutoTopUp] = useState(false);
@@ -330,7 +337,9 @@ export default function BalancePage({ setActivePage }) {
     if (autoTopUpSynced || !balanceData) return;
 
     setAutoTopUp(!!balanceData.autoTopUp);
-    setThreshold(balanceData.autoTopUpThreshold ?? 100);
+    // Server stores/compares this in raw credits — convert to minutes for
+    // display, matching the "Trigger Threshold (mins)" input.
+    setThreshold(Math.round((balanceData.autoTopUpThreshold ?? 100) / CREDITS_PER_MINUTE));
     setTopUpAmt(balanceData.autoTopUpAmount ?? 50);
     setAutoTopUpSynced(true);
   }, [balanceData, autoTopUpSynced]);
@@ -340,7 +349,11 @@ export default function BalancePage({ setActivePage }) {
     setSavingAutoTopUp(true);
     setAutoTopUpSaved(false);
     try {
-      await saveAutoTopUp({ enabled, threshold: thresholdVal, amount: amountVal });
+      // Convert the minutes shown in the input back to credits before
+      // sending — the backend compares auto_topup_threshold directly
+      // against credits_remaining.
+      const thresholdCredits = Math.round(Number(thresholdVal || 0) * CREDITS_PER_MINUTE);
+      await saveAutoTopUp({ enabled, threshold: thresholdCredits, amount: amountVal });
       setAutoTopUpSaved(true);
       setTimeout(() => setAutoTopUpSaved(false), 2500);
     } catch (err) {
@@ -551,7 +564,7 @@ export default function BalancePage({ setActivePage }) {
           </div>
           {autoTopUp && (
             <>
-              <div style={{ marginTop: 12, padding: "9px 12px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 6, fontSize: 11, color: "#065f46" }}>✓ Will auto top-up <strong>${topUpAmt}</strong> (~{Math.round(topUpAmt / 0.22)} min) when below <strong>{threshold} minutes</strong></div>
+              <div style={{ marginTop: 12, padding: "9px 12px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 6, fontSize: 11, color: "#065f46" }}>✓ Will auto top-up <strong>${topUpAmt}</strong> (~{Math.round((Number(topUpAmt || 0) / CREDITS_PER_MINUTE) * 10) / 10} min) when below <strong>{threshold} minutes</strong></div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12 }}>
                 <button onClick={handleSaveAutoTopUpSettings} disabled={savingAutoTopUp}
                   style={{ padding: "6px 14px", background: Pr, color: "#fff", border: "none", borderRadius: 5, cursor: savingAutoTopUp ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>
