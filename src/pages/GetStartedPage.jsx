@@ -194,7 +194,7 @@ function Step1({ data, setData, onNext }) {
       <Inp label="Business Name" placeholder="Apex Health Clinic" required value={data.businessName} onChange={set("businessName")} />
       <Sel label="Business Type" required value={data.businessType} onChange={set("businessType")}
         options={["Salon","Clinic / Healthcare","Legal Practice","Real Estate Agency","Financial Services","Restaurant","Retail Store","Home Services","Other"]} />
-      <Inp label="Business Phone Number" type="tel" placeholder="+234 803 456 7890" required value={data.businessPhone} onChange={set("businessPhone")} />
+      <Inp label="Business Phone Number" type="tel" placeholder="+1 (415) 555-0132" required value={data.businessPhone} onChange={set("businessPhone")} />
       <Inp label="Business Email" type="email" placeholder="info@apexhealth.com" required value={data.businessEmail} onChange={set("businessEmail")} />
       <Inp label="Business Address (optional)" placeholder="123 Victoria Island, Lagos" value={data.businessAddress} onChange={set("businessAddress")} />
       <NextBtn disabled={!valid}>Continue →</NextBtn>
