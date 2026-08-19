@@ -5,9 +5,9 @@ import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
 
 const PLANS=[
-  {tier:"Starter",price:"$120",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings"],dim:["CRM Integration","Voice Cloning"],featured:false,cta:"Select Protocol",target:"getstarted"},
-  {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","334 Minutes Included","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:true,cta:"Initiate Growth",target:"getstarted"},
-  {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","1,000 Minutes Included","Multi-Practice Support","Custom AI Voice Cloning","White-label Dashboard","API & Automations"],dim:[],featured:false,cta:"Contact Sales",target:"contact"},
+  {tier:"Starter",price:"$120",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings"],dim:["CRM Integration","Voice Cloning"],featured:false,available:true,cta:"Select Protocol",target:"getstarted"},
+  {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","334 Minutes Included","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:true,available:false,cta:"Coming Soon",target:"getstarted"},
+  {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","1,000 Minutes Included","Multi-Practice Support","Custom AI Voice Cloning","White-label Dashboard","API & Automations"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"contact"},
 ];
 const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","400","334","1,000"],["SMS follow-up","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Voice cloning","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
 const FAQS=[["Can I change plans anytime?","Yes. Upgrade or downgrade at any time from your dashboard. Changes take effect at the next billing cycle."],["What if I exceed my minutes?","Additional minutes are $0.09/min Starter, $0.07/min Growth, $0.05/min Enterprise."],["Is there a free trial?","Every plan includes a 14-day free trial with full feature access. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","Letconvo works with any existing number via call forwarding. No hardware changes required."],["What integrations are supported?","Salesforce, HubSpot, Google Calendar, Outlook, Zapier (2,000+ apps), and full API on Enterprise."]];
@@ -34,16 +34,20 @@ export default function PricingPage({setPage}) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 items-start">
           {PLANS.map((p,i)=>(
             <Reveal key={p.tier} delay={i*.1}>
-              <div className={`relative flex flex-col bg-white border rounded-sm ${p.featured?"border-[#8B6E3C] shadow-lg shadow-[#8B6E3C]/10":"border-[#d4c8b8]/60 shadow-sm"}`}
-                style={{transform:p.featured?"translateY(-6px)":undefined}}>
+              <div className={`relative flex flex-col bg-white border rounded-sm ${!p.available?"opacity-60":""} ${p.featured?"border-[#8B6E3C] shadow-lg shadow-[#8B6E3C]/10":"border-[#d4c8b8]/60 shadow-sm"}`}
+                style={{transform:p.featured?"translateY(-6px)":undefined}}
+                title={p.available?undefined:"This plan is still under build and isn't available yet"}>
                 {p.featured&&<div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B6E3C] text-white font-syne font-bold text-[9px] uppercase tracking-[.1em] px-4 py-1 rounded-sm whitespace-nowrap">Most Popular</div>}
                 <div className="p-5 sm:p-6">
-                  <div className={`font-syne font-bold text-[10px] uppercase tracking-[.12em] mb-2 ${p.featured?"text-[#8B6E3C]":"text-[#4E4439]/55"}`}>{p.tier}</div>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <div className={`font-syne font-bold text-[10px] uppercase tracking-[.12em] ${p.featured?"text-[#8B6E3C]":"text-[#4E4439]/55"}`}>{p.tier}</div>
+                    {!p.available&&<span className="font-syne font-bold text-[8px] uppercase tracking-[.08em] text-[#8B6E3C] bg-[#8B6E3C]/10 border border-[#8B6E3C]/25 rounded-sm px-1.5 py-0.5 whitespace-nowrap">Coming Soon</span>}
+                  </div>
                   <div className="flex items-baseline gap-0.5 mb-1">
                     <span className="font-syne font-black text-[34px] sm:text-[38px] text-[#8B6E3C] leading-none tracking-tight">{p.price}</span>
                     <span className="text-[12px] text-[#4E4439]/55 mb-0.5">/mo</span>
                   </div>
-                  <p className="text-[11.5px] text-[#4E4439]/60 mb-4 leading-relaxed">{p.desc}</p>
+                  <p className="text-[11.5px] text-[#4E4439]/60 mb-4 leading-relaxed">{p.available?p.desc:"Still under build — not available yet"}</p>
                   <div className="h-px bg-[#d4c8b8]/50 mb-4"/>
                   <div className="flex flex-col gap-2 flex-1">
                     {p.feats.map(f=>(
@@ -57,8 +61,9 @@ export default function PricingPage({setPage}) {
                       </div>
                     ))}
                   </div>
-                  <motion.button whileHover={{scale:1.02}} whileTap={{scale:.97}} onClick={()=>setPage(p.target)}
-                    className={`mt-5 sm:mt-6 w-full py-2.5 font-syne font-bold text-[11px] uppercase tracking-[.08em] transition-colors rounded-sm ${p.featured?"bg-[#8B6E3C] text-white hover:bg-[#6b5228]":"border border-[#8B6E3C] text-[#8B6E3C] hover:bg-[#8B6E3C]/5"}`}>
+                  <motion.button whileHover={p.available?{scale:1.02}:{}} whileTap={p.available?{scale:.97}:{}}
+                    onClick={()=>p.available&&setPage(p.target)} disabled={!p.available}
+                    className={`mt-5 sm:mt-6 w-full py-2.5 font-syne font-bold text-[11px] uppercase tracking-[.08em] transition-colors rounded-sm ${!p.available?"border border-[#d4c8b8] text-[#8B7060] cursor-not-allowed":p.featured?"bg-[#8B6E3C] text-white hover:bg-[#6b5228]":"border border-[#8B6E3C] text-[#8B6E3C] hover:bg-[#8B6E3C]/5"}`}>
                     {p.cta}
                   </motion.button>
                 </div>
@@ -80,7 +85,11 @@ export default function PricingPage({setPage}) {
                 <thead>
                   <tr className="bg-[#f7f2ec] border-b-2 border-[#d4c8b8]/50">
                     <th className="text-left px-4 sm:px-5 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-[#4E4439]">Feature</th>
-                    {["Starter","Growth","Enterprise"].map(h=><th key={h} className="px-3 sm:px-4 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-center text-[#4E4439]">{h}</th>)}
+                    {[["Starter",true],["Growth",false],["Enterprise",false]].map(([h,available])=>(
+                      <th key={h} className="px-3 sm:px-4 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-center text-[#4E4439]">
+                        {h}{!available&&<div className="text-[8px] font-normal normal-case tracking-normal text-[#8B7060] mt-0.5">(Coming Soon)</div>}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>

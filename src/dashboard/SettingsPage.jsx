@@ -43,14 +43,24 @@ const Sel = ({ label, value, onChange, options, sub }) => (
   </div>
 );
 
-const Sec = ({ title, icon, children }) => (
+const Sec = ({ title, icon, children, locked }) => (
   <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
     style={{ background: "#fff", border: "1px solid #e8e2d8", borderRadius: 8, marginBottom: 14, overflow: "hidden" }}>
     <div style={{ padding: "14px 20px", borderBottom: "1px solid #f0ebe4", display: "flex", alignItems: "center", gap: 10, background: "#fdf9f5" }}>
       <span className="material-symbols-outlined" style={{ fontSize: 17, color: Pr }}>{icon}</span>
       <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1A1614" }}>{title}</span>
+      {locked && (
+        <span style={{ marginLeft: "auto", padding: "3px 9px", borderRadius: 4, background: `${Pr}10`, border: `1px solid ${Pr}30`, color: Pr, fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap" }}>
+          Growth &amp; Premium
+        </span>
+      )}
     </div>
-    <div style={{ padding: "16px 20px" }}>{children}</div>
+    {locked && (
+      <div style={{ padding: "9px 20px", background: "#fdf9f5", borderBottom: "1px solid #f0ebe4", fontSize: 11.5, color: "#8B7060" }}>
+        This integration comes with the Growth and Premium plans, both still under build — not available yet.
+      </div>
+    )}
+    <div style={{ padding: "16px 20px", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>{children}</div>
   </motion.div>
 );
 
@@ -325,7 +335,7 @@ if (isLoading) {
 
       {tab === "integrations" && (
         <>
-          <Sec title="Calendar Integration" icon="calendar_month">
+          <Sec title="Calendar Integration" icon="calendar_month" locked>
             <Toggle value={calendarSync} onChange={setCalendarSync} label="Google Calendar Sync" sub="AI automatically books appointments into your calendar." />
             {calendarSync && (
   <div style={{ marginTop: 10, padding: "12px 14px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 7, display: "flex", alignItems: "center", gap: 8 }}>
@@ -355,7 +365,7 @@ if (isLoading) {
 
             </div>
           </Sec>
-          <Sec title="CRM Integration" icon="contacts">
+          <Sec title="CRM Integration" icon="contacts" locked>
             <Toggle value={crmSync} onChange={setCrmSync} label="CRM Auto-sync" sub="Automatically create/update contacts and log interactions." />
             <div style={{ marginTop: 12, display: "flex", gap: 10, flexWrap: "wrap" }}>
               {["Salesforce", "HubSpot", "Zoho CRM", "Pipedrive"].map(name => (
