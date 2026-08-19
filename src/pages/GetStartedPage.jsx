@@ -260,10 +260,10 @@ function Step3({ data, setData, onNext }) {
           {data.plan === "starter" && ["400 minutes/month","Basic call handling","SMS follow-up","Digital call logs"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          {data.plan === "growth" && ["1,000 minutes/month","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
+          {data.plan === "growth" && ["334 minutes/month","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          {data.plan === "premium" && ["3,000+ minutes/month","Multi-location","Custom AI voice","White-label dashboard"].map(f=>(
+          {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Custom AI voice","White-label dashboard"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
           <p className="text-[10px] text-[#8B7060] mt-1.5">450 credits free trial · No credit card required</p>
