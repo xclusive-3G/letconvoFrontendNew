@@ -2,6 +2,7 @@ import { useState,useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { API_BASE } from "../config/apiBase";
+import { ADMIN_EMAILS } from "../config/adminEmails";
 
 
 const Pr = "#8B6E3C";
@@ -148,6 +149,10 @@ const markAllNotificationsRead = async () => {
   // On desktop we use desktopOpen; we detect via CSS classes
   const navTo = (id) => { setActivePage(id); setMobileNav(false); };
 
+  // UX-only — see src/config/adminEmails.js for why this isn't a security
+  // boundary. Just controls whether the "Admin Panel" link renders.
+  const isAdmin = ADMIN_EMAILS.includes((client?.ownerEmail || "").toLowerCase());
+
   return (
     <div style={{ display:"flex", height:"100vh", overflow:"hidden", fontFamily:"'DM Sans',sans-serif", background:"#f4f0eb" }}>
 
@@ -196,6 +201,20 @@ const markAllNotificationsRead = async () => {
 
         {/* Bottom */}
         <div style={{ borderTop:"1px solid rgba(255,255,255,0.07)", padding:"8px 0" }}>
+          {isAdmin && (
+            <motion.button whileHover={{x:2}} onClick={() => setAppPage("admin")}
+              style={{ display:"flex", alignItems:"center", gap:12, width:"100%", padding:"9px 16px", background:"transparent", border:"none", cursor:"pointer", overflow:"hidden" }}>
+              <span className="material-symbols-outlined" style={{ fontSize:17, color:"#c4a97a", flexShrink:0 }}>admin_panel_settings</span>
+              <AnimatePresence>
+                {desktopOpen && (
+                  <motion.span initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
+                    style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#c4a97a", textTransform:"uppercase", letterSpacing:"0.06em", whiteSpace:"nowrap" }}>
+                    Admin Panel
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
+          )}
           <motion.button whileHover={{x:2}} onClick={() => setAppPage("benefits")}
             style={{ display:"flex", alignItems:"center", gap:12, width:"100%", padding:"9px 16px", background:"transparent", border:"none", cursor:"pointer", overflow:"hidden" }}>
             <span className="material-symbols-outlined" style={{ fontSize:17, color:"rgba(255,255,255,0.35)", flexShrink:0 }}>arrow_back</span>
@@ -387,6 +406,13 @@ const markAllNotificationsRead = async () => {
                   <span className="material-symbols-outlined" style={{ fontSize:15, color:"#c4a97a" }}>account_balance_wallet</span>
                   <span style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#c4a97a" }}>{billingSummary?.minutesRemaining || 0}min · {Number(billingSummary?.dollarBalance || 0).toLocaleString()}</span>
                 </button>
+                {isAdmin && (
+                  <button onClick={() => setAppPage("admin")}
+                    style={{ marginTop:8, width:"100%", display:"flex", alignItems:"center", gap:8, padding:"8px 12px", background:"transparent", border:"none", cursor:"pointer" }}>
+                    <span className="material-symbols-outlined" style={{ fontSize:16, color:"#c4a97a" }}>admin_panel_settings</span>
+                    <span style={{ fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#c4a97a", textTransform:"uppercase", letterSpacing:"0.06em" }}>Admin Panel</span>
+                  </button>
+                )}
                 <button onClick={() => setAppPage("benefits")}
                   style={{ marginTop:8, width:"100%", display:"flex", alignItems:"center", gap:8, padding:"8px 12px", background:"transparent", border:"none", cursor:"pointer" }}>
                   <span className="material-symbols-outlined" style={{ fontSize:16, color:"rgba(255,255,255,0.3)" }}>arrow_back</span>

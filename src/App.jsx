@@ -86,6 +86,7 @@ import ContactPage    from "./pages/ContactPage";
 import LoginPage      from "./pages/LoginPage";
 import GetStartedPage from "./pages/GetStartedPage";
 import DashboardPage  from "./dashboard/DashboardPage";
+import AdminPage      from "./admin/AdminPage";
 import TermsPage      from "./pages/termsPage"; // ← fix casing
 import PrivacyPage    from "./pages/privacyPage";
 import { supabase }   from "./lib/supabase";
@@ -101,7 +102,7 @@ const PUBLIC_PAGES = {
   privacy:    { comp: PrivacyPage,    title: "Privacy — Letconvo AI"                  },
 };
 
-const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard"]);
+const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard", "admin"]);
 
 function getInitialPage() {
   const hashPage = window.location.hash?.replace("#", "").trim();
@@ -156,6 +157,12 @@ export default function App() {
     const token = localStorage.getItem("token");
     if (!token) return <LoginPage setPage={changePage} />;
     return <DashboardPage setAppPage={changePage} />;
+  }
+
+  if (page === "admin") {
+    const token = localStorage.getItem("token");
+    if (!token) return <LoginPage setPage={changePage} />;
+    return <AdminPage setAppPage={changePage} />;
   }
 
   const Active = PUBLIC_PAGES[page]?.comp ?? BenefitsPage;
