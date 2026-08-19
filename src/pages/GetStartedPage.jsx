@@ -28,6 +28,7 @@ const PERKS = [
 const STEP_TITLES = [
   "Business Info",
   "Reception Setup",
+  "Booking Details",
   "Plan & Billing",
   "Owner Info",
 ];
@@ -35,8 +36,25 @@ const STEP_TITLES = [
 const STEP_SUBS = [
   "Tell us about your business",
   "Configure your AI receptionist",
+  "What the AI should collect",
   "Choose your plan",
   "Create your account",
+];
+
+// Details the AI can ask a caller for when booking an appointment. Feeds
+// client_settings.booking_info_fields — this is the reference list used to
+// hand-build each client's Retell agent prompt (what to collect, in what
+// order) since prompts aren't generated dynamically from this data.
+const BOOKING_FIELD_OPTIONS = [
+  { value: "Full Name", sub: "Who the appointment is for" },
+  { value: "Phone Number", sub: "For confirmation & reminders" },
+  { value: "Email Address", sub: "For confirmation & reminders" },
+  { value: "Service / Reason for Visit", sub: "What they need done" },
+  { value: "Preferred Date", sub: "" },
+  { value: "Preferred Time", sub: "" },
+  { value: "New or Returning Client", sub: "" },
+  { value: "Insurance Provider", sub: "Healthcare businesses" },
+  { value: "Special Notes / Requests", sub: "Allergies, accessibility, etc." },
 ];
 
 /* ── Reusable form atoms ── */
@@ -124,6 +142,30 @@ const RadioGroup = ({ label, required, options, value, onChange }) => (
   </div>
 );
 
+const CheckboxGroup = ({ label, sub, options, value, onToggle }) => (
+  <div className="flex flex-col gap-1.5">
+    <label className={labelCls}>{label}</label>
+    {sub && <p className="text-[10.5px] text-[#8B7060] -mt-1 mb-1">{sub}</p>}
+    <div className="flex flex-col gap-2">
+      {options.map((opt) => {
+        const checked = value.includes(opt.value);
+        return (
+          <label key={opt.value} onClick={() => onToggle(opt.value)}
+            className={`flex items-center gap-2.5 px-3 py-2.5 border rounded-sm cursor-pointer transition-all ${checked ? "border-[#8B6E3C] bg-[#8B6E3C]/05" : "border-[#d4c8b8]/60 hover:border-[#8B6E3C]/40"}`}>
+            <div className={`w-4 h-4 rounded-sm border-2 flex-shrink-0 flex items-center justify-center transition-colors ${checked ? "border-[#8B6E3C] bg-[#8B6E3C]" : "border-[#d4c8b8]"}`}>
+              {checked && <span className="material-symbols-outlined text-white text-[10px]" style={{ fontVariationSettings:"'FILL' 1" }}>check</span>}
+            </div>
+            <div>
+              <div className="font-syne font-semibold text-[12px] text-[#1A1614]">{opt.value}</div>
+              {opt.sub && <div className="text-[10px] text-[#8B7060] mt-0.5">{opt.sub}</div>}
+            </div>
+          </label>
+        );
+      })}
+    </div>
+  </div>
+);
+
 const SectionDivider = ({ number, title }) => (
   <div className="flex items-center gap-3 mb-4">
     <div className="w-5 h-5 rounded-full bg-[#8B6E3C] flex items-center justify-center flex-shrink-0">
@@ -206,12 +248,52 @@ function Step2({ data, setData, onNext }) {
   );
 }
 
-/* ── Step 3: Plan & Billing ── */
-function Step3({ data, setData, onNext }) {
+/* ── Step 3: Booking Details ── */
+function Step3Booking({ data, setData, onNext }) {
+  const set = k => e => setData(p => ({ ...p, [k]: e.target.value }));
+  const toggleField = (fieldValue) => setData(p => ({
+    ...p,
+    bookingFields: p.bookingFields.includes(fieldValue)
+      ? p.bookingFields.filter(f => f !== fieldValue)
+      : [...p.bookingFields, fieldValue]
+  }));
+  const valid = data.bookingFields.length > 0;
+  return (
+    <form onSubmit={e => { e.preventDefault(); if (valid) onNext(); }} className="flex flex-col gap-4">
+      <SectionDivider number="3" title="Booking Details" />
+      <p className="text-[11.5px] text-[#4E4439]/65 -mt-2 leading-relaxed">
+        This tells us what your AI receptionist should ask a caller for before booking their appointment — we use it to build your Retell AI prompt.
+      </p>
+      <CheckboxGroup
+        label="Collect from every caller"
+        sub="Pick everything your AI should ask for before confirming a booking."
+        options={BOOKING_FIELD_OPTIONS}
+        value={data.bookingFields}
+        onToggle={toggleField}
+      />
+      <Textarea
+        label="Services You Offer (optional)"
+        placeholder={"e.g. \"Haircut, Coloring, Consultation, Teeth Cleaning, Root Canal\""}
+        value={data.servicesOffered}
+        onChange={set("servicesOffered")}
+      />
+      <Textarea
+        label="Booking Policies & Notes (optional)"
+        placeholder={"e.g. \"Appointments are 30 minutes. 24-hour cancellation notice required. New clients need a $20 deposit.\""}
+        value={data.bookingPolicies}
+        onChange={set("bookingPolicies")}
+      />
+      <NextBtn disabled={!valid}>Continue →</NextBtn>
+    </form>
+  );
+}
+
+/* ── Step 4: Plan & Billing ── */
+function Step4Plan({ data, setData, onNext }) {
   const valid = !!data.plan;
   return (
     <form onSubmit={e => { e.preventDefault(); if (valid) onNext(); }} className="flex flex-col gap-4">
-      <SectionDivider number="3" title="Plan & Billing" />
+      <SectionDivider number="4" title="Plan & Billing" />
       <div>
         <label className={labelCls}>Choose Your Plan<span className="text-[#8B6E3C] ml-0.5">*</span></label>
         <div className="flex flex-col gap-2.5 mt-1">
@@ -274,8 +356,8 @@ function Step3({ data, setData, onNext }) {
   );
 }
 
-/* ── Step 4: Owner Info ── */
-function Step4({ data, setData, onNext, handleSubmit, oauthSession, onGoogleSignup }) {
+/* ── Step 5: Owner Info ── */
+function Step5Owner({ data, setData, onNext, handleSubmit, oauthSession, onGoogleSignup }) {
   const set = k => e => setData(p => ({ ...p, [k]: e.target.value }));
   const [showPw, setShowPw] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -306,7 +388,7 @@ function Step4({ data, setData, onNext, handleSubmit, oauthSession, onGoogleSign
   }}
   className="flex flex-col gap-3.5"
 >
-      <SectionDivider number="4" title="Owner Info" />
+      <SectionDivider number="5" title="Owner Info" />
 
       {!oauthSession && (
         <>
@@ -403,7 +485,7 @@ function StepSuccess({ data, onDone }) {
 /* ── Main export ── */
 export default function GetStartedPage({ setPage }) {
   const [step, setStep] = useState(1);
-  const TOTAL = 4;
+  const TOTAL = 5;
 
   const [formData, setFormData] = useState({
     /* Section 1 */
@@ -411,8 +493,10 @@ export default function GetStartedPage({ setPage }) {
     /* Section 2 */
     receptionistMode: "", greetingMessage: "", openTime: "08:00", closeTime: "18:00",
     /* Section 3 */
-    plan: "starter",
+    bookingFields: ["Full Name", "Phone Number"], servicesOffered: "", bookingPolicies: "",
     /* Section 4 */
+    plan: "starter",
+    /* Section 5 */
     ownerName: "", ownerEmail: "", password: "",
   });
 
@@ -447,7 +531,7 @@ export default function GetStartedPage({ setPage }) {
       // no draft — e.g. from the dashboard's "Complete Business Setup"
       // prompt — means business info was never collected, so start at step 1.
       if (draft.businessName) {
-        setStep(4);
+        setStep(5);
       }
     });
   }, []);
@@ -584,9 +668,10 @@ export default function GetStartedPage({ setPage }) {
               >
                 {step === 1 && <Step1 data={formData} setData={setFormData} onNext={next} />}
                 {step === 2 && <Step2 data={formData} setData={setFormData} onNext={next} />}
-                {step === 3 && <Step3 data={formData} setData={setFormData} onNext={next} />}
-                {step === 4 && <Step4 data={formData} setData={setFormData} onNext={next} handleSubmit={handleSubmit} oauthSession={oauthSession} onGoogleSignup={handleGoogleSignup}/>}
-                {step === 5 && <StepSuccess data={formData} onDone={() => setPage("dashboard")} />}
+                {step === 3 && <Step3Booking data={formData} setData={setFormData} onNext={next} />}
+                {step === 4 && <Step4Plan data={formData} setData={setFormData} onNext={next} />}
+                {step === 5 && <Step5Owner data={formData} setData={setFormData} onNext={next} handleSubmit={handleSubmit} oauthSession={oauthSession} onGoogleSignup={handleGoogleSignup}/>}
+                {step === 6 && <StepSuccess data={formData} onDone={() => setPage("dashboard")} />}
               </motion.div>
             </AnimatePresence>
 
