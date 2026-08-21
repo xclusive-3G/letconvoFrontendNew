@@ -185,18 +185,28 @@ const NextBtn = ({ children, disabled }) => (
 );
 
 /* ── Step 1: Business Info ── */
+const SUPPORTED_COUNTRIES = ["United States", "Canada"];
+
 function Step1({ data, setData, onNext }) {
   const set = k => e => setData(p => ({ ...p, [k]: e.target.value }));
-  const valid = data.businessName && data.businessPhone && data.businessEmail;
+  const countryBlocked = data.country && !SUPPORTED_COUNTRIES.includes(data.country);
+  const valid = data.businessName && data.businessPhone && data.businessEmail && data.country && !countryBlocked;
   return (
     <form onSubmit={e => { e.preventDefault(); if (valid) onNext(); }} className="flex flex-col gap-3.5">
       <SectionDivider number="1" title="Business Info" />
       <Inp label="Business Name" placeholder="Apex Health Clinic" required value={data.businessName} onChange={set("businessName")} />
       <Sel label="Business Type" required value={data.businessType} onChange={set("businessType")}
         options={["Salon","Clinic / Healthcare","Legal Practice","Real Estate Agency","Financial Services","Restaurant","Retail Store","Home Services","Other"]} />
+      <Sel label="Country" required value={data.country} onChange={set("country")}
+        options={[...SUPPORTED_COUNTRIES, "Other"]} />
+      {countryBlocked && (
+        <p className="text-[10.5px] text-red-600 -mt-2 leading-relaxed">
+          Letconvo is currently only available to businesses in the United States and Canada. We'll let you know when we expand.
+        </p>
+      )}
       <Inp label="Business Phone Number" type="tel" placeholder="+1 (415) 555-0132" required value={data.businessPhone} onChange={set("businessPhone")} />
       <Inp label="Business Email" type="email" placeholder="info@apexhealth.com" required value={data.businessEmail} onChange={set("businessEmail")} />
-      <Inp label="Business Address (optional)" placeholder="123 Victoria Island, Lagos" value={data.businessAddress} onChange={set("businessAddress")} />
+      <Inp label="Business Address (optional)" placeholder="123 Main St, Austin, TX" value={data.businessAddress} onChange={set("businessAddress")} />
       <NextBtn disabled={!valid}>Continue →</NextBtn>
     </form>
   );
@@ -489,7 +499,7 @@ export default function GetStartedPage({ setPage }) {
 
   const [formData, setFormData] = useState({
     /* Section 1 */
-    businessName: "", businessType: "", businessPhone: "", businessEmail: "", businessAddress: "",
+    businessName: "", businessType: "", country: "", businessPhone: "", businessEmail: "", businessAddress: "",
     /* Section 2 */
     receptionistMode: "", greetingMessage: "", openTime: "08:00", closeTime: "18:00",
     /* Section 3 */
@@ -615,8 +625,12 @@ export default function GetStartedPage({ setPage }) {
             <h2 className="font-syne font-black text-[16px] uppercase tracking-tight text-[#1A1614] leading-tight mb-2">
               Start Capturing Every Lead Today
             </h2>
-            <p className="text-[12px] text-[#4E4439]/65 leading-relaxed mb-6">
+            <p className="text-[12px] text-[#4E4439]/65 leading-relaxed mb-3">
               Join thousands of businesses that never miss a call. Setup in under 15 minutes, no contract required.
+            </p>
+            <p className="text-[10.5px] text-[#8B7060] leading-relaxed mb-6 flex items-start gap-1.5">
+              <span className="material-symbols-outlined text-[12px] flex-shrink-0 mt-[1px]">info</span>
+              Currently available to <strong>USA and Canada businesses</strong> only.
             </p>
 
             {/* Perks */}
