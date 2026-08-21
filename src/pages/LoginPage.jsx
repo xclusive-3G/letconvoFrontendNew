@@ -12,6 +12,7 @@ export default function LoginPage({ setPage }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [resetStatus, setResetStatus] = useState(null); // null | "sending" | "sent" | error string
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -40,6 +41,31 @@ export default function LoginPage({ setPage }) {
     console.log("✅ Logged in:", data.user);
 
     setPage ? setPage("dashboard") : (window.location.href = "/dashboard");
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setResetStatus("Enter your email above first, then click Forgot password.");
+      return;
+    }
+
+    setResetStatus("sending");
+
+    // ?passwordReset=1 (query string, not hash) so Supabase's own
+    // #access_token=...&type=recovery fragment on the redirect back doesn't
+    // collide with this app's hash-based page routing — same pattern
+    // BalancePage uses for the Paystack checkout return.
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}${window.location.pathname}?passwordReset=1`
+    });
+
+    if (error) {
+      console.log("❌ Password reset error:", error.message);
+      setResetStatus(error.message);
+      return;
+    }
+
+    setResetStatus("sent");
   };
 
   const handleGoogleLogin = async () => {
@@ -98,8 +124,19 @@ export default function LoginPage({ setPage }) {
               </div>
               <div className="flex justify-between items-center">
                 <label className="flex items-center gap-1.5 text-[11px] text-[#4E4439]/60 cursor-pointer"><input type="checkbox" className="w-3 h-3 accent-[#8B6E3C]" />Remember me</label>
-                <span className="text-[11px] text-[#8B6E3C] font-semibold cursor-pointer hover:underline">Forgot password?</span>
+                <button type="button" onClick={handleForgotPassword} disabled={resetStatus === "sending"}
+                  className="text-[11px] text-[#8B6E3C] font-semibold cursor-pointer hover:underline disabled:opacity-60">
+                  {resetStatus === "sending" ? "Sending…" : "Forgot password?"}
+                </button>
               </div>
+              {resetStatus === "sent" && (
+                <div className="text-[11px] text-green-700 bg-green-50 border border-green-200 rounded-sm px-3 py-2">
+                  Check your email for a password reset link.
+                </div>
+              )}
+              {resetStatus && resetStatus !== "sending" && resetStatus !== "sent" && (
+                <div className="text-[11px] text-red-600">{resetStatus}</div>
+              )}
               <motion.button whileHover={{ scale: done ? 1 : 1.02 }} whileTap={{ scale: .97 }} type="submit"
                 className={`w-full py-2.5 font-syne font-bold text-[11px] uppercase tracking-[.1em] rounded-sm transition-colors ${done ? "bg-green-600 text-white" : "bg-[#8B6E3C] text-white hover:bg-[#6b5228]"}`}>
                 {done ? "Signed In ✓" : "Sign In →"}

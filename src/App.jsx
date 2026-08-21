@@ -84,6 +84,7 @@ import BenefitsPage   from "./pages/BenefitsPage";
 import PricingPage    from "./pages/PricingPage";
 import ContactPage    from "./pages/ContactPage";
 import LoginPage      from "./pages/LoginPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import GetStartedPage from "./pages/GetStartedPage";
 import DashboardPage  from "./dashboard/DashboardPage";
 import AdminPage      from "./admin/AdminPage";
@@ -152,6 +153,15 @@ export default function App() {
         ? "Dashboard — Letconvo AI"
         : PUBLIC_PAGES[page]?.title ?? "Letconvo AI";
   }, [page]);
+
+  // Supabase's password-reset redirect carries its own #access_token=...&
+  // type=recovery hash fragment, which the hash-based page router below
+  // can't route on — check the query string instead (same pattern
+  // BalancePage uses for the Paystack checkout return) so this renders
+  // regardless of what garbage is currently in the hash.
+  if (new URLSearchParams(window.location.search).get("passwordReset") === "1") {
+    return <ResetPasswordPage setPage={changePage} />;
+  }
 
   if (page === "dashboard") {
     const token = localStorage.getItem("token");
