@@ -11,7 +11,8 @@ const NOTIF_ICON = {
   call: "call",
   appointment: "calendar_month",
   alert: "warning",
-  info: "notifications"
+  info: "notifications",
+  phone: "smartphone"
 };
 
 function timeAgo(dateStr) {
