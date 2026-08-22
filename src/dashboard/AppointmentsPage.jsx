@@ -87,7 +87,7 @@ function AppointmentDrawer({ appt, onClose, onSave, saving }) {
         <div>
           <div style={{ fontSize:10, fontFamily:"Syne,sans-serif", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", color:"#8B7060", marginBottom:8 }}>Quick Actions</div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
-            {[["sms","Send Reminder SMS"],["mail","Send Email"],["call","Call Patient"],["edit_calendar","Reschedule"]].map(([ic,lbl])=>(
+            {[["sms","Send Reminder SMS"],["edit_calendar","Reschedule"]].map(([ic,lbl])=>(
               <button key={lbl} style={{ display:"flex", alignItems:"center", gap:6, padding:"8px 12px", background:"#f7f2ec", border:"1px solid #e8e2d8", borderRadius:6, cursor:"pointer", fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#4E4439" }}>
                 <span className="material-symbols-outlined" style={{ fontSize:14, color:Pr }}>{ic}</span>{lbl}
               </button>
