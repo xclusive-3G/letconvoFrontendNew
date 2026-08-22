@@ -60,3 +60,10 @@ export const updateAppointment = async (id, updates) => {
   });
   return mapBooking(data.appointment);
 };
+
+export const sendReminderSms = async (id) => {
+  const { data } = await axios.post(`${API}/me/appointments/${id}/send-reminder`, {}, {
+    headers: authHeaders(),
+  });
+  return data;
+};

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchAppointments, updateAppointment } from "../api/appointmentsApi";
+import { fetchAppointments, updateAppointment, sendReminderSms } from "../api/appointmentsApi";
 
 const Pr = "#8B6E3C";
 
@@ -46,6 +46,31 @@ function AppointmentCard({ appt, onClick }) {
 function AppointmentDrawer({ appt, onClose, onSave, saving }) {
   const [status, setStatus] = useState(appt.rawStatus);
   const [notes, setNotes] = useState(appt.notes||"");
+  const [rescheduling, setRescheduling] = useState(false);
+  const [newDate, setNewDate] = useState(appt.raw_date||"");
+  const [newTime, setNewTime] = useState((appt.raw_time||"").slice(0,5));
+  const [reminderState, setReminderState] = useState("idle"); // idle | sending | sent | error
+
+  const handleSendReminder = async () => {
+    setReminderState("sending");
+    try {
+      await sendReminderSms(appt.id);
+      setReminderState("sent");
+    } catch (err) {
+      console.error("Failed to send reminder SMS:", err);
+      setReminderState("error");
+    }
+  };
+
+  const handleSave = () => {
+    const updates = { status, notes };
+    if (rescheduling && newDate && newTime) {
+      updates.appointment_date = newDate;
+      updates.appointment_time = newTime;
+    }
+    onSave(appt.id, updates);
+  };
+
   return (
     <motion.div initial={{x:"100%"}} animate={{x:0}} exit={{x:"100%"}} transition={{duration:0.28,ease:[0.16,1,0.3,1]}}
       style={{ position:"fixed", top:0, right:0, bottom:0, width:400, background:"#fff", borderLeft:"1px solid #e8e2d8", zIndex:200, display:"flex", flexDirection:"column", boxShadow:"-8px 0 32px rgba(0,0,0,0.1)" }}>
@@ -87,12 +112,24 @@ function AppointmentDrawer({ appt, onClose, onSave, saving }) {
         <div>
           <div style={{ fontSize:10, fontFamily:"Syne,sans-serif", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", color:"#8B7060", marginBottom:8 }}>Quick Actions</div>
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
-            {[["sms","Send Reminder SMS"],["edit_calendar","Reschedule"]].map(([ic,lbl])=>(
-              <button key={lbl} style={{ display:"flex", alignItems:"center", gap:6, padding:"8px 12px", background:"#f7f2ec", border:"1px solid #e8e2d8", borderRadius:6, cursor:"pointer", fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#4E4439" }}>
-                <span className="material-symbols-outlined" style={{ fontSize:14, color:Pr }}>{ic}</span>{lbl}
-              </button>
-            ))}
+            <button onClick={handleSendReminder} disabled={reminderState==="sending"}
+              style={{ display:"flex", alignItems:"center", gap:6, padding:"8px 12px", background:"#f7f2ec", border:"1px solid #e8e2d8", borderRadius:6, cursor:reminderState==="sending"?"default":"pointer", opacity:reminderState==="sending"?0.6:1, fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:"#4E4439" }}>
+              <span className="material-symbols-outlined" style={{ fontSize:14, color:Pr }}>sms</span>
+              {reminderState==="sending"?"Sending…":reminderState==="sent"?"Sent!":reminderState==="error"?"Failed — retry":"Send Reminder SMS"}
+            </button>
+            <button onClick={()=>setRescheduling(r=>!r)}
+              style={{ display:"flex", alignItems:"center", gap:6, padding:"8px 12px", background:rescheduling?`${Pr}12`:"#f7f2ec", border:`1px solid ${rescheduling?Pr:"#e8e2d8"}`, borderRadius:6, cursor:"pointer", fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11, color:rescheduling?Pr:"#4E4439" }}>
+              <span className="material-symbols-outlined" style={{ fontSize:14, color:Pr }}>edit_calendar</span>Reschedule
+            </button>
           </div>
+          {rescheduling && (
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginTop:8 }}>
+              <input type="date" value={newDate} onChange={e=>setNewDate(e.target.value)}
+                style={{ padding:"7px 10px", border:"1px solid #e8e2d8", borderRadius:6, fontSize:12, color:"#4E4439", fontFamily:"DM Sans,sans-serif", outline:"none" }}/>
+              <input type="time" value={newTime} onChange={e=>setNewTime(e.target.value)}
+                style={{ padding:"7px 10px", border:"1px solid #e8e2d8", borderRadius:6, fontSize:12, color:"#4E4439", fontFamily:"DM Sans,sans-serif", outline:"none" }}/>
+            </div>
+          )}
         </div>
         <div>
           <div style={{ fontSize:10, fontFamily:"Syne,sans-serif", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", color:"#8B7060", marginBottom:8 }}>Activity Timeline</div>
@@ -113,7 +150,7 @@ function AppointmentDrawer({ appt, onClose, onSave, saving }) {
         </div>
       </div>
       <div style={{ padding:"14px 20px", borderTop:"1px solid #f0ebe4", display:"flex", gap:8, flexShrink:0 }}>
-        <button disabled={saving} onClick={()=>onSave(appt.id, { status, notes })} style={{ flex:1, padding:"9px", background:Pr, color:"#fff", border:"none", borderRadius:5, cursor:saving?"default":"pointer", opacity:saving?0.6:1, fontFamily:"Syne,sans-serif", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:"0.08em" }}>{saving?"Saving…":"Save Changes"}</button>
+        <button disabled={saving} onClick={handleSave} style={{ flex:1, padding:"9px", background:Pr, color:"#fff", border:"none", borderRadius:5, cursor:saving?"default":"pointer", opacity:saving?0.6:1, fontFamily:"Syne,sans-serif", fontWeight:700, fontSize:11, textTransform:"uppercase", letterSpacing:"0.08em" }}>{saving?"Saving…":"Save Changes"}</button>
         <button onClick={onClose} style={{ padding:"9px 14px", background:"#f7f2ec", color:"#4E4439", border:"1px solid #e8e2d8", borderRadius:5, cursor:"pointer", fontFamily:"Syne,sans-serif", fontWeight:600, fontSize:11 }}>Cancel</button>
       </div>
     </motion.div>
