@@ -80,6 +80,15 @@ export const assignRetellAgent = async (clientId, retellAgentId) => {
   return data;
 };
 
+export const migrateToRetellNative = async (clientId) => {
+  const { data } = await axios.post(
+    `${API}/admin/companies/${clientId}/migrate-to-retell-native`,
+    {},
+    authHeaders()
+  );
+  return data;
+};
+
 export const deleteCompany = async (clientId) => {
   const { data } = await axios.delete(`${API}/admin/companies/${clientId}`, authHeaders());
   return data;

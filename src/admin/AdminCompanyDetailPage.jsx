@@ -7,6 +7,7 @@ import {
   adjustCompanyCredits,
   assignPhoneNumber,
   assignRetellAgent,
+  migrateToRetellNative,
   deleteCompany
 } from "../api/adminApi";
 
@@ -38,6 +39,8 @@ export default function AdminCompanyDetailPage({ clientId, onBack }) {
   const [creditType, setCreditType] = useState("credit");
   const [creditDesc, setCreditDesc] = useState("");
   const [phoneError, setPhoneError] = useState(null);
+  const [migrating, setMigrating] = useState(false);
+  const [migrateResult, setMigrateResult] = useState(null);
 
   const [deleteInput, setDeleteInput] = useState("");
   const [deleting, setDeleting] = useState(false);
@@ -150,6 +153,19 @@ export default function AdminCompanyDetailPage({ clientId, onBack }) {
     }
   };
 
+  const handleMigrateToRetellNative = async () => {
+    setMigrating(true);
+    setMigrateResult(null);
+    try {
+      const res = await migrateToRetellNative(clientId);
+      setMigrateResult({ ok: true, message: `Migrated — inbound webhook set, agent ${res.retellNumber?.inbound_agents?.[0]?.agent_id || ""}` });
+    } catch (err) {
+      setMigrateResult({ ok: false, message: err.response?.data?.error || "Migration failed" });
+    } finally {
+      setMigrating(false);
+    }
+  };
+
   const handleDelete = async () => {
     setDeleting(true);
     try {
@@ -237,6 +253,24 @@ export default function AdminCompanyDetailPage({ clientId, onBack }) {
           <input placeholder="agent_xxxxxxxxxxxx" value={agentInput} onChange={(e) => setAgentInput(e.target.value)} style={{ ...inputCls, flex: 1 }} />
           <button onClick={handleSaveAgent} disabled={saving} style={{ ...btnCls, opacity: saving ? 0.6 : 1 }}>Assign</button>
         </div>
+      </Section>
+
+      <Section title="Call Routing">
+        <div style={{ fontSize: 11.5, color: "#8B7060", marginBottom: 10, lineHeight: 1.5 }}>
+          By default, live calls route through Telnyx's SIP-transfer path — Telnyx only allows
+          about 1 second before it gives up on an unanswered call, which is too tight for a
+          database lookup to reliably beat. Migrating switches this number to Retell's own
+          native inbound routing instead, which gives a 10 second budget for the same
+          per-client agent/personalization resolution. Safe to run again if it's already migrated.
+        </div>
+        <button onClick={handleMigrateToRetellNative} disabled={migrating} style={{ ...btnCls, opacity: migrating ? 0.6 : 1 }}>
+          {migrating ? "Migrating..." : "Migrate to Retell-native routing"}
+        </button>
+        {migrateResult && (
+          <div style={{ marginTop: 10, fontSize: 11.5, color: migrateResult.ok ? "#10b981" : "#ef4444" }}>
+            {migrateResult.message}
+          </div>
+        )}
       </Section>
 
       <Section title="Recent Calls">
