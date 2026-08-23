@@ -166,6 +166,34 @@ const CheckboxGroup = ({ label, sub, options, value, onToggle }) => (
   </div>
 );
 
+const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+const DaysPicker = ({ label, sub, value, onToggle }) => (
+  <div className="flex flex-col gap-1.5">
+    <label className={labelCls}>{label}</label>
+    {sub && <p className="text-[10.5px] text-[#8B7060] -mt-1 mb-1">{sub}</p>}
+    <div className="flex flex-wrap gap-1.5">
+      {DAYS_OF_WEEK.map(day => {
+        const checked = value.includes(day);
+        return (
+          <button
+            type="button"
+            key={day}
+            onClick={() => onToggle(day)}
+            className={`px-2.5 py-1.5 border rounded-sm font-syne font-semibold text-[10.5px] transition-all cursor-pointer ${
+              checked
+                ? "border-[#8B6E3C] bg-[#8B6E3C] text-white"
+                : "border-[#d4c8b8]/60 text-[#4E4439] hover:border-[#8B6E3C]/40"
+            }`}
+          >
+            {day.slice(0, 3)}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+);
+
 const SectionDivider = ({ number, title }) => (
   <div className="flex items-center gap-3 mb-4">
     <div className="w-5 h-5 rounded-full bg-[#8B6E3C] flex items-center justify-center flex-shrink-0">
@@ -216,7 +244,13 @@ function Step1({ data, setData, onNext }) {
 function Step2({ data, setData, onNext }) {
   const set = k => e => setData(p => ({ ...p, [k]: e.target.value }));
   const setRadio = k => v => setData(p => ({ ...p, [k]: v }));
-  const valid = data.receptionistMode && data.greetingMessage;
+  const toggleWorkingDay = (day) => setData(p => ({
+    ...p,
+    workingDays: p.workingDays.includes(day)
+      ? p.workingDays.filter(d => d !== day)
+      : [...p.workingDays, day]
+  }));
+  const valid = data.receptionistMode && data.greetingMessage && data.workingDays.length > 0;
   return (
     <form onSubmit={e => { e.preventDefault(); if (valid) onNext(); }} className="flex flex-col gap-4">
       <SectionDivider number="2" title="Reception Setup" />
@@ -253,6 +287,12 @@ function Step2({ data, setData, onNext }) {
         </div>
         <p className="text-[10.5px] text-[#8B7060] mt-1.5">AI is active 24/7 — hours set the after-hours greeting mode.</p>
       </div>
+      <DaysPicker
+        label="Working Days"
+        sub="Days your AI receptionist should treat as open — it uses this to answer availability questions instead of guessing."
+        value={data.workingDays}
+        onToggle={toggleWorkingDay}
+      />
       <NextBtn disabled={!valid}>Continue →</NextBtn>
     </form>
   );
@@ -502,6 +542,7 @@ export default function GetStartedPage({ setPage }) {
     businessName: "", businessType: "", country: "", businessPhone: "", businessEmail: "", businessAddress: "",
     /* Section 2 */
     receptionistMode: "", greetingMessage: "", openTime: "08:00", closeTime: "18:00",
+    workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     /* Section 3 */
     bookingFields: ["Full Name", "Phone Number"], servicesOffered: "", bookingPolicies: "",
     /* Section 4 */
