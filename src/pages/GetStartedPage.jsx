@@ -168,9 +168,9 @@ const CheckboxGroup = ({ label, sub, options, value, onToggle }) => (
 
 const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const DaysPicker = ({ label, sub, value, onToggle }) => (
+const DaysPicker = ({ label, sub, required = false, value, onToggle }) => (
   <div className="flex flex-col gap-1.5">
-    <label className={labelCls}>{label}</label>
+    <label className={labelCls}>{label}{required && <span className="text-[#8B6E3C] ml-0.5">*</span>}</label>
     {sub && <p className="text-[10.5px] text-[#8B7060] -mt-1 mb-1">{sub}</p>}
     <div className="flex flex-wrap gap-1.5">
       {DAYS_OF_WEEK.map(day => {
@@ -250,7 +250,7 @@ function Step2({ data, setData, onNext }) {
       ? p.workingDays.filter(d => d !== day)
       : [...p.workingDays, day]
   }));
-  const valid = data.receptionistMode && data.greetingMessage && data.workingDays.length > 0;
+  const valid = data.receptionistMode && data.greetingMessage && data.openTime && data.closeTime && data.workingDays.length > 0;
   return (
     <form onSubmit={e => { e.preventDefault(); if (valid) onNext(); }} className="flex flex-col gap-4">
       <SectionDivider number="2" title="Reception Setup" />
@@ -272,23 +272,24 @@ function Step2({ data, setData, onNext }) {
         onChange={set("greetingMessage")}
       />
       <div>
-        <label className={labelCls}>Working Hours</label>
+        <label className={labelCls}>Working Hours<span className="text-[#8B6E3C] ml-0.5">*</span></label>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="font-syne text-[9px] uppercase tracking-[.08em] text-[#8B7060] mb-1 block">Open Time</label>
-            <input type="time" value={data.openTime} onChange={set("openTime")}
-              className={inputCls} defaultValue="08:00" />
+            <input type="time" required value={data.openTime} onChange={set("openTime")}
+              className={inputCls} />
           </div>
           <div>
             <label className="font-syne text-[9px] uppercase tracking-[.08em] text-[#8B7060] mb-1 block">Close Time</label>
-            <input type="time" value={data.closeTime} onChange={set("closeTime")}
-              className={inputCls} defaultValue="18:00" />
+            <input type="time" required value={data.closeTime} onChange={set("closeTime")}
+              className={inputCls} />
           </div>
         </div>
         <p className="text-[10.5px] text-[#8B7060] mt-1.5">AI is active 24/7 — hours set the after-hours greeting mode.</p>
       </div>
       <DaysPicker
         label="Working Days"
+        required
         sub="Days your AI receptionist should treat as open — it uses this to answer availability questions instead of guessing."
         value={data.workingDays}
         onToggle={toggleWorkingDay}
