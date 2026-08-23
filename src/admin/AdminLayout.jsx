@@ -6,9 +6,10 @@ const Pr = "#8B6E3C";
 const NAV_ITEMS = [
   { id: "overview",  icon: "dashboard",       label: "Overview"  },
   { id: "companies", icon: "domain",          label: "Companies" },
+  { id: "messages",  icon: "mail",            label: "Messages"  },
 ];
 
-export default function AdminLayout({ children, activePage, setActivePage, setAppPage, logoutUser }) {
+export default function AdminLayout({ children, activePage, setActivePage, setAppPage, logoutUser, unreadMessages = 0 }) {
   const [desktopOpen, setDesktopOpen] = useState(true);
   const [mobileNav, setMobileNav] = useState(false);
 
@@ -41,15 +42,28 @@ export default function AdminLayout({ children, activePage, setActivePage, setAp
         <nav style={{ flex: 1, overflowY: "auto", overflowX: "hidden", padding: "10px 0" }}>
           {NAV_ITEMS.map(item => {
             const active = activePage === item.id;
+            const badge = item.id === "messages" ? unreadMessages : 0;
             return (
               <motion.button key={item.id} whileHover={{ x: 2 }} onClick={() => navTo(item.id)}
                 style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", padding: "9px 16px", background: active ? "rgba(139,110,60,0.18)" : "transparent", border: "none", cursor: "pointer", borderLeft: active ? `3px solid ${Pr}` : "3px solid transparent", transition: "background 0.15s", overflow: "hidden" }}>
-                <span className="material-symbols-outlined" style={{ fontSize: 18, color: active ? Pr : "rgba(255,255,255,0.45)", flexShrink: 0 }}>{item.icon}</span>
+                <span style={{ position: "relative", flexShrink: 0, display: "flex" }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 18, color: active ? Pr : "rgba(255,255,255,0.45)" }}>{item.icon}</span>
+                  {badge > 0 && (
+                    <span style={{ position: "absolute", top: -3, right: -5, minWidth: 14, height: 14, padding: "0 3px", borderRadius: 100, background: "#ef4444", color: "#fff", fontSize: 8, fontFamily: "Syne,sans-serif", fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
+                      {badge > 9 ? "9+" : badge}
+                    </span>
+                  )}
+                </span>
                 <AnimatePresence>
                   {desktopOpen && (
                     <motion.span initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -8 }} transition={{ duration: 0.18 }}
-                      style={{ fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 11, color: active ? "#c4a97a" : "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap" }}>
+                      style={{ fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 11, color: active ? "#c4a97a" : "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 6 }}>
                       {item.label}
+                      {badge > 0 && (
+                        <span style={{ minWidth: 15, height: 15, padding: "0 4px", borderRadius: 100, background: "#ef4444", color: "#fff", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
+                          {badge > 9 ? "9+" : badge}
+                        </span>
+                      )}
                     </motion.span>
                   )}
                 </AnimatePresence>
@@ -131,11 +145,19 @@ export default function AdminLayout({ children, activePage, setActivePage, setAp
               <nav style={{ flex: 1, overflowY: "auto", padding: "10px 0" }}>
                 {NAV_ITEMS.map(item => {
                   const active = activePage === item.id;
+                  const badge = item.id === "messages" ? unreadMessages : 0;
                   return (
                     <button key={item.id} onClick={() => navTo(item.id)}
                       style={{ display: "flex", alignItems: "center", gap: 12, width: "100%", padding: "11px 16px", background: active ? "rgba(139,110,60,0.18)" : "transparent", border: "none", cursor: "pointer", borderLeft: active ? `3px solid ${Pr}` : "3px solid transparent" }}>
                       <span className="material-symbols-outlined" style={{ fontSize: 18, color: active ? Pr : "rgba(255,255,255,0.45)", flexShrink: 0 }}>{item.icon}</span>
-                      <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 12, color: active ? "#c4a97a" : "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{item.label}</span>
+                      <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 12, color: active ? "#c4a97a" : "rgba(255,255,255,0.55)", textTransform: "uppercase", letterSpacing: "0.06em", display: "flex", alignItems: "center", gap: 6 }}>
+                        {item.label}
+                        {badge > 0 && (
+                          <span style={{ minWidth: 15, height: 15, padding: "0 4px", borderRadius: 100, background: "#ef4444", color: "#fff", fontSize: 9, display: "flex", alignItems: "center", justifyContent: "center", lineHeight: 1 }}>
+                            {badge > 9 ? "9+" : badge}
+                          </span>
+                        )}
+                      </span>
                     </button>
                   );
                 })}

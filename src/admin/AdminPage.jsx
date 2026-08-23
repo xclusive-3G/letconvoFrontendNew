@@ -5,11 +5,19 @@ import AdminLayout from "./AdminLayout";
 import AdminOverviewPage from "./AdminOverviewPage";
 import AdminCompaniesPage from "./AdminCompaniesPage";
 import AdminCompanyDetailPage from "./AdminCompanyDetailPage";
+import AdminMessagesPage from "./AdminMessagesPage";
 
 export default function AdminPage({ setAppPage }) {
   const [activePage, setActivePage] = useState("overview");
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [access, setAccess] = useState("checking"); // "checking" | "granted" | "denied"
+  const [unreadMessages, setUnreadMessages] = useState(0);
+
+  const refreshUnreadCount = useCallback(() => {
+    fetchAdminStats()
+      .then((res) => setUnreadMessages(res.stats?.unreadMessages || 0))
+      .catch(() => {});
+  }, []);
 
   const logoutUser = useCallback(async () => {
     try { await supabase.auth.signOut(); } catch (_) {}
@@ -21,7 +29,10 @@ export default function AdminPage({ setAppPage }) {
 
   useEffect(() => {
     fetchAdminStats()
-      .then(() => setAccess("granted"))
+      .then((res) => {
+        setAccess("granted");
+        setUnreadMessages(res.stats?.unreadMessages || 0);
+      })
       .catch((err) => {
         if (err.response?.status === 401 || err.response?.status === 403) {
           setAccess("denied");
@@ -62,12 +73,13 @@ export default function AdminPage({ setAppPage }) {
   }
 
   return (
-    <AdminLayout activePage={activePage} setActivePage={setActivePage} setAppPage={setAppPage} logoutUser={logoutUser}>
+    <AdminLayout activePage={activePage} setActivePage={setActivePage} setAppPage={setAppPage} logoutUser={logoutUser} unreadMessages={unreadMessages}>
       {activePage === "overview" && <AdminOverviewPage openCompany={openCompany} setActivePage={setActivePage} />}
       {activePage === "companies" && <AdminCompaniesPage openCompany={openCompany} />}
       {activePage === "companyDetail" && (
         <AdminCompanyDetailPage clientId={selectedClientId} onBack={() => setActivePage("companies")} />
       )}
+      {activePage === "messages" && <AdminMessagesPage onRead={refreshUnreadCount} />}
     </AdminLayout>
   );
 }

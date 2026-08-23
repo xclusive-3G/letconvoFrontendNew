@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import PageHero from "../components/PageHero";
 import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
+import { submitContactMessage } from "../api/contactApi";
 
 const INFO=[{icon:"mail",label:"Email",val:"hello@letconvo.live"},{icon:"call",label:"Phone",val:"+1 (800) 555-Letconvo"},{icon:"schedule",label:"Response Time",val:"Within 2 business hours"},{icon:"support_agent",label:"Support Hours",val:"24/7 for active clients"}];
 const OFFICES=[{tag:"Headquarters",city:"San Francisco, CA",addr:["100 Market Street, Suite 800","San Francisco, CA 94105","United States"]},{tag:"EMEA",city:"London, UK",addr:["30 St Mary Axe, Level 12","London EC3A 8BF","United Kingdom"]},{tag:"Africa",city:"Lagos, Nigeria",addr:["Victoria Island Business Hub","Adeola Odeku Street","Lagos, Nigeria"]}];
@@ -13,8 +14,30 @@ function S({children,bg,className=""}) {
   return <section className={`relative z-10 py-12 sm:py-14 px-4 sm:px-6 ${className}`} style={{background:bg}}><div className="max-w-5xl mx-auto">{children}</div></section>;
 }
 
+const EMPTY_FORM = { firstName:"", lastName:"", email:"", phone:"", companyName:"", interest:INTERESTS[0], message:"" };
+
 export default function ContactPage({setPage}) {
   const [sent,setSent]=useState(false);
+  const [form,setForm]=useState(EMPTY_FORM);
+  const [submitting,setSubmitting]=useState(false);
+  const [error,setError]=useState("");
+  const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (submitting) return;
+    setError("");
+    setSubmitting(true);
+    try {
+      await submitContactMessage(form);
+      setSent(true);
+      setForm(EMPTY_FORM);
+    } catch (err) {
+      setError(err.response?.data?.error || "Something went wrong — please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <main style={{position:"relative",zIndex:10}}>
       <PageHero chip="Get In Touch" title="Let's Start a Conversation" hlWord="Conversation"
@@ -53,32 +76,33 @@ export default function ContactPage({setPage}) {
                     <p className="text-[12px] text-[#4E4439]/65">We'll get back to you within 2 business hours.</p>
                   </motion.div>
                 ):(
-                  <motion.form key="form" onSubmit={e=>{e.preventDefault();setSent(true);}}>
+                  <motion.form key="form" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {[["First Name","text","Sarah"],["Last Name","text","Okonkwo"],["Work Email","email","sarah@company.com"],["Phone","tel","+1 (555) 000-0000"]].map(([lbl,type,ph])=>(
-                        <div key={lbl} className="flex flex-col gap-1">
+                      {[["First Name","text","Sarah","firstName",true],["Last Name","text","Okonkwo","lastName",false],["Work Email","email","sarah@company.com","email",true],["Phone","tel","+1 (555) 000-0000","phone",false]].map(([lbl,type,ph,key,required])=>(
+                        <div key={key} className="flex flex-col gap-1">
                           <label className="font-syne font-bold text-[9px] uppercase tracking-[.1em] text-[#4E4439]/50">{lbl}</label>
-                          <input type={type} placeholder={ph} className={inputCls}/>
+                          <input type={type} placeholder={ph} required={required} value={form[key]} onChange={set(key)} className={inputCls}/>
                         </div>
                       ))}
                       <div className="sm:col-span-2 flex flex-col gap-1">
                         <label className="font-syne font-bold text-[9px] uppercase tracking-[.1em] text-[#4E4439]/50">Company Name</label>
-                        <input type="text" placeholder="Apex Health Clinic" className={inputCls}/>
+                        <input type="text" placeholder="Apex Health Clinic" value={form.companyName} onChange={set("companyName")} className={inputCls}/>
                       </div>
                       <div className="sm:col-span-2 flex flex-col gap-1">
                         <label className="font-syne font-bold text-[9px] uppercase tracking-[.1em] text-[#4E4439]/50">I'm interested in</label>
-                        <select className={inputCls + " cursor-pointer bg-white"}>
+                        <select value={form.interest} onChange={set("interest")} className={inputCls + " cursor-pointer bg-white"}>
                           {INTERESTS.map(o=><option key={o}>{o}</option>)}
                         </select>
                       </div>
                       <div className="sm:col-span-2 flex flex-col gap-1">
                         <label className="font-syne font-bold text-[9px] uppercase tracking-[.1em] text-[#4E4439]/50">Message</label>
-                        <textarea rows={4} placeholder="Tell us about your business..." className={inputCls + " resize-y"}/>
+                        <textarea rows={4} placeholder="Tell us about your business..." required value={form.message} onChange={set("message")} className={inputCls + " resize-y"}/>
                       </div>
                     </div>
-                    <motion.button whileHover={{scale:1.02}} whileTap={{scale:.97}} type="submit"
-                      className="w-full mt-4 py-3 bg-[#8B6E3C] text-white font-syne font-bold text-[11px] uppercase tracking-[.1em] rounded-sm hover:bg-[#6b5228] transition-colors">
-                      Send Message →
+                    {error && <p className="text-[11px] text-red-600 mt-3">{error}</p>}
+                    <motion.button whileHover={{scale:submitting?1:1.02}} whileTap={{scale:submitting?1:.97}} type="submit" disabled={submitting}
+                      className={`w-full mt-4 py-3 text-white font-syne font-bold text-[11px] uppercase tracking-[.1em] rounded-sm transition-colors ${submitting ? "bg-[#c4a97a] cursor-not-allowed" : "bg-[#8B6E3C] hover:bg-[#6b5228] cursor-pointer"}`}>
+                      {submitting ? "Sending…" : "Send Message →"}
                     </motion.button>
                     <p className="text-[10px] text-[#4E4439]/40 text-center mt-2">We respect your privacy. Your info is never shared.</p>
                   </motion.form>

@@ -93,3 +93,13 @@ export const deleteCompany = async (clientId) => {
   const { data } = await axios.delete(`${API}/admin/companies/${clientId}`, authHeaders());
   return data;
 };
+
+export const fetchContactMessages = async () => {
+  const { data } = await axios.get(`${API}/admin/contact-messages`, authHeaders());
+  return data;
+};
+
+export const markContactMessageRead = async (id) => {
+  const { data } = await axios.patch(`${API}/admin/contact-messages/${id}/read`, {}, authHeaders());
+  return data;
+};
