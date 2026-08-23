@@ -215,10 +215,16 @@ const NextBtn = ({ children, disabled }) => (
 /* ── Step 1: Business Info ── */
 const SUPPORTED_COUNTRIES = ["United States", "Canada"];
 
+// Loose "looks like a domain" check — matches the backend's acceptance in
+// register_business.js so a value that passes here won't get rejected
+// server-side. Bare domains ("apexhealth.com") are fine, no protocol required.
+const WEBSITE_URL_RE = /^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+(\/\S*)?$/i;
+
 function Step1({ data, setData, onNext }) {
   const set = k => e => setData(p => ({ ...p, [k]: e.target.value }));
   const countryBlocked = data.country && !SUPPORTED_COUNTRIES.includes(data.country);
-  const valid = data.businessName && data.businessPhone && data.businessEmail && data.country && !countryBlocked;
+  const websiteUrlValid = WEBSITE_URL_RE.test(data.websiteUrl.trim());
+  const valid = data.businessName && data.businessPhone && data.businessEmail && data.country && !countryBlocked && websiteUrlValid;
   return (
     <form onSubmit={e => { e.preventDefault(); if (valid) onNext(); }} className="flex flex-col gap-3.5">
       <SectionDivider number="1" title="Business Info" />
@@ -234,6 +240,13 @@ function Step1({ data, setData, onNext }) {
       )}
       <Inp label="Business Phone Number" type="tel" placeholder="+1 (415) 555-0132" required value={data.businessPhone} onChange={set("businessPhone")} />
       <Inp label="Business Email" type="email" placeholder="info@apexhealth.com" required value={data.businessEmail} onChange={set("businessEmail")} />
+      <div className="flex flex-col">
+        <Inp label="Website URL" placeholder="apexhealth.com" required value={data.websiteUrl} onChange={set("websiteUrl")} />
+        <p className="text-[10.5px] text-[#8B7060] mt-1">We use this to help build out what your AI receptionist knows about your business.</p>
+        {data.websiteUrl && !websiteUrlValid && (
+          <p className="text-[10.5px] text-red-600 mt-1">Enter a valid website, e.g. apexhealth.com</p>
+        )}
+      </div>
       <Inp label="Business Address (optional)" placeholder="123 Main St, Austin, TX" value={data.businessAddress} onChange={set("businessAddress")} />
       <NextBtn disabled={!valid}>Continue →</NextBtn>
     </form>
@@ -540,7 +553,7 @@ export default function GetStartedPage({ setPage }) {
 
   const [formData, setFormData] = useState({
     /* Section 1 */
-    businessName: "", businessType: "", country: "", businessPhone: "", businessEmail: "", businessAddress: "",
+    businessName: "", businessType: "", country: "", businessPhone: "", businessEmail: "", businessAddress: "", websiteUrl: "",
     /* Section 2 */
     receptionistMode: "", greetingMessage: "", openTime: "08:00", closeTime: "18:00",
     workingDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
