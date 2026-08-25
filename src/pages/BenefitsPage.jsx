@@ -29,6 +29,40 @@ const TESTS = [
 const WITHOUT = ["Missed calls after hours","Staff overwhelmed at peak times","Manual appointment scheduling","Inconsistent customer experience","High staffing overhead","No data on call performance"];
 const WITH    = ["Every call answered instantly, 24/7","Unlimited concurrent call handling","Automatic calendar booking","Consistent, branded interactions","Up to 80% cost savings","Full analytics dashboard"];
 
+const WHAT_LETCONVO_DOES = [
+  { icon: "phone_in_talk", title: "Answers every call", desc: "Letconvo answers incoming calls when your team is busy, unavailable, or closed—so a missed call does not become a missed opportunity." },
+  { icon: "person_add", title: "Captures more leads", desc: "It collects the caller details and reason for calling that your team needs to follow up, helping you turn more enquiries into customers." },
+  { icon: "forum", title: "Answers customer questions", desc: "Your AI receptionist gives callers consistent answers about your services, hours, policies, and the information you choose to provide." },
+  { icon: "event_available", title: "Books appointments", desc: "It checks availability, books appointments, and helps callers find or reschedule an existing booking without back-and-forth calls." },
+];
+
+// Written around the questions business owners commonly ask before choosing
+// an AI receptionist. This is visible, helpful on-page content rather than
+// keyword-only copy, and the matching JSON-LD below lets search engines
+// understand the FAQ structure.
+const FAQS = [
+  {
+    q: "What does an AI receptionist do?",
+    a: "Letconvo AI answers incoming business calls, gives callers helpful information, captures lead details, and handles appointment requests using the information and availability you set for your business."
+  },
+  {
+    q: "Can an AI receptionist capture leads after business hours?",
+    a: "Yes. Letconvo is designed to answer calls around the clock, so callers can share their name, phone number, reason for calling, and other details your team needs to follow up on qualified leads."
+  },
+  {
+    q: "Can Letconvo book and reschedule appointments?",
+    a: "Yes. The AI can check your configured business hours and available slots, create appointments, look up an existing booking, and help callers update or reschedule it without making your team manage every call manually."
+  },
+  {
+    q: "Will the AI answer questions about my business?",
+    a: "Yes. You provide your greeting, services, policies, hours, booking requirements, and website information so the AI can give callers clear, consistent answers that reflect your business."
+  },
+  {
+    q: "Who is an AI phone receptionist for?",
+    a: "It is a practical fit for service businesses that rely on calls for new enquiries and bookings, including clinics, salons, legal practices, home-service providers, real-estate teams, restaurants, and other customer-facing businesses."
+  },
+];
+
 function S({ children, bg, className="" }) {
   return (
     <section className={`relative px-4 sm:px-6 py-12 sm:py-14 ${className}`}
@@ -45,8 +79,19 @@ function Label({ children }) {
 }
 
 export default function BenefitsPage({ setPage }) {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQS.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+
   return (
     <main style={{ position:"relative", zIndex:10 }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <PageHero chip="Corporate Intelligence" title="Never Miss a Lead Again."
         hlWord="Lead"
         sub="Letconvo AI captures every call, books appointments, and greets your customers with corporate precision."
@@ -71,6 +116,30 @@ export default function BenefitsPage({ setPage }) {
                 <h3 className="font-syne font-bold uppercase tracking-[.06em] text-[#1A1614] mb-1.5 text-[10.5px] sm:text-[11px]">{b.title}</h3>
                 <p className="text-[#4E4439]/70 leading-relaxed text-[11.5px] sm:text-[12.5px]">{b.desc}</p>
               </div>
+            </Reveal>
+          ))}
+        </div>
+      </S>
+
+      {/* Plain-language product explanation for visitors arriving from search. */}
+      <S bg="rgb(253,248,243)">
+        <Reveal className="mb-8 sm:mb-10">
+          <Label>What Letconvo Does</Label>
+          <H2>An AI Receptionist That Keeps Every Opportunity Moving</H2>
+          <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-2xl leading-relaxed">
+            Letconvo is an AI phone receptionist for businesses that do not want to lose leads to missed calls. It answers callers, captures enquiries, provides useful information, and books appointments—24 hours a day.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6">
+          {WHAT_LETCONVO_DOES.map((item, i) => (
+            <Reveal key={item.title} delay={i * 0.07}>
+              <article className="h-full bg-white border border-[#d4c8b8]/55 p-5 sm:p-6">
+                <div className="w-9 h-9 flex items-center justify-center text-[#8B6E3C] mb-4 bg-[#8B6E3C]/8 rounded-sm">
+                  <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+                </div>
+                <h3 className="font-syne font-bold uppercase tracking-[.06em] text-[#1A1614] text-[11px] sm:text-[12px] mb-2">{item.title}</h3>
+                <p className="text-[#4E4439]/70 leading-relaxed text-[11.5px] sm:text-[12px]">{item.desc}</p>
+              </article>
             </Reveal>
           ))}
         </div>
@@ -189,6 +258,27 @@ export default function BenefitsPage({ setPage }) {
                   </div>
                 </div>
               </div>
+            </Reveal>
+          ))}
+        </div>
+      </S>
+
+      {/* Search-friendly FAQ: follows the existing section scale and colours. */}
+      <S bg="rgb(253,248,243)">
+        <Reveal className="mb-7 sm:mb-8">
+          <Label>How Letconvo Helps</Label>
+          <H2>AI Receptionist Questions, Answered</H2>
+          <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-2xl leading-relaxed">
+            Learn how Letconvo helps businesses answer calls, capture more leads, book appointments, and give customers useful answers when your team is unavailable.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-1">
+          {FAQS.map((faq, i) => (
+            <Reveal key={faq.q} delay={i * 0.05}>
+              <article className="border-t border-[#d4c8b8]/60 py-4 sm:py-5">
+                <h3 className="font-syne font-bold text-[#1A1614] text-[12px] sm:text-[13px] leading-snug">{faq.q}</h3>
+                <p className="text-[#4E4439]/70 leading-relaxed text-[12px] sm:text-[12.5px] mt-2">{faq.a}</p>
+              </article>
             </Reveal>
           ))}
         </div>

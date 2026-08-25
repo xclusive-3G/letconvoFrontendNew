@@ -90,6 +90,7 @@ import DashboardPage  from "./dashboard/DashboardPage";
 import AdminPage      from "./admin/AdminPage";
 import TermsPage      from "./pages/termsPage"; // ← fix casing
 import PrivacyPage    from "./pages/privacyPage";
+import BlogPage       from "./pages/BlogPage";
 import { supabase }   from "./lib/supabase";
 
 
@@ -101,6 +102,7 @@ const PUBLIC_PAGES = {
   login:      { comp: LoginPage,      title: "Login — Letconvo AI"                    },
   getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI"         },
   privacy:    { comp: PrivacyPage,    title: "Privacy — Letconvo AI"                  },
+  blog:       { comp: BlogPage,       title: "AI Receptionist Blog — Letconvo AI"     },
 };
 
 const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard", "admin"]);

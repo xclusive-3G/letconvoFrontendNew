@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { id:"benefits", label:"Features" },
   { id:"pricing",  label:"Pricing"  },
   { id:"contact",  label:"Contact"  },
+  { id:"blog",     label:"Blog"     },
 ];
 
 export default function Navbar({ page, setPage }) {
