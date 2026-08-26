@@ -12,13 +12,15 @@ export default function LoginPage({ setPage }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
   const [resetStatus, setResetStatus] = useState(null); // null | "sending" | "sent" | error string
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError("");
 
     if (!email || !password) {
-      alert("Email and password are required");
+      setLoginError("Enter both your email address and password.");
       return;
     }
 
@@ -29,7 +31,11 @@ export default function LoginPage({ setPage }) {
 
     if (error) {
       console.log("❌ Login error:", error.message);
-      alert(error.message);
+      setLoginError(
+        error.message.toLowerCase().includes("invalid login credentials")
+          ? "Incorrect email or password. Please try again."
+          : error.message
+      );
       return;
     }
 
@@ -104,7 +110,7 @@ export default function LoginPage({ setPage }) {
                   required
                   className="text-[12.5px] text-[#1A1614] bg-white border border-[#d4c8b8]/70 rounded-sm px-3 py-2 w-full focus:outline-none focus:border-[#8B6E3C]"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setLoginError(""); }}
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -115,7 +121,7 @@ export default function LoginPage({ setPage }) {
                     placeholder="••••••••"
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => { setPassword(e.target.value); setLoginError(""); }}
                     className="w-full text-[12.5px] text-[#1A1614] bg-white border border-[#d4c8b8]/70 rounded-sm px-3 py-2 pr-10 focus:outline-none focus:border-[#8B6E3C]"
                   />                  <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#4E4439]/40 hover:text-[#8B6E3C] transition-colors">
                     <span className="material-symbols-outlined text-[15px]">{showPw ? "visibility_off" : "visibility"}</span>
@@ -129,6 +135,11 @@ export default function LoginPage({ setPage }) {
                   {resetStatus === "sending" ? "Sending…" : "Forgot password?"}
                 </button>
               </div>
+              {loginError && (
+                <div role="alert" aria-live="polite" className="text-[11px] text-red-700 bg-red-50 border border-red-200 rounded-sm px-3 py-2 leading-relaxed">
+                  {loginError}
+                </div>
+              )}
               {resetStatus === "sent" && (
                 <div className="text-[11px] text-green-700 bg-green-50 border border-green-200 rounded-sm px-3 py-2">
                   Check your email for a password reset link.
