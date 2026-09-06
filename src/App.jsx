@@ -91,11 +91,14 @@ import AdminPage      from "./admin/AdminPage";
 import TermsPage      from "./pages/termsPage"; // ← fix casing
 import PrivacyPage    from "./pages/privacyPage";
 import BlogPage       from "./pages/BlogPage";
+import SeoLandingPage, { SEO_LANDING_PAGES } from "./pages/SeoLandingPage";
+import SeoMeta        from "./components/SeoMeta";
+import { PAGE_PATHS, pageFromPath } from "./config/routes";
 import { supabase }   from "./lib/supabase";
 
 
 const PUBLIC_PAGES = {
-  benefits:   { comp: BenefitsPage,   title: "Letconvo AI | Never Miss a Lead Again"  },
+  benefits:   { comp: BenefitsPage,   title: "AI Receptionist for Small Business | Letconvo AI", description: "Letconvo is an AI phone receptionist for small businesses. Answer every call, capture missed-call leads, and book appointments 24/7 — no voicemail, no lost customers." },
   pricing:    { comp: PricingPage,    title: "Pricing — Letconvo AI"                  },
   contact:    { comp: ContactPage,    title: "Contact — Letconvo AI"                  },
   terms:      { comp: TermsPage,      title: "Terms — Letconvo AI"                    },
@@ -105,11 +108,20 @@ const PUBLIC_PAGES = {
   blog:       { comp: BlogPage,       title: "AI Receptionist Blog — Letconvo AI"     },
 };
 
+Object.entries(SEO_LANDING_PAGES).forEach(([pageId, page]) => {
+  PUBLIC_PAGES[pageId] = {
+    comp: SeoLandingPage,
+    title: `${page.eyebrow.replace(/(^|\s)\S/g, (letter) => letter.toUpperCase())} | Letconvo AI`,
+    description: page.description,
+  };
+});
+
 const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard", "admin"]);
 
 function getInitialPage() {
-  const hashPage = window.location.hash?.replace("#", "").trim();
-  return VALID_PAGES.has(hashPage) ? hashPage : "benefits";
+  const legacyHashPage = window.location.hash?.replace(/^#/, "").trim();
+  if (VALID_PAGES.has(legacyHashPage)) return legacyHashPage;
+  return pageFromPath(window.location.pathname);
 }
 
 export default function App() {
@@ -117,7 +129,8 @@ export default function App() {
 
   const changePage = useCallback((p) => {
     const nextPage = VALID_PAGES.has(p) ? p : "benefits";
-    window.location.hash = nextPage === "benefits" ? "" : nextPage;
+    const nextPath = PAGE_PATHS[nextPage] || PAGE_PATHS.benefits;
+    if (window.location.pathname !== nextPath) window.history.pushState({}, "", nextPath);
     setTimeout(() => {
       setPage(nextPage);
       window.scrollTo({ top: 0, behavior: "instant" }); // ← after mount
@@ -125,9 +138,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const onHashChange = () => setPage(getInitialPage());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+    const legacyHashPage = window.location.hash?.replace(/^#/, "").trim();
+    if (VALID_PAGES.has(legacyHashPage)) {
+      window.history.replaceState({}, "", PAGE_PATHS[legacyHashPage] || "/");
+      setPage(legacyHashPage);
+    }
+    const onPopState = () => setPage(getInitialPage());
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
   // Picks up the session after a Google OAuth redirect. LoginPage sets
@@ -178,9 +196,12 @@ export default function App() {
   }
 
   const Active = PUBLIC_PAGES[page]?.comp ?? BenefitsPage;
+  const seo = PUBLIC_PAGES[page] || PUBLIC_PAGES.benefits;
+  const path = PAGE_PATHS[page] || PAGE_PATHS.benefits;
 
   return (
     <>
+      <SeoMeta title={seo.title} description={seo.description || "Letconvo is an AI receptionist that answers calls, captures leads, answers customer questions, and books appointments 24/7."} path={path} />
       <AnimatedBg />
       <Navbar page={page} setPage={changePage} />
       <AnimatePresence mode="wait">
@@ -191,7 +212,7 @@ export default function App() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.18 }}
         >
-          <Active setPage={changePage} />
+          <Active setPage={changePage} pageId={page} />
         </motion.div>
       </AnimatePresence>
     </>
