@@ -1,6 +1,10 @@
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
+import { PAGE_PATHS } from "../config/routes";
+import { BLOG_POSTS } from "./BlogPostPage";
+
+const GUIDES = Object.entries(BLOG_POSTS).map(([id, post]) => ({ id, ...post }));
 
 const ARTICLES = [
   {
@@ -62,6 +66,26 @@ export default function BlogPage({ setPage }) {
               Learn how Letconvo helps businesses capture more leads, answer customer questions, and book appointments with an AI phone receptionist.
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="relative px-4 sm:px-6 py-12 sm:py-16 bg-[#fdf8f3] border-b border-[#d4c8b8]/45">
+        <div className="max-w-5xl mx-auto">
+          <Reveal className="mb-6 sm:mb-8">
+            <p className="font-syne font-semibold text-[9px] uppercase tracking-[.2em] text-[#8B6E3C]/65">Guides</p>
+          </Reveal>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+            {GUIDES.map((guide, index) => (
+              <Reveal key={guide.id} delay={index * 0.05}>
+                <a href={PAGE_PATHS[guide.id]} onClick={(event) => { event.preventDefault(); setPage(guide.id); }}
+                  className="block h-full border border-[#d4c8b8]/55 bg-white p-5 sm:p-7 hover:border-[#8B6E3C]/60 transition-colors">
+                  <p className="font-syne font-semibold text-[9px] uppercase tracking-[.15em] text-[#8B6E3C]/65 mb-3">{guide.eyebrow}</p>
+                  <h2 className="font-syne font-black text-[#1A1614] leading-snug text-[16px] sm:text-[18px]">{guide.title}</h2>
+                  <p className="text-[#4E4439]/75 leading-relaxed text-[12.5px] sm:text-[13px] mt-3">{guide.description}</p>
+                </a>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 

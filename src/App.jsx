@@ -92,6 +92,7 @@ import TermsPage      from "./pages/termsPage"; // ← fix casing
 import PrivacyPage    from "./pages/privacyPage";
 import BlogPage       from "./pages/BlogPage";
 import SeoLandingPage, { SEO_LANDING_PAGES } from "./pages/SeoLandingPage";
+import BlogPostPage, { BLOG_POSTS } from "./pages/BlogPostPage";
 import SeoMeta        from "./components/SeoMeta";
 import { PAGE_PATHS, pageFromPath } from "./config/routes";
 import { supabase }   from "./lib/supabase";
@@ -113,6 +114,14 @@ Object.entries(SEO_LANDING_PAGES).forEach(([pageId, page]) => {
     comp: SeoLandingPage,
     title: `${page.eyebrow.replace(/(^|\s)\S/g, (letter) => letter.toUpperCase())} | Letconvo AI`,
     description: page.description,
+  };
+});
+
+Object.entries(BLOG_POSTS).forEach(([pageId, post]) => {
+  PUBLIC_PAGES[pageId] = {
+    comp: BlogPostPage,
+    title: `${post.title} | Letconvo AI`,
+    description: post.description,
   };
 });
 

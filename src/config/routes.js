@@ -16,6 +16,8 @@ export const PAGE_PATHS = {
   "ai-receptionist-for-law-firms": "/ai-receptionist-for-law-firms",
   "missed-call-lead-capture": "/missed-call-lead-capture",
   "ai-appointment-booking": "/ai-appointment-booking",
+  "after-hours-call-answering-service": "/blog/after-hours-call-answering-service",
+  "ai-phone-answering-service-for-service-businesses": "/blog/ai-phone-answering-service-for-service-businesses",
 };
 
 const NORMALIZED_PATHS = Object.fromEntries(
