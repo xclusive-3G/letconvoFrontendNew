@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_BASE, API_ROOT } from "../config/apiBase";
 
 const Pr = "#8B6E3C";
@@ -166,15 +166,10 @@ const forwardingVerified = phoneSetup?.forwarding_verified || false;
   const [timezone, setTimezone] = useState("Africa/Lagos");
   const [saved, setSaved] = useState(false);
 const [subscription, setSubscription] = useState(null);
-// const [businessPhone, setBusinessPhone] = useState("");
-// const [letconvoNumber, setLetconvoNumber] = useState(null);
-// const [forwardingVerified, setForwardingVerified] = useState(false);
-// const [letconvoNumber, setLetconvoNumber] = useState(null);
-// const [forwardingVerified, setForwardingVerified] = useState(false);
-// const [verifying, setVerifying] = useState(false);
-// const [phoneSetup, setPhoneSetup] = useState(null);
+const [verifying, setVerifying] = useState(false);
+const queryClient = useQueryClient();
 
-  
+
 
   const handleSave = async () => {
     try {
@@ -218,41 +213,39 @@ const [subscription, setSubscription] = useState(null);
 
 
 
-//   const verifyForwarding = async () => {
-//   try {
-//     setVerifying(true);
+  const verifyForwarding = async () => {
+    try {
+      setVerifying(true);
 
-//     const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-//     const res = await axios.post(
-//       "https://api.letconvo.live/api/me/phone-setup/verify",
-//       {},
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`
-//         }
-//       }
-//     );
+      const res = await axios.post(
+        `${API_BASE}/me/phone-setup/verify`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
-//     setForwardingVerified(
-//       res.data.verified
-//     );
+      await queryClient.invalidateQueries({ queryKey: ["phone-setup"] });
 
-//     alert(
-//       res.data.verified
-//         ? "Phone forwarding verified"
-//         : "No forwarded call detected"
-//     );
-//   } catch (err) {
-//     alert(
-//       err.response?.data?.message ||
-//       err.response?.data?.error ||
-//       "Verification failed"
-//     );
-//   } finally {
-//     setVerifying(false);
-//   }
-// };
+      alert(
+        res.data.verified
+          ? "Phone forwarding verified — your calls are now reaching Letconvo."
+          : "No test call detected yet. Call your business number first, then click Verify Connection again."
+      );
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Verification failed"
+      );
+    } finally {
+      setVerifying(false);
+    }
+  };
 
 
   const TABS = [
@@ -262,22 +255,6 @@ const [subscription, setSubscription] = useState(null);
     { id: "notifications", label: "Notifications", icon: "notifications" },
 
   ];
-
-//   useEffect(() => {
-//   const loadPhoneSetup = async () => {
-//     try {
-//       const setup = await fetchPhoneSetup();
-
-//       setLetconvoNumber(setup?.letconvo_number || null);
-//       setForwardingVerified(setup?.forwarding_verified || false);
-//       setBusinessPhone(setup?.business_number || "");
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-
-//   loadPhoneSetup();
-// }, []);
 
 useEffect(() => {
   if (!settingsData) return;
@@ -446,14 +423,34 @@ if (isLoading) {
       Forward Calls To
     </div>
 
-    <div
-      style={{
-        fontSize: 18,
-        fontWeight: 700,
-        color: Pr
-      }}
-    >
-      {letconvoNumber ? letconvoNumber : "Number not assigned"}
+    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+      <div
+        style={{
+          fontSize: 18,
+          fontWeight: 700,
+          color: Pr
+        }}
+      >
+        {letconvoNumber ? letconvoNumber : "Number not assigned"}
+      </div>
+      {letconvoNumber && (
+        <button
+          onClick={() => navigator.clipboard.writeText(letconvoNumber)}
+          style={{
+            padding: "4px 10px",
+            border: "1px solid #e8e2d8",
+            borderRadius: 5,
+            background: "#fff",
+            cursor: "pointer",
+            fontFamily: "Syne,sans-serif",
+            fontWeight: 700,
+            fontSize: 10,
+            color: "#4E4439"
+          }}
+        >
+          Copy
+        </button>
+      )}
     </div>
 
     <div
@@ -463,31 +460,61 @@ if (isLoading) {
         color: "#8B7060"
       }}
     >
-      Configure call forwarding from your carrier
-      to this LetConvo number.
+      This is the number your carrier needs to forward calls to. Letconvo
+      answers every call that reaches it — your business number itself
+      never changes.
     </div>
   </div>
 
   </>
 )}
 
-  
+
   <div
     style={{
       background: "#fff",
       border: "1px solid #e8e2d8",
       borderRadius: 8,
-      padding: 14,
+      padding: 16,
       marginBottom: 14
     }}
   >
     {letconvoNumber ? (
   <>
-    <p>Call your carrier.</p>
-    <p>Enable call forwarding.</p>
-    <p>Forward calls to {letconvoNumber}.</p>
-    <p>Call your business number.</p>
-    <p>Click Verify Connection.</p>
+    <div style={{ fontSize: 13, fontWeight: 700, color: "#1A1614", marginBottom: 4 }}>
+      Set up call forwarding
+    </div>
+    <p style={{ fontSize: 12, color: "#8B7060", marginTop: 0, marginBottom: 12 }}>
+      Choose <strong>unconditional / forward all calls</strong> on your carrier
+      — not "forward when busy" or "forward when unanswered" — so every
+      call reaches Letconvo, not just the ones you miss.
+    </p>
+
+    <div style={{ display: "grid", gap: 10, marginBottom: 14 }}>
+      {[
+        ["AT&T", `*21*${letconvoNumber.replace(/\D/g, "")}#`, "Then press call. To turn off: dial #21# and press call."],
+        ["T-Mobile", `**21*${letconvoNumber.replace(/\D/g, "")}#`, "Then press call. To turn off: dial ##21# and press call."],
+        ["Verizon", `*72${letconvoNumber.replace(/\D/g, "")}`, "Then press call, wait for confirmation, then hang up. To turn off: dial *73."],
+        ["Other carrier / landline / VoIP", `*72${letconvoNumber.replace(/\D/g, "")}`, "Most carriers use *72 to enable and *73 to disable — if that doesn't work, ask your carrier for the \"unconditional call forwarding\" code."]
+      ].map(([carrier, code, note]) => (
+        <div key={carrier} style={{ padding: "10px 12px", background: "#fdf9f5", border: "1px solid #f0ebe4", borderRadius: 6 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 11.5, fontWeight: 700, color: "#1A1614" }}>{carrier}</span>
+            <code style={{ fontSize: 12, background: "#f0ebe4", padding: "3px 8px", borderRadius: 4, color: Pr, fontWeight: 700 }}>{code}</code>
+          </div>
+          <div style={{ fontSize: 11, color: "#8B7060", marginTop: 4 }}>{note}</div>
+        </div>
+      ))}
+    </div>
+
+    <div style={{ fontSize: 13, fontWeight: 700, color: "#1A1614", marginBottom: 8 }}>
+      Then verify it worked
+    </div>
+    <ol style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: "#4E4439", lineHeight: 1.7 }}>
+      <li>From a different phone, call your business number.</li>
+      <li>Confirm Letconvo's AI receptionist answers.</li>
+      <li>Come back here and click <strong>Verify Connection</strong> below.</li>
+    </ol>
   </>
 ) : (
   <p>
@@ -535,7 +562,7 @@ if (isLoading) {
 )}
     </div>
 
-   {/* <button
+    <button
   onClick={verifyForwarding}
   disabled={verifying || !letconvoNumber}
       style={{
@@ -544,7 +571,8 @@ if (isLoading) {
         borderRadius: 6,
         background: Pr,
         color: "#fff",
-        cursor: "pointer",
+        cursor: verifying || !letconvoNumber ? "not-allowed" : "pointer",
+        opacity: verifying || !letconvoNumber ? 0.5 : 1,
         fontFamily: "Syne,sans-serif",
         fontWeight: 700
       }}
@@ -552,7 +580,7 @@ if (isLoading) {
       {verifying
         ? "Verifying..."
         : "Verify Connection"}
-    </button> */}
+    </button>
   </div>
 
 </Sec>
