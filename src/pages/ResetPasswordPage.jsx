@@ -16,14 +16,21 @@ export default function ResetPasswordPage({ setPage }) {
   const [formError, setFormError] = useState(null);  // form validation/submit error — shown inline, form stays up
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
+  const [userEmail, setUserEmail] = useState(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) setReady(true);
+      if (data.session) {
+        setReady(true);
+        setUserEmail(data.session.user?.email || null);
+      }
     });
 
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "PASSWORD_RECOVERY" && session) setReady(true);
+      if (event === "PASSWORD_RECOVERY" && session) {
+        setReady(true);
+        setUserEmail(session.user?.email || null);
+      }
     });
 
     // detectSessionInUrl needs a moment on first load — if nothing showed
@@ -56,6 +63,27 @@ export default function ResetPasswordPage({ setPage }) {
     }
 
     setSubmitting(true);
+
+    // Supabase never exposes the current password hash to check against
+    // directly — attempting to sign in with the proposed new password is
+    // the only reliable way to tell whether it matches the existing one.
+    // A failed sign-in here just means the passwords differ (the normal,
+    // expected case), not that anything went wrong. If this check itself
+    // errors out for an unrelated reason (network blip, etc.), don't block
+    // the user on it — fall through and let the real update attempt run.
+    if (userEmail) {
+      try {
+        const { data: signInData } = await supabase.auth.signInWithPassword({ email: userEmail, password });
+        if (signInData?.session) {
+          setSubmitting(false);
+          setFormError("New password must be different from your current password.");
+          return;
+        }
+      } catch (_) {
+        // ignore — treat as "couldn't confirm a match", proceed to the real update
+      }
+    }
+
     const { data, error: updateError } = await supabase.auth.updateUser({ password });
     setSubmitting(false);
 
