@@ -1,5 +1,6 @@
 import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
+import { PAGE_PATHS } from "../config/routes";
 
 const POSTS = {
   "after-hours-call-answering-service": {
@@ -88,6 +89,9 @@ export { POSTS as BLOG_POSTS };
 
 export default function BlogPostPage({ pageId, setPage }) {
   const post = POSTS[pageId] || POSTS["after-hours-call-answering-service"];
+  const activeId = POSTS[pageId] ? pageId : "after-hours-call-answering-service";
+  const otherPosts = Object.entries(POSTS).filter(([id]) => id !== activeId).map(([id, p]) => ({ id, ...p }));
+  const go = (id) => (event) => { event.preventDefault(); setPage(id); };
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -104,6 +108,10 @@ export default function BlogPostPage({ pageId, setPage }) {
         <section className="px-4 sm:px-6 py-14 sm:py-20 bg-[#fdf8f3] border-b border-[#d4c8b8]/45">
           <div className="max-w-3xl mx-auto">
             <Reveal>
+              <a href={PAGE_PATHS.blog} onClick={go("blog")}
+                className="inline-flex items-center gap-1 font-syne font-semibold text-[10px] uppercase tracking-[.15em] text-[#8B6E3C]/70 hover:text-[#8B6E3C] transition-colors mb-4">
+                <span className="material-symbols-outlined text-[13px]">arrow_back</span> All guides
+              </a>
               <p className="font-syne font-semibold text-[9px] uppercase tracking-[.2em] text-[#8B6E3C]/65 mb-3">{post.eyebrow}</p>
               <h1 className="font-syne font-black uppercase tracking-tight text-[#1A1614] leading-tight" style={{ fontSize:"clamp(26px,4.2vw,42px)" }}>{post.title}</h1>
               <p className="text-[#4E4439]/70 text-[13px] sm:text-[15px] mt-4 leading-relaxed">{post.description}</p>
@@ -121,6 +129,31 @@ export default function BlogPostPage({ pageId, setPage }) {
                 ))}
               </Reveal>
             ))}
+          </div>
+        </section>
+
+        <section className="relative px-4 sm:px-6 py-12 sm:py-16 bg-[#fdf8f3] border-t border-[#d4c8b8]/45">
+          <div className="max-w-3xl mx-auto">
+            <Reveal className="mb-5 sm:mb-6">
+              <p className="font-syne font-semibold text-[9px] uppercase tracking-[.2em] text-[#8B6E3C]/65">More guides</p>
+            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+              {otherPosts.map((otherPost, index) => (
+                <Reveal key={otherPost.id} delay={index * 0.05}>
+                  <a href={PAGE_PATHS[otherPost.id]} onClick={go(otherPost.id)}
+                    className="block h-full border border-[#d4c8b8]/55 bg-white p-5 sm:p-6 hover:border-[#8B6E3C]/60 transition-colors">
+                    <p className="font-syne font-semibold text-[9px] uppercase tracking-[.15em] text-[#8B6E3C]/65 mb-2">{otherPost.eyebrow}</p>
+                    <h3 className="font-syne font-black text-[#1A1614] leading-snug text-[14px] sm:text-[15px]">{otherPost.title}</h3>
+                  </a>
+                </Reveal>
+              ))}
+              <Reveal delay={otherPosts.length * 0.05}>
+                <a href={PAGE_PATHS.blog} onClick={go("blog")}
+                  className="flex h-full items-center border border-[#d4c8b8]/55 bg-white p-5 sm:p-6 hover:border-[#8B6E3C]/60 transition-colors">
+                  <span className="font-syne font-bold text-[#8B6E3C] text-[12px] sm:text-[13px] uppercase tracking-[.08em]">View all guides →</span>
+                </a>
+              </Reveal>
+            </div>
           </div>
         </section>
 
