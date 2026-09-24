@@ -1,6 +1,14 @@
 import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
 import { PAGE_PATHS } from "../config/routes";
+import { SEO_LANDING_PAGES } from "./SeoLandingPage";
+
+// Which industry/solution landing pages each post links out to — picked from
+// the businesses/topics the post itself already names.
+const RELATED_SOLUTIONS = {
+  "after-hours-call-answering-service": ["missed-call-lead-capture", "ai-receptionist-for-clinics", "ai-receptionist-for-law-firms"],
+  "ai-phone-answering-service-for-service-businesses": ["ai-receptionist-for-plumbers", "missed-call-lead-capture", "ai-appointment-booking"],
+};
 
 const POSTS = {
   "after-hours-call-answering-service": {
@@ -129,6 +137,24 @@ export default function BlogPostPage({ pageId, setPage }) {
                 ))}
               </Reveal>
             ))}
+          </div>
+        </section>
+
+        <section className="relative px-4 sm:px-6 py-12 sm:py-16 bg-white border-t border-[#d4c8b8]/45">
+          <div className="max-w-3xl mx-auto">
+            <Reveal className="mb-5 sm:mb-6">
+              <p className="font-syne font-semibold text-[9px] uppercase tracking-[.2em] text-[#8B6E3C]/65">Related solutions</p>
+            </Reveal>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+              {(RELATED_SOLUTIONS[activeId] || []).map((solutionId, index) => (
+                <Reveal key={solutionId} delay={index * 0.05}>
+                  <a href={PAGE_PATHS[solutionId]} onClick={go(solutionId)}
+                    className="block h-full border border-[#d4c8b8]/55 bg-[#fdfaf6] p-4 sm:p-5 hover:border-[#8B6E3C]/60 transition-colors">
+                    <h3 className="font-syne font-black uppercase tracking-[.04em] text-[#1A1614] leading-snug text-[11.5px] sm:text-[12.5px]">{SEO_LANDING_PAGES[solutionId].eyebrow}</h3>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </section>
 

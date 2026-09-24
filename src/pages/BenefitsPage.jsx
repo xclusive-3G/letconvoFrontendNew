@@ -3,6 +3,8 @@ import PageHero  from "../components/PageHero";
 import Reveal    from "../components/Reveal";
 import Counter   from "../components/Counter";
 import Footer    from "../components/Footer";
+import { PAGE_PATHS } from "../config/routes";
+import { SEO_LANDING_PAGES } from "./SeoLandingPage";
 
 // const Pr = "#8B6E3C";
 
@@ -282,6 +284,36 @@ export default function BenefitsPage({ setPage }) {
             </Reveal>
           ))}
         </div>
+      </S>
+
+      {/* Cross-links to industry landing pages + blog guides */}
+      <S bg="rgb(255,255,255)">
+        <Reveal className="mb-7 sm:mb-8">
+          <Label>Solutions By Industry</Label>
+          <H2>Built For How Your Business Actually Works</H2>
+          <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-2xl leading-relaxed">
+            Letconvo is configured around the calls your industry actually gets. See how it works for your business.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
+          {Object.entries(SEO_LANDING_PAGES)
+            .filter(([id]) => id !== "ai-receptionist-for-small-business")
+            .map(([id, page], i) => (
+              <Reveal key={id} delay={i * 0.06}>
+                <a href={PAGE_PATHS[id]} onClick={(event) => { event.preventDefault(); setPage(id); }}
+                  className="block h-full border border-[#d4c8b8]/55 bg-[#fdfaf6] p-5 hover:border-[#8B6E3C]/60 transition-colors">
+                  <h3 className="font-syne font-black uppercase tracking-[.04em] text-[#1A1614] text-[12px]">{page.eyebrow}</h3>
+                  <p className="text-[#4E4439]/70 leading-relaxed text-[11.5px] mt-2">{page.description}</p>
+                </a>
+              </Reveal>
+            ))}
+        </div>
+        <Reveal delay={0.3} className="mt-6 sm:mt-7">
+          <a href={PAGE_PATHS.blog} onClick={(event) => { event.preventDefault(); setPage("blog"); }}
+            className="inline-flex items-center gap-1.5 font-syne font-bold text-[#8B6E3C] text-[11px] uppercase tracking-[.1em] hover:text-[#6b5228] transition-colors">
+            Read our guides on missed calls &amp; AI receptionists →
+          </a>
+        </Reveal>
       </S>
 
       {/* CTA */}

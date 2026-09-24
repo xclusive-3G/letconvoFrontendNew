@@ -1,6 +1,14 @@
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
 import Reveal from "../components/Reveal";
+import { PAGE_PATHS } from "../config/routes";
+
+// Kept as plain data (not imported from BlogPostPage.jsx) to avoid a
+// circular import between the two page modules.
+const RELATED_GUIDES = [
+  { id: "after-hours-call-answering-service", title: "After-Hours Call Answering Service: How Small Businesses Stop Losing Nighttime Calls" },
+  { id: "ai-phone-answering-service-for-service-businesses", title: "AI Phone Answering Service for Service Businesses: A Practical Guide" },
+];
 
 const PAGES = {
   "ai-receptionist-for-small-business": {
@@ -76,6 +84,38 @@ export default function SeoLandingPage({ pageId, setPage }) {
           {benefits.map(([icon, title, copy], index) => <Reveal key={title} delay={index * .06}><article className="h-full bg-[#fdfaf6] border border-[#d4c8b8]/55 p-5 sm:p-6"><span className="material-symbols-outlined text-[#8B6E3C] text-[21px]">{icon}</span><h2 className="font-syne font-bold uppercase tracking-[.06em] text-[#1A1614] text-[11px] sm:text-[12px] mt-4 mb-2">{title}</h2><p className="text-[#4E4439]/70 leading-relaxed text-[11.5px] sm:text-[12px]">{copy}</p></article></Reveal>)}
         </div>
       </section>
+
+      <section className="relative px-4 sm:px-6 py-12 sm:py-16 bg-[#fdf8f3] border-t border-[#d4c8b8]/45">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+          <Reveal>
+            <p className="font-syne font-semibold text-[9px] uppercase tracking-[.2em] text-[#8B6E3C]/65 mb-4">Other Solutions</p>
+            <ul className="flex flex-col gap-2.5">
+              {Object.entries(PAGES).filter(([id]) => id !== pageId).map(([id, p]) => (
+                <li key={id}>
+                  <a href={PAGE_PATHS[id]} onClick={(event) => { event.preventDefault(); setPage(id); }}
+                    className="text-[12px] text-[#4E4439]/65 hover:text-[#8B6E3C] transition-colors">
+                    {p.eyebrow}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <p className="font-syne font-semibold text-[9px] uppercase tracking-[.2em] text-[#8B6E3C]/65 mb-4">Related Reading</p>
+            <ul className="flex flex-col gap-3.5">
+              {RELATED_GUIDES.map((guide) => (
+                <li key={guide.id}>
+                  <a href={PAGE_PATHS[guide.id]} onClick={(event) => { event.preventDefault(); setPage(guide.id); }}
+                    className="text-[12px] font-semibold text-[#1A1614] hover:text-[#8B6E3C] transition-colors leading-snug block">
+                    {guide.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </section>
+
       <Footer setPage={setPage} />
     </main>
   );
