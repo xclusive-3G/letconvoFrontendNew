@@ -100,13 +100,13 @@ import { supabase }   from "./lib/supabase";
 
 const PUBLIC_PAGES = {
   benefits:   { comp: BenefitsPage,   title: "AI Receptionist for Small Business | Letconvo AI", description: "Letconvo is an AI phone receptionist for small businesses. Answer every call, capture missed-call leads, and book appointments 24/7 — no voicemail, no lost customers." },
-  pricing:    { comp: PricingPage,    title: "Pricing — Letconvo AI"                  },
-  contact:    { comp: ContactPage,    title: "Contact — Letconvo AI"                  },
-  terms:      { comp: TermsPage,      title: "Terms — Letconvo AI"                    },
-  login:      { comp: LoginPage,      title: "Login — Letconvo AI"                    },
-  getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI"         },
-  privacy:    { comp: PrivacyPage,    title: "Privacy — Letconvo AI"                  },
-  blog:       { comp: BlogPage,       title: "AI Receptionist Blog — Letconvo AI"     },
+  pricing:    { comp: PricingPage,    title: "Pricing — Letconvo AI",                  description: "See Letconvo AI pricing and credit plans. Pay for the calls your AI receptionist actually handles — no per-seat fees, no long-term contract." },
+  contact:    { comp: ContactPage,    title: "Contact — Letconvo AI",                  description: "Get in touch with the Letconvo AI team about setup, pricing, or how the AI phone receptionist works for your business." },
+  terms:      { comp: TermsPage,      title: "Terms — Letconvo AI",                    description: "Letconvo AI's terms of service — the rules and conditions for using the Letconvo AI phone receptionist platform." },
+  login:      { comp: LoginPage,      title: "Login — Letconvo AI",                    description: "Log in to your Letconvo AI dashboard to manage calls, appointments, credits, and receptionist settings." },
+  getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI",         description: "Start free with Letconvo AI. Set up your AI phone receptionist in minutes and start capturing every call, lead, and appointment." },
+  privacy:    { comp: PrivacyPage,    title: "Privacy — Letconvo AI",                  description: "Letconvo AI's privacy policy — how we collect, use, and protect the data of businesses and callers using the Letconvo AI receptionist." },
+  blog:       { comp: BlogPage,       title: "AI Receptionist Blog — Letconvo AI",     description: "Guides on missed calls, AI receptionists, and phone answering for small businesses, from the Letconvo AI team." },
 };
 
 Object.entries(SEO_LANDING_PAGES).forEach(([pageId, page]) => {
