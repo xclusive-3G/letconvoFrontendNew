@@ -19,7 +19,6 @@
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
-const puppeteer = require("puppeteer");
 
 const BUILD_DIR = path.join(__dirname, "..", "build");
 const PORT = 45679;
@@ -92,6 +91,27 @@ function outputPathFor(route) {
   return path.join(BUILD_DIR, route, "index.html");
 }
 
+// Vercel's build container is a minimal Amazon Linux image missing the
+// desktop shared libraries (libnspr4, libnss3, ...) plain puppeteer's
+// downloaded Chromium needs — confirmed via a real failed deploy
+// (`error while loading shared libraries: libnspr4.so`). @sparticuz/chromium
+// ships a build made for exactly this environment. Locally (Windows/Mac dev)
+// we use full puppeteer instead, since @sparticuz/chromium only targets
+// serverless Linux.
+async function launchBrowser() {
+  if (process.env.VERCEL) {
+    const chromium = require("@sparticuz/chromium");
+    const puppeteerCore = require("puppeteer-core");
+    return puppeteerCore.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+    });
+  }
+  const puppeteer = require("puppeteer");
+  return puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+}
+
 async function main() {
   if (!fs.existsSync(path.join(BUILD_DIR, "index.html"))) {
     console.error("[prerender] build/index.html not found — run the build before this script.");
@@ -99,7 +119,7 @@ async function main() {
   }
 
   const server = await startServer();
-  const browser = await puppeteer.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+  const browser = await launchBrowser();
 
   try {
     for (const route of ROUTES) {
