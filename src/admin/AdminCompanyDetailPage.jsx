@@ -277,7 +277,7 @@ export default function AdminCompanyDetailPage({ clientId, onBack }) {
         {(!recentCalls || recentCalls.length === 0) && <div style={{ fontSize: 12, color: "#8B7060" }}>No calls yet.</div>}
         {recentCalls?.map((c) => (
           <div key={c.id} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#4E4439", padding: "5px 0", borderBottom: "1px solid #f7f2ec" }}>
-            <span>{c.caller_phone || "Unknown"} · {c.call_status || "-"}</span>
+            <span>{c.caller_name || c.caller_phone || "Unknown"} · {c.call_status || "-"}</span>
             <span>{c.created_at ? new Date(c.created_at).toLocaleString() : "-"}</span>
           </div>
         ))}

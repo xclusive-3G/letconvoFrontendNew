@@ -412,7 +412,7 @@ if (error) {
                         color: "#1A1614"
                       }}
                     >
-                      {c.caller_phone || "Unknown caller"}
+                      {c.caller_name || c.caller_phone || "Unknown caller"}
                     </div>
 
                     <div style={{ fontSize: 10, color: "#8B7060" }}>

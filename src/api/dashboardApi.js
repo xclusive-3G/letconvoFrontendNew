@@ -68,7 +68,7 @@ export const fetchCalls = async () => {
 
   return (res.data.calls || []).map((c) => ({
     id: c.id,
-    caller: c.caller_phone || "Unknown caller",
+    caller: c.caller_name || c.caller_phone || "Unknown caller",
     number: c.caller_phone || "-",
     duration:
       Math.ceil(Number(c.duration_ms || 0) / 1000) < 60
