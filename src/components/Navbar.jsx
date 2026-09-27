@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PAGE_PATHS } from "../config/routes";
+import letconvoLogo from "../assets/letconvo-logo.png";
 
 const NAV_LINKS = [
   { id:"benefits", label:"Features" },
@@ -28,8 +29,8 @@ export default function Navbar({ page, setPage }) {
 
         {/* Logo */}
         <a href={PAGE_PATHS.benefits} onClick={(event) => { event.preventDefault(); go("benefits"); }}
-          className="font-syne font-black text-[#d19836] tracking-[.12em] uppercase text-[13px] sm:text-[14px] hover:opacity-75 transition-opacity flex-shrink-0">
-          letconvo
+          className="flex-shrink-0 hover:opacity-75 transition-opacity">
+          <img src={letconvoLogo} alt="Letconvo AI" className="h-8 sm:h-9 w-auto" />
         </a>
 
         {/* Desktop centre nav */}
