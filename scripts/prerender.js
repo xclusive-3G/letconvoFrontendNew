@@ -119,15 +119,30 @@ async function main() {
   }
 
   const server = await startServer();
-  const browser = await launchBrowser();
-
+  let browser;
   try {
+    browser = await launchBrowser();
     for (const route of ROUTES) {
       const page = await browser.newPage();
       try {
         await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: "networkidle0", timeout: 30000 });
         // SeoMeta's effect runs on mount, but give animated/lazy content a beat to settle.
         await new Promise((resolve) => setTimeout(resolve, 300));
+        await page.waitForFunction(() => document.querySelector('#root')?.innerText.trim().length > 100 && document.querySelector('link[rel="canonical"]'));
+        const canonical = await page.$eval('link[rel="canonical"]', el => el.href);
+        if (canonical !== `https://letconvo.live${route}`) {
+          throw new Error(`Wrong canonical for ${route}: ${canonical}`);
+        }
+        // Reveal sections before taking the snapshot so static HTML is visible
+        // without waiting for JavaScript or IntersectionObserver.
+        await page.evaluate(async () => {
+          for (let y = 0; y < document.body.scrollHeight; y += 600) {
+            window.scrollTo(0, y);
+            await new Promise(resolve => setTimeout(resolve, 40));
+          }
+          window.scrollTo(0, 0);
+        });
+        await new Promise(resolve => setTimeout(resolve, 1000));
         const html = await page.content();
         const outPath = outputPathFor(route);
         fs.mkdirSync(path.dirname(outPath), { recursive: true });
@@ -138,7 +153,7 @@ async function main() {
       }
     }
   } finally {
-    await browser.close();
+    if (browser) await browser.close();
     server.close();
   }
 }

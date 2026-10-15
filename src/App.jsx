@@ -210,7 +210,7 @@ export default function App() {
 
   return (
     <>
-      <SeoMeta title={seo.title} description={seo.description || "Letconvo is an AI receptionist that answers calls, captures leads, answers customer questions, and books appointments 24/7."} path={path} />
+      <SeoMeta title={seo.title} description={seo.description || "Letconvo is an AI receptionist that answers calls, captures leads, answers customer questions, and books appointments 24/7."} path={path} noindex={page === "login"} />
       <AnimatedBg />
       <Navbar page={page} setPage={changePage} />
       <AnimatePresence mode="wait">

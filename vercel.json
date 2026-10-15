@@ -1,5 +1,88 @@
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+    "trailingSlash":  false,
+    "headers":  [
+                    {
+                        "headers":  [
+                                        {
+                                            "key":  "X-Robots-Tag",
+                                            "value":  "noindex, nofollow"
+                                        }
+                                    ],
+                        "source":  "/:path(dashboard|admin|login)"
+                    }
+                ],
+    "rewrites":  [
+                     {
+                         "destination":  "/ai-receptionist-for-small-business/index.html",
+                         "source":  "/ai-receptionist-for-small-business"
+                     },
+                     {
+                         "destination":  "/ai-receptionist-for-plumbers/index.html",
+                         "source":  "/ai-receptionist-for-plumbers"
+                     },
+                     {
+                         "destination":  "/ai-receptionist-for-salons/index.html",
+                         "source":  "/ai-receptionist-for-salons"
+                     },
+                     {
+                         "destination":  "/ai-receptionist-for-clinics/index.html",
+                         "source":  "/ai-receptionist-for-clinics"
+                     },
+                     {
+                         "destination":  "/ai-receptionist-for-law-firms/index.html",
+                         "source":  "/ai-receptionist-for-law-firms"
+                     },
+                     {
+                         "destination":  "/missed-call-lead-capture/index.html",
+                         "source":  "/missed-call-lead-capture"
+                     },
+                     {
+                         "destination":  "/ai-appointment-booking/index.html",
+                         "source":  "/ai-appointment-booking"
+                     },
+                     {
+                         "destination":  "/blog/index.html",
+                         "source":  "/blog"
+                     },
+                     {
+                         "destination":  "/blog/after-hours-call-answering-service/index.html",
+                         "source":  "/blog/after-hours-call-answering-service"
+                     },
+                     {
+                         "destination":  "/blog/ai-phone-answering-service-for-service-businesses/index.html",
+                         "source":  "/blog/ai-phone-answering-service-for-service-businesses"
+                     },
+                     {
+                         "destination":  "/pricing/index.html",
+                         "source":  "/pricing"
+                     },
+                     {
+                         "destination":  "/get-started/index.html",
+                         "source":  "/get-started"
+                     },
+                     {
+                         "destination":  "/contact/index.html",
+                         "source":  "/contact"
+                     },
+                     {
+                         "destination":  "/terms/index.html",
+                         "source":  "/terms"
+                     },
+                     {
+                         "destination":  "/privacy/index.html",
+                         "source":  "/privacy"
+                     },
+                     {
+                         "destination":  "/login/index.html",
+                         "source":  "/login"
+                     },
+                     {
+                         "destination":  "/index.html",
+                         "source":  "/dashboard"
+                     },
+                     {
+                         "destination":  "/index.html",
+                         "source":  "/admin"
+                     }
+                 ]
 }

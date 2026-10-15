@@ -12,10 +12,16 @@ function setMeta(selector, attribute, value) {
   element.setAttribute("content", value);
 }
 
-export default function SeoMeta({ title, description, path, schema }) {
+export default function SeoMeta({ title, description, path, schema, noindex = false }) {
   useEffect(() => {
     const canonicalUrl = `${SITE_URL}${path === "/" ? "/" : path}`;
     document.title = title;
+    setMeta('meta[name="robots"]', { name: "robots" }, noindex ? "noindex, follow" : "index, follow, max-image-preview:large");
+    setMeta('meta[property="og:type"]', { property: "og:type" }, "website");
+    setMeta('meta[property="og:site_name"]', { property: "og:site_name" }, "Letconvo AI");
+    setMeta('meta[property="og:image"]', { property: "og:image" }, `${SITE_URL}/logo512.png`);
+    setMeta('meta[name="twitter:card"]', { name: "twitter:card" }, "summary");
+    setMeta('meta[name="twitter:image"]', { name: "twitter:image" }, `${SITE_URL}/logo512.png`);
     setMeta('meta[name="description"]', { name: "description" }, description);
     setMeta('meta[property="og:title"]', { property: "og:title" }, title);
     setMeta('meta[property="og:description"]', { property: "og:description" }, description);
@@ -45,7 +51,7 @@ export default function SeoMeta({ title, description, path, schema }) {
       description,
       url: canonicalUrl,
     });
-  }, [title, description, path, schema]);
+  }, [title, description, path, schema, noindex]);
 
   return null;
 }
