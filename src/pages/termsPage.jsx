@@ -93,7 +93,7 @@ const SECTIONS = [
       "You authorize us to charge your designated payment method on each billing cycle renewal date.",
       "All fees are exclusive of applicable taxes (including VAT, GST, or sales tax), which you are responsible for paying.",
       "Minute overages beyond your plan's included allowance will be billed at the applicable per-minute rate shown in your account dashboard.",
-      "We offer a 14-day free trial for new accounts. No credit card is required to start a trial. Trials are limited to one per business or individual.",
+      "We offer 15 minutes of free AI calling credit for new accounts. No credit card is required. This free credit is limited to one per business or individual.",
       "Refunds are generally not provided for monthly subscriptions. Annual subscriptions may be eligible for a prorated refund if cancelled within 30 days of the annual renewal date, at our discretion.",
       "Failed payments may result in service interruption. We will attempt to notify you before suspending your account.",
       "We reserve the right to modify pricing with 30 days' written notice. Continued use after the effective date of any price change constitutes acceptance.",
@@ -317,7 +317,7 @@ export default function TermsPage({ setPage }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {[
                     ["check_circle","You own your data and caller information"],
-                    ["check_circle","14-day free trial — no credit card needed"],
+                    ["check_circle","15 minutes free AI calling credit — no credit card needed"],
                     ["warning","You're responsible for call recording consent laws"],
                     ["warning","AI outputs may contain errors — verify critical info"],
                     ["info","Cancel anytime from your dashboard"],

@@ -19,7 +19,7 @@ const PLANS = [
 
 const PERKS = [
   "No credit card required",
-  "Full feature access for 14 days",
+  "15 minutes of free AI calling credit",
   "Cancel anytime, no penalties",
   "Setup in under 15 minutes",
   "Live onboarding support included",
@@ -412,7 +412,7 @@ function Step4Plan({ data, setData, onNext }) {
           {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Custom AI voice","White-label dashboard"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          <p className="text-[10px] text-[#8B7060] mt-1.5">450 credits free trial · No credit card required</p>
+          <p className="text-[10px] text-[#8B7060] mt-1.5">15 minutes of free AI calling credit · No commitment required</p>
         </motion.div>
       )}
       <NextBtn disabled={!valid}>Continue →</NextBtn>
@@ -674,7 +674,7 @@ export default function GetStartedPage({ setPage }) {
 
             <div className="font-syne font-black text-[#8B6E3C] tracking-[.1em] uppercase text-[13px] mb-1">Letconvo AI</div>
             <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-[#f7f2ec] border border-[#d4c8b8]/60 text-[9px] font-syne font-bold uppercase tracking-[.1em] text-[#8B6E3C] mb-5 rounded-sm w-fit">
-              🎉 450 credits free trial
+              🎉 15 minutes free AI calling credit
             </span>
 
             <h2 className="font-syne font-black text-[16px] uppercase tracking-tight text-[#1A1614] leading-tight mb-2">

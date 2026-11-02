@@ -8,6 +8,10 @@ import { SEO_LANDING_PAGES } from "./SeoLandingPage";
 const RELATED_SOLUTIONS = {
   "after-hours-call-answering-service": ["missed-call-lead-capture", "ai-receptionist-for-clinics", "ai-receptionist-for-law-firms"],
   "ai-phone-answering-service-for-service-businesses": ["ai-receptionist-for-plumbers", "missed-call-lead-capture", "ai-appointment-booking"],
+  "ai-receptionist-cost": ["ai-receptionist-for-small-business", "missed-call-lead-capture", "ai-appointment-booking"],
+  "free-ai-receptionist-small-business": ["ai-receptionist-for-small-business", "missed-call-lead-capture", "ai-appointment-booking"],
+  "ai-receptionist-vs-human-receptionist": ["ai-receptionist-for-small-business", "ai-receptionist-for-salons", "missed-call-lead-capture"],
+  "best-ai-receptionist-small-business-usa": ["ai-receptionist-for-small-business", "ai-receptionist-for-salons", "ai-appointment-booking"],
 };
 
 const POSTS = {
@@ -19,35 +23,35 @@ const POSTS = {
       {
         heading: "Why after-hours calls matter more than they seem to",
         paragraphs: [
-          "Most small businesses close for the day and let the phone go quiet with them. But callers don't work on your schedule — someone searching for a plumber at 9pm, a salon at 7am before work, or a clinic at midnight because a symptom won't wait is a real lead with a real, immediate need. If that call reaches voicemail, a meaningful share of those callers simply call the next business on the list instead of leaving a message.",
-          "An after-hours call answering service exists to close that gap: a way for a business to keep answering calls, capturing details, and giving callers a real response even when no one on the team is available to pick up the phone.",
+          "Most small businesses close up for the night and let the phone go quiet right along with them. Callers don't work on your schedule, though — someone looking for a plumber at 9pm, a salon before work at 7am, or a clinic at midnight because a symptom won't wait is a real person with a real, immediate need. Reach voicemail, and a lot of them won't bother leaving a message. They'll just call the next name on the list.",
+          "That's the gap an after-hours answering service is meant to close: some way to keep answering, capturing details, and giving callers an actual response, even when nobody on your team is anywhere near a phone.",
         ],
       },
       {
         heading: "What an after-hours answering service actually does",
         paragraphs: [
-          "At its core, an after-hours answering service picks up calls that arrive outside your normal working hours (or during hours you've marked as closed) and handles them instead of routing to voicemail. Depending on the service, that can mean anything from a human answering service reading a script, to an AI receptionist like Letconvo that can hold a real conversation — greeting the caller, answering common questions about your business, capturing their name, number, and reason for calling, and even booking or checking an appointment against your actual schedule.",
-          "The goal isn't to replace your team's judgement on complex calls — it's to make sure no caller is met with silence, and that whoever calls in the morning has a clear, accurate record of who called and why.",
+          "Strip it down, and an after-hours service just picks up the calls that land outside your normal hours instead of letting them roll to voicemail. How it handles those calls varies a lot — a human answering service usually works from a script, while an AI receptionist like Letconvo can hold an actual conversation: greet the caller, answer the questions people usually have, grab their name and number, and check or book an appointment against your real schedule.",
+          "None of this is about replacing your team's judgment on the calls that need it. It's about making sure nobody gets dead air, and that whoever opens up in the morning has an accurate record of who called and why.",
         ],
       },
       {
         heading: "The real cost of relying on voicemail after hours",
         paragraphs: [
-          "Voicemail feels like a safety net, but it behaves more like a filter that quietly removes your least patient — and often most valuable — leads. A caller who is comparing a few local businesses rarely leaves a message and waits; they move to whichever business actually answers. For appointment-based businesses especially (salons, clinics, contractors, law firms), the caller who reaches out after hours is frequently someone who is ready to book right now, not someone doing early research.",
-          "The cost isn't just the missed call itself — it's the lead going to a competitor who happened to have coverage at that hour.",
+          "Voicemail feels like a safety net. In practice it behaves more like a filter that quietly screens out your least patient — and often most valuable — leads. Someone comparing a few local businesses isn't going to leave a message and wait around; they'll call whoever actually picks up. For salons, clinics, contractors, and law firms especially, the person calling after hours is often ready to book right now, not just browsing.",
+          "The real cost isn't the missed call itself. It's that lead ending up with a competitor who happened to have someone covering the phone at that hour.",
         ],
       },
       {
         heading: "AI receptionist vs. traditional answering service",
         paragraphs: [
-          "Traditional live answering services staff a call center with human agents working in shifts, which covers after-hours calls but usually means a generic script, per-minute or per-call pricing, and a message that gets relayed to you rather than resolved on the call.",
-          "An AI phone receptionist like Letconvo instead uses the specific information you provide — your services, hours, booking policies, and FAQs — to answer callers directly, in your business's voice, every time a call comes in, at any hour. It can check your real availability and book an appointment on the spot instead of just taking a message, which matters most exactly when a live team isn't around to follow up quickly.",
+          "A traditional live answering service staffs a call center in shifts, which does cover the after-hours gap — but usually with a generic script, per-minute pricing, and a message that just gets relayed to you rather than resolved on the call.",
+          "An AI receptionist like Letconvo works from the specifics you give it — your services, hours, policies, FAQs — and answers every caller in your business's own voice, at any hour, not just during a shift someone happened to schedule. It can check real availability and book on the spot instead of taking a message, which matters most exactly when nobody's around to follow up quickly.",
         ],
       },
       {
         heading: "Getting started",
         paragraphs: [
-          "If your business currently sends after-hours calls to voicemail, the fastest way to see the difference is to try answering just one shift's worth of calls with an AI receptionist and compare what you get back the next morning: real caller details and, where relevant, real bookings, instead of a handful of unreturned voicemail notifications.",
+          "If after-hours calls at your business are currently going to voicemail, the fastest way to see the difference is to let an AI receptionist handle just one overnight shift and compare what you get the next morning — real caller details and real bookings, instead of a few voicemail notifications nobody's calling back.",
         ],
       },
     ],
@@ -60,33 +64,294 @@ const POSTS = {
       {
         heading: "Why service businesses miss more calls than most",
         paragraphs: [
-          "Plumbers, electricians, HVAC technicians, cleaners, landscapers, and similar service businesses share one operational reality: the people who could answer the phone are usually on a job, driving between jobs, or working with their hands, not sitting at a desk. That's exactly when a new customer calls to book service — and exactly when the call is hardest to answer.",
-          "Unlike an office-based business, adding a full-time receptionist to solve this often doesn't make financial sense for a small crew. That's the specific gap an AI phone answering service is built to fill.",
+          "Plumbers, electricians, HVAC techs, cleaners, landscapers — these businesses all share one problem: whoever could answer the phone is usually on a job, driving between jobs, or hands full with a tool, not sitting at a desk. And that's exactly when a new customer calls wanting service booked.",
+          "Hiring a full-time receptionist to fix this rarely makes financial sense for a small crew. An AI phone answering service exists for exactly that math problem.",
         ],
       },
       {
         heading: "What it looks like in practice",
         paragraphs: [
-          "An AI phone answering service for a service business answers every inbound call using the details you've configured — your services, service area, pricing approach, and availability — and handles the conversation the way a well-trained front-desk person would: greeting the caller, answering routine questions (\"do you service this area,\" \"are you available this week\"), collecting the job details and contact information, and booking or scheduling an appointment directly against your real calendar rather than just taking a message.",
-          "Because it answers instantly regardless of what the field team is doing, it removes the tradeoff between being on a job and being reachable — both happen at once.",
+          "An AI phone answering service for a trade business answers every call using whatever you've set up — your services, service area, pricing approach, availability — and runs the conversation the way a solid front-desk person would: greets the caller, answers the obvious questions (\"do you cover my area,\" \"can you come this week\"), gets the job details and contact info, and books straight onto your real calendar instead of just jotting down a message.",
+          "Because it answers the instant the phone rings no matter what the crew is doing, it erases the usual tradeoff between being on a job and being reachable. Both just happen at once.",
         ],
       },
       {
         heading: "Where it fits alongside your team, not instead of it",
         paragraphs: [
-          "The most effective setup isn't \"AI replaces the phone\" — it's AI handling the call the moment it comes in, so nothing goes to voicemail, while your team still makes the judgment calls that need a person: quoting an unusual job, handling a complaint, or a customer who specifically asks for a callback from someone on staff. Letconvo is built around that division: it answers, qualifies, and books what it can, and hands off exactly the details a person needs for anything it can't resolve itself.",
+          "The setups that actually work aren't \"AI replaces the phone\" — they're AI picking up the second a call comes in, so nothing goes to voicemail, while your team still handles what genuinely needs a person: quoting an odd job, smoothing over a complaint, or a customer who specifically wants a callback from someone on staff. Letconvo is built around exactly that split — it answers, qualifies, books what it can, and hands a person the context they need for anything it can't close out itself.",
         ],
       },
       {
         heading: "What to look for in a service-business AI receptionist",
         paragraphs: [
-          "Three things matter more for service businesses than for a typical office: real appointment booking against your actual open slots (not just message-taking), the ability to correctly represent your service area and hours so callers aren't misled, and reliability outside normal business hours, since service calls (a burst pipe, a broken furnace) frequently happen at the worst possible time.",
+          "Three things matter more here than at a typical office: real booking against your actual open slots, not just message-taking; getting your service area and hours right so callers aren't misled; and holding up outside normal hours, since the calls that matter most — a burst pipe, a dead furnace — tend to land at the worst possible time.",
         ],
       },
       {
         heading: "Getting started",
         paragraphs: [
-          "If missed calls are currently costing your service business real jobs, the fastest way to find out how much is to route one number through an AI receptionist for a few weeks and compare the leads and bookings it captures against what used to go to voicemail.",
+          "If missed calls are quietly costing your business real jobs, the fastest way to find out how many is to route one number through an AI receptionist for a couple of weeks and see what it captures compared to what used to vanish into voicemail.",
+        ],
+      },
+    ],
+  },
+  "ai-receptionist-cost": {
+    eyebrow: "AI Receptionist Pricing",
+    title: "How Much Does an AI Receptionist Cost? Complete Small Business Pricing Guide",
+    description: "What an AI phone receptionist actually costs, the pricing models you'll run into, how it stacks up against a human receptionist's salary, and how to test one before you pay for a full month.",
+    sections: [
+      {
+        heading: "Why the cost of a missed call matters more than the cost of answering it",
+        paragraphs: [
+          "Every small business already pays for missed calls — it just never shows up on an invoice. Someone hits voicemail after hours, mid-shift, or while your one receptionist's at lunch, and most of them don't leave a message; they just call whoever picks up next. That's the real comparison behind a search like \"AI receptionist cost\": not $0 against some monthly fee, but the ongoing cost of calls nobody answers versus the cost of answering every one of them.",
+          "Before you start comparing prices, it's worth knowing exactly what you'd be paying for.",
+        ],
+      },
+      {
+        heading: "What is an AI receptionist?",
+        paragraphs: [
+          "An AI receptionist is software that answers your business calls the way a trained front-desk person would — greeting callers, answering the usual questions about your services, hours, and pricing, taking down a lead's name and number, handing off anything complicated to a person, and for appointment-based businesses, booking straight onto your real calendar. It's on 24/7, so a call at 11pm gets the same response as one at 11am.",
+          "Letconvo works exactly this way: set up your business details once, and every call after that gets answered using them — no staffing decision required per call.",
+        ],
+      },
+      {
+        heading: "How much does an AI receptionist cost?",
+        paragraphs: [
+          "There's no standard price tag in this category, so it helps to know what you're actually comparing. You'll run into flat monthly subscriptions that bundle a set number of minutes, pay-per-minute or pay-per-call rates with no base fee, usage tiers that scale with volume, setup or onboarding fees, charges for extra numbers or overflow calls, and premium add-ons like CRM syncing or custom voice cloning.",
+          "As a concrete example: Letconvo's Starter plan runs $120/month and includes 400 minutes of AI-answered calls, with anything past that billed at $0.09/minute — no setup fee, cancel or change anytime from the dashboard. Pricing climbs from there if you want calendar booking, CRM integration, or multi-location support.",
+        ],
+      },
+      {
+        heading: "AI receptionist vs. human receptionist cost",
+        paragraphs: [
+          "A single full-time receptionist usually runs well past $2,500–$3,500 a month once you factor in wages, payroll tax, and benefits — and that's still only one shift's coverage. An AI receptionist typically costs a fraction of that, with no second hire needed to cover evenings, weekends, lunch breaks, or sick days.",
+        ],
+        table: {
+          headers: ["", "AI Receptionist", "Human Receptionist"],
+          rows: [
+            ["Availability", "24/7, every day", "Scheduled hours only"],
+            ["Simultaneous calls", "Handles multiple at once", "One call at a time"],
+            ["Typical monthly cost", "From $120 (Letconvo Starter)", "$2,500–$3,500+ in wages & benefits"],
+            ["Appointment booking", "Automatic, against real availability", "Manual"],
+            ["Scaling to more calls", "Same plan, no extra hiring", "Requires additional staff"],
+          ],
+        },
+      },
+      {
+        heading: "What should a small business look for in an AI receptionist?",
+        paragraphs: [
+          "Price alone won't tell you whether an AI receptionist will actually hold up on your calls. Worth checking first: does it hold a real conversation instead of reading off a script, does it book and reschedule actual appointments rather than just taking a message, can it hand a call to a person when it needs to, does it follow up by text after a missed or finished call, how fast can you train it on your specific services and FAQs, and do you get logs and analytics that show what's really happening on your line.",
+          "Setup time counts too — a system that takes weeks to configure defeats the point of fixing a problem you have today.",
+        ],
+      },
+      {
+        heading: "Is an AI receptionist worth it for a small business?",
+        paragraphs: [
+          "It tends to pay for itself fastest at businesses where a missed call means a missed booking, not just a missed chat — barbershops, salons, dental and medical offices, plumbers and HVAC crews, repair shops, real estate agents, restaurants juggling reservations, and other lead- or appointment-driven work. If most of your revenue hinges on someone actually picking up the phone, an AI receptionist usually costs a lot less than the bookings a voicemail greeting quietly loses you.",
+        ],
+      },
+      {
+        heading: "Try it free before you pay for it",
+        paragraphs: [
+          "A lot of people searching for AI receptionist pricing are really asking something simpler: can I try this for free before I pay for anything? Letconvo gives every new signup 15 minutes of free AI calling credit — no card, no commitment — so you can send it a handful of real calls and hear exactly how it handles them before picking a plan.",
+          "That's usually a faster way to answer \"is this worth it\" than reading yet another pricing page. A few real, answered calls will tell you more than any comparison chart.",
+        ],
+      },
+      {
+        heading: "Getting started",
+        paragraphs: [
+          "If missed calls are already costing you bookings, the quickest way to put a number on that is to claim your 15 free minutes, send Letconvo a few real calls, and compare what it catches against what used to disappear into voicemail.",
+        ],
+      },
+    ],
+  },
+  "free-ai-receptionist-small-business": {
+    eyebrow: "Free AI Receptionist",
+    title: "Free AI Receptionist for Small Businesses: What You Can Get for $0",
+    description: "What a \"free AI receptionist\" offer actually gets you, what's never really free, and how far Letconvo's no-cost calling credit goes before you need a paid plan.",
+    sections: [
+      {
+        heading: "What people searching for \"free AI receptionist\" actually want",
+        paragraphs: [
+          "Most of the traffic behind \"free AI receptionist for small business\" isn't actually hoping to run a phone line for free forever — it's trying to answer something smaller first: does this even work, and is it worth paying for? Before spending money on a monthly plan, wanting to hear the thing handle a real call, answer a real question, maybe book a real appointment — that's a completely reasonable ask.",
+          "So it's worth being straight about what \"free\" really covers here, and what it doesn't.",
+        ],
+      },
+      {
+        heading: "Is there a completely free AI receptionist?",
+        paragraphs: [
+          "Not one that genuinely answers your business line indefinitely, no. Every call that comes in costs something real to handle — a phone number, carrier minutes, AI voice processing — so anything that actually picks up your calls, holds a conversation, and books appointments has to charge for usage somewhere, even if getting in the door is free.",
+          "What you can find instead, and what's actually worth looking for, is a real product you get to try before paying anything: free setup, free minutes to test with, no card required to start. That answers \"does this work for my business\" honestly, instead of handing you a forever-free tool that quietly can't do what the paid version does.",
+        ],
+      },
+      {
+        heading: "What you can actually get for $0 with Letconvo",
+        paragraphs: [
+          "Every new Letconvo signup gets 15 minutes of free AI calling credit, no card, no commitment. That's enough to run a handful of real calls through it — a new customer asking a question, someone checking your hours, a booking request — and hear exactly how it handles your business before you decide anything.",
+          "Think of it as a test, not a replacement for a plan. Fifteen minutes tells you how it performs, not what it'd cost to run your phone line full time. Once you've seen it handle a few real calls the way you need, moving to a paid plan is what keeps it answering everything after that.",
+        ],
+      },
+      {
+        heading: "What to check before trusting a \"free\" AI receptionist offer",
+        paragraphs: [
+          "Free offers in this space aren't all equally free. Before you hand over a card or your business number, check whether one's required upfront — that's usually a sign you'll get auto-charged the second the free usage runs dry — whether the free tier quietly strips out what actually matters (real booking, SMS follow-up, call transfers), leaving a demo-grade chatbot behind, and whether there's a contract waiting once the free period's over.",
+          "Letconvo's free credit doesn't ask for a card and doesn't auto-enroll you into anything. Once the 15 minutes are gone, it's your call whether to subscribe — not the other way around.",
+        ],
+      },
+      {
+        heading: "When free is enough, and when you need a paid plan",
+        paragraphs: [
+          "Free calling credit answers one question well: will this handle my calls the way I need it to? It's not built to cover your real call volume — a business that actually depends on its phone will burn through 15 minutes in a single busy afternoon. Once you trust it works, a paid plan is what keeps it picking up every call, not just the first few. For what that costs month to month, our AI receptionist pricing guide breaks it down.",
+        ],
+      },
+      {
+        heading: "Getting started",
+        paragraphs: [
+          "Want to know if an AI receptionist is worth paying for before you pay for it? Claim your 15 free minutes, send it a few real calls, and judge it by what it actually catches — not by the price tag.",
+        ],
+      },
+    ],
+  },
+  "ai-receptionist-vs-human-receptionist": {
+    eyebrow: "AI vs. Human Receptionist",
+    title: "AI Receptionist vs. Human Receptionist: Which Is Better for a Small Business?",
+    description: "A dimension-by-dimension comparison of AI and human receptionists — availability, cost, consistency, and the calls each one actually handles better — so you can decide what your small business needs.",
+    sections: [
+      {
+        heading: "This isn't really an either/or question",
+        paragraphs: [
+          "\"AI receptionist vs. human receptionist\" sounds like a contest with one winner. But most small businesses that have actually run both end up asking a smaller question instead: which calls does each one handle better? A human and an AI receptionist just aren't good at the same things, and the businesses getting the most out of either tend to split the work rather than pick a side.",
+          "Before putting them head to head, it helps to see what each one's actually built for.",
+        ],
+      },
+      {
+        heading: "Where a human receptionist wins",
+        paragraphs: [
+          "A good human receptionist still beats AI on calls that need judgment, not just information — talking down an angry customer, picking up on a vague or emotional request between the lines, improvising through a sales call that won't follow a script, building the kind of rapport that makes a regular client feel known rather than processed. If your calls run complex, high-stakes, or relationship-heavy, a person on the line is genuinely hard to replace.",
+          "People also catch what AI tends to miss — a tone that says the real problem isn't what's being said out loud, or a longtime customer who expects to be recognized instead of asked for their name again.",
+        ],
+      },
+      {
+        heading: "Where an AI receptionist wins",
+        paragraphs: [
+          "An AI receptionist pulls ahead on the calls that are frequent, time-sensitive, and don't need judgment — answering instantly at 2am, handling several calls at once instead of stacking people on hold, giving the same correct answer every single time instead of a tired or inconsistent one, booking straight onto your real calendar with nobody typing it in later. It doesn't take lunch, call in sick, quit for a better offer, or need two weeks of training before it gets your hours right.",
+          "That matters most on the calls that quietly cost small businesses the most money: a new customer calling after hours, or calling at the exact moment the one person who could answer is already on another line.",
+        ],
+      },
+      {
+        heading: "AI receptionist vs. human receptionist, side by side",
+        paragraphs: [
+          "For a full breakdown of what each option actually costs month to month, our AI receptionist pricing guide covers that in detail. Here's how they stack up on everything else that usually decides it.",
+        ],
+        table: {
+          headers: ["", "AI Receptionist", "Human Receptionist"],
+          rows: [
+            ["Availability", "24/7, including nights and weekends", "Scheduled working hours only"],
+            ["Handling multiple calls", "Answers several at once", "One call at a time, others wait or go to voicemail"],
+            ["Consistency", "Same accurate answer every time", "Varies with mood, memory, fatigue"],
+            ["Complex or emotional calls", "Can escalate or transfer to a person", "Handles directly, with judgment"],
+            ["Ramp-up time", "Configured in minutes", "Days to weeks of training"],
+            ["Turnover risk", "None", "Sick days, quitting, hiring gaps"],
+            ["Scaling to more call volume", "Same plan handles more calls", "Needs additional hires"],
+          ],
+        },
+      },
+      {
+        heading: "The hybrid model most small businesses actually land on",
+        paragraphs: [
+          "In practice, the businesses getting the best results don't pick one — they let the AI receptionist answer the instant the phone rings, handle whatever it can (FAQs, booking, basic qualifying questions), and pass anything that genuinely needs judgment straight to a person. Nothing goes to voicemail, and the calls that really need a human still get one.",
+          "Letconvo's built around exactly that split: it answers, qualifies, and books what it can on its own, then hands a person exactly the context they'd need for anything it can't close out.",
+        ],
+      },
+      {
+        heading: "So which is better for your small business?",
+        paragraphs: [
+          "If most of your calls are routine — booking, hours, pricing, availability — an AI receptionist alone will probably beat a human on cost, consistency, and coverage. If a good chunk of your calls are complex, emotional, or relationship-driven, you'll still want a person available, but having an AI receptionist soak up the overflow and after-hours calls means that person isn't your only line of defense against a missed one.",
+          "Hardly any small business actually needs to pick a permanent side here. Most just need the phone answered right more often than it currently is, by whichever combination gets them there.",
+        ],
+      },
+      {
+        heading: "Getting started",
+        paragraphs: [
+          "Letconvo gives every new signup 15 minutes of free AI calling credit, no card required, so you can see firsthand which of your calls it handles well on its own — and which ones you'd still rather a person took.",
+        ],
+      },
+    ],
+  },
+  "best-ai-receptionist-small-business-usa": {
+    eyebrow: "Buyer's Guide",
+    title: "Best AI Receptionist for Small Businesses in the USA: Top Options for 2027",
+    description: "A practical look at the AI receptionist options US small businesses actually run into, what each one's really built for, and how to tell which one fits your calls instead of picking whichever ranks highest.",
+    sections: [
+      {
+        heading: "Why \"best\" depends on your calls, not a ranking",
+        paragraphs: [
+          "A fair warning before you read any \"best AI receptionist\" list, including this one: most of them are written by a company selling one of the options on the list. That doesn't make the information useless, but it's worth knowing going in — especially since the \"best\" option for a solo barbershop fielding booking questions looks nothing like the \"best\" one for a law firm that wants a human on every sensitive call.",
+          "Below is an honest rundown of the options small businesses in the US actually run into, grouped by what each one's really built for — including where Letconvo fits, and where it doesn't.",
+        ],
+      },
+      {
+        heading: "What to check before you pick one",
+        paragraphs: [
+          "A few things matter more than any marketing page: does it actually book appointments against a real calendar, or just take a message and leave the calling back to you? Is it AI-only, or AI with live humans on standby for anything complicated? Are you billed by the minute, by the call, or by unique caller — and does that match how your phone actually rings? And can you test it with real calls before paying for a full month, or does it want a card upfront?",
+        ],
+      },
+      {
+        heading: "The options at a glance",
+        paragraphs: [
+          "Pricing in this space changes often and some providers quote per-call rather than a flat rate, so treat the numbers below as a starting point and confirm current pricing directly with whichever one you're considering.",
+        ],
+        table: {
+          headers: ["", "Best for", "Starting price", "Type"],
+          rows: [
+            ["Letconvo", "Appointment booking, AI-first", "$120/mo (15 min free to test)", "AI, with live transfer option"],
+            ["Rosie", "Tightest budget", "$49/mo for 250 min", "AI-only"],
+            ["Goodcall", "Steady storefront call volume", "$79/mo, billed per caller", "AI-only"],
+            ["Smith.ai", "AI with a human safety net", "Call-based, quote varies", "AI + live human"],
+            ["Ruby", "A live person on every call", "From $250/mo for 50 min", "Human-only"],
+          ],
+        },
+      },
+      {
+        heading: "Letconvo — best for appointment-based businesses that want AI to actually book the job",
+        paragraphs: [
+          "Letconvo answers every call using the specifics you give it — your services, hours, and booking rules — and can check real availability and book directly instead of just taking a message. Plans start at $120/month with 400 included minutes, and every new signup gets 15 minutes of free AI calling credit to test it with real calls first. It's the strongest fit for salons, clinics, home-service businesses, and anyone else whose calls are mostly \"can I get an appointment\" rather than open-ended support.",
+        ],
+      },
+      {
+        heading: "Rosie — best for the tightest budget",
+        paragraphs: [
+          "Rosie's entry plan runs $49/month for 250 minutes, with higher tiers adding calendar booking and warm transfers to a person. It's built around simple, affordable call answering and message-taking, with a 7-day free trial to try it out. If the goal is just not missing calls on the smallest possible budget, it's worth a look — though you'll need one of the pricier tiers to get real appointment booking rather than message-taking alone.",
+        ],
+      },
+      {
+        heading: "Goodcall — best for storefronts with steady call patterns",
+        paragraphs: [
+          "Goodcall charges by unique caller rather than by the minute — plans start at $79/month for up to 100 unique callers, with no per-minute metering. That fits a shop with a steady trickle of short, similar calls well, since a long call doesn't cost more than a short one. It also lets you build and test the AI agent for free before connecting a phone number, which is a low-risk way to try it out.",
+        ],
+      },
+      {
+        heading: "Smith.ai — best for businesses that want AI with a human safety net",
+        paragraphs: [
+          "Smith.ai pairs AI call handling with live human agents who can step in on calls the AI shouldn't take alone, which is the main reason to pick it over an AI-only option. Pricing is call-based and varies by which tier of their service you're looking at — AI-only versus AI-plus-live — so it's worth getting a current quote directly from them rather than trusting a specific number here; their pricing structure is one of the more layered on this list.",
+        ],
+      },
+      {
+        heading: "Ruby — best if you want a live person, not AI, answering every call",
+        paragraphs: [
+          "Ruby isn't actually an AI receptionist — it's a live, human-staffed answering service, with AI used only for extras like transcripts and sentiment analysis. Plans are priced by the minute, starting around $250/month for 50 minutes. If what you actually want is a real person on every call rather than AI with occasional human backup, Ruby is answering a different question than the rest of this list.",
+        ],
+      },
+      {
+        heading: "How to actually choose",
+        paragraphs: [
+          "None of this is really a ranking — it's closer to matching. If your calls are routine and appointment-driven, an AI-first option like Letconvo or Rosie will probably get you furthest for the money. If a meaningful share of your calls need a human's judgment, something with live backup — Smith.ai, or a fully live service like Ruby — is worth the extra cost. And since every provider here, including us, changes pricing and plans over time, the only way to know for sure is to test the one you're leaning toward with a handful of your own real calls before committing.",
+        ],
+      },
+      {
+        heading: "Getting started",
+        paragraphs: [
+          "If an AI-first option sounds like the right fit, Letconvo gives every new signup 15 minutes of free AI calling credit — no card required — so you can hear exactly how it handles your calls before deciding on anything.",
         ],
       },
     ],
@@ -129,12 +394,36 @@ export default function BlogPostPage({ pageId, setPage }) {
 
         <section className="relative px-4 sm:px-6 py-12 sm:py-16 bg-white">
           <div className="max-w-3xl mx-auto flex flex-col gap-9 sm:gap-11">
-            {post.sections.map(({ heading, paragraphs }, index) => (
+            {post.sections.map(({ heading, paragraphs, table }, index) => (
               <Reveal key={heading} delay={index * 0.05}>
                 <h2 className="font-syne font-bold text-[#1A1614] text-[15px] sm:text-[17px] leading-snug mb-3">{heading}</h2>
                 {paragraphs.map((paragraph) => (
                   <p key={paragraph.slice(0, 40)} className="text-[#4E4439]/75 leading-relaxed text-[12.5px] sm:text-[13.5px] mt-3">{paragraph}</p>
                 ))}
+                {table && (
+                  <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0 mt-5">
+                    <div className="min-w-[480px] sm:min-w-0 bg-[#fdfaf6] border border-[#d4c8b8]/55 overflow-hidden">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-[#f7f2ec] border-b-2 border-[#d4c8b8]/50">
+                            {table.headers.map((h) => (
+                              <th key={h || "blank"} className="text-left px-3 sm:px-4 py-2.5 font-syne font-bold text-[9.5px] uppercase tracking-[.08em] text-[#4E4439]">{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {table.rows.map((row, ri) => (
+                            <tr key={row[0]} className={ri % 2 === 1 ? "bg-white" : ""}>
+                              {row.map((cell, ci) => (
+                                <td key={ci} className={`px-3 sm:px-4 py-2.5 text-[11.5px] sm:text-[12px] border-b border-[#d4c8b8]/30 ${ci === 0 ? "font-medium text-[#1A1614]" : "text-[#4E4439]/85"}`}>{cell}</td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </Reveal>
             ))}
           </div>

@@ -18,6 +18,10 @@ export const PAGE_PATHS = {
   "ai-appointment-booking": "/ai-appointment-booking",
   "after-hours-call-answering-service": "/blog/after-hours-call-answering-service",
   "ai-phone-answering-service-for-service-businesses": "/blog/ai-phone-answering-service-for-service-businesses",
+  "ai-receptionist-cost": "/blog/ai-receptionist-cost",
+  "free-ai-receptionist-small-business": "/blog/free-ai-receptionist-small-business",
+  "ai-receptionist-vs-human-receptionist": "/blog/ai-receptionist-vs-human-receptionist",
+  "best-ai-receptionist-small-business-usa": "/blog/best-ai-receptionist-small-business-usa",
 };
 
 const NORMALIZED_PATHS = Object.fromEntries(

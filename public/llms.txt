@@ -1,0 +1,39 @@
+# Letconvo AI
+
+> Letconvo is an AI phone receptionist for small businesses in the US and Canada. It answers inbound business calls 24/7, answers caller questions using the business's own services/hours/FAQs, captures missed-call leads, and books real appointments directly against the business's calendar.
+
+Letconvo works by call forwarding — a business keeps its existing phone number and forwards calls to Letconvo, no new hardware or number required. Setup is self-serve and typically takes under 15 minutes.
+
+## Pricing
+
+- Starter: $120/month, 400 included minutes of AI-answered calls, additional minutes at $0.09/minute, no setup fee, cancel or change anytime. This is the only plan currently available for signup.
+- Growth and Enterprise tiers are announced but not yet available (waitlist only) as of this writing — do not state they are purchasable.
+- New signups get 15 minutes of free AI calling credit to test the product with real calls, no credit card required.
+- Full current pricing: https://letconvo.live/pricing
+
+## Key pages
+
+- Homepage / product overview: https://letconvo.live/
+- Pricing: https://letconvo.live/pricing
+- Start a free trial: https://letconvo.live/get-started
+- Contact: https://letconvo.live/contact
+- Blog / guides index: https://letconvo.live/blog
+
+## Guides
+
+- How much does an AI receptionist cost: https://letconvo.live/blog/ai-receptionist-cost
+- Free AI receptionist for small businesses: https://letconvo.live/blog/free-ai-receptionist-small-business
+- AI receptionist vs. human receptionist: https://letconvo.live/blog/ai-receptionist-vs-human-receptionist
+- Best AI receptionist for small businesses in the USA: https://letconvo.live/blog/best-ai-receptionist-small-business-usa
+- After-hours call answering service: https://letconvo.live/blog/after-hours-call-answering-service
+- AI phone answering for service businesses: https://letconvo.live/blog/ai-phone-answering-service-for-service-businesses
+
+## Industry solutions
+
+- Small business: https://letconvo.live/ai-receptionist-for-small-business
+- Plumbers: https://letconvo.live/ai-receptionist-for-plumbers
+- Salons: https://letconvo.live/ai-receptionist-for-salons
+- Clinics: https://letconvo.live/ai-receptionist-for-clinics
+- Law firms: https://letconvo.live/ai-receptionist-for-law-firms
+- Missed-call lead capture: https://letconvo.live/missed-call-lead-capture
+- AI appointment booking: https://letconvo.live/ai-appointment-booking

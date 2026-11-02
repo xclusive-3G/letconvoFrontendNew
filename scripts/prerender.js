@@ -40,6 +40,10 @@ const ROUTES = [
   "/ai-appointment-booking",
   "/blog/after-hours-call-answering-service",
   "/blog/ai-phone-answering-service-for-service-businesses",
+  "/blog/ai-receptionist-cost",
+  "/blog/free-ai-receptionist-small-business",
+  "/blog/ai-receptionist-vs-human-receptionist",
+  "/blog/best-ai-receptionist-small-business-usa",
   "/", // last: this overwrites build/index.html, the SPA fallback shell used
        // while prerendering every other route above — keep it last so that
        // fallback keeps serving the original generic shell until then.
