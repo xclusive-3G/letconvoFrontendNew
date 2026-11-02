@@ -129,10 +129,12 @@ async function main() {
     for (const route of ROUTES) {
       const page = await browser.newPage();
       try {
-        await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: "networkidle0", timeout: 30000 });
+        await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: "networkidle0", timeout: 60000 });
         // SeoMeta's effect runs on mount, but give animated/lazy content a beat to settle.
         await new Promise((resolve) => setTimeout(resolve, 300));
-        await page.waitForFunction(() => document.querySelector('#root')?.innerText.trim().length > 100 && document.querySelector('link[rel="canonical"]'));
+        // Default waitForFunction timeout (30s) has been observed to flake on slower
+        // build containers once the route count grew — 60s gives real headroom.
+        await page.waitForFunction(() => document.querySelector('#root')?.innerText.trim().length > 100 && document.querySelector('link[rel="canonical"]'), { timeout: 60000 });
         const canonical = await page.$eval('link[rel="canonical"]', el => el.href);
         if (canonical !== `https://letconvo.live${route}`) {
           throw new Error(`Wrong canonical for ${route}: ${canonical}`);
