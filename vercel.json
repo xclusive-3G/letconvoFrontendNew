@@ -53,6 +53,22 @@
                          "source":  "/blog/ai-phone-answering-service-for-service-businesses"
                      },
                      {
+                         "destination":  "/blog/ai-receptionist-cost/index.html",
+                         "source":  "/blog/ai-receptionist-cost"
+                     },
+                     {
+                         "destination":  "/blog/free-ai-receptionist-small-business/index.html",
+                         "source":  "/blog/free-ai-receptionist-small-business"
+                     },
+                     {
+                         "destination":  "/blog/ai-receptionist-vs-human-receptionist/index.html",
+                         "source":  "/blog/ai-receptionist-vs-human-receptionist"
+                     },
+                     {
+                         "destination":  "/blog/best-ai-receptionist-small-business-usa/index.html",
+                         "source":  "/blog/best-ai-receptionist-small-business-usa"
+                     },
+                     {
                          "destination":  "/pricing/index.html",
                          "source":  "/pricing"
                      },
