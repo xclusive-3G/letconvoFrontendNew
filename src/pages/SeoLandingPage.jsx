@@ -70,9 +70,9 @@ const PAGES = {
   "ai-receptionist-for-clinics": {
     eyebrow: "AI receptionist for clinics",
     title: "Support clinic callers when your front desk is busy.",
-    description: "Letconvo is an AI receptionist for clinics that answers incoming calls, captures enquiries, provides approved business information, and helps manage appointment requests.",
-    audience: "clinics and healthcare practices that need reliable call coverage",
-    framing: "Letconvo is an AI receptionist for small businesses — this is what it looks like for clinics and healthcare practices.",
+    description: "Letconvo is an AI receptionist for clinics — including laser clinics, med spas, and other appointment-based practices — that answers incoming calls, captures enquiries, provides approved business information, and helps manage appointment requests.",
+    audience: "clinics, laser clinics, and healthcare practices that need reliable call coverage",
+    framing: "Letconvo is an AI receptionist for small businesses — this is what it looks like for clinics, laser clinics, and healthcare practices.",
     painPoint: "Your front desk is juggling patients in the waiting room and the phone at the same time. Calls during lunch or after hours go unanswered — some from patients with a real, time-sensitive need.",
     benefits: [
       ["support_agent", "Covers your front desk", "During rushes, lunch, and after hours."],

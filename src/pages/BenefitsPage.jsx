@@ -129,7 +129,7 @@ export default function BenefitsPage({ setPage }) {
           <Label>What Letconvo Does</Label>
           <H2>An AI Receptionist That Keeps Every Opportunity Moving</H2>
           <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-2xl leading-relaxed">
-            Letconvo is an AI phone receptionist for businesses that do not want to lose leads to missed calls. It answers callers, captures enquiries, provides useful information, and books appointments—24 hours a day.
+            Letconvo is an AI phone receptionist and lead capture answering service for businesses that do not want to lose leads to missed calls. It answers callers, captures enquiries, provides useful information, and books appointments—24 hours a day.
           </p>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 sm:gap-6">
@@ -292,7 +292,7 @@ export default function BenefitsPage({ setPage }) {
           <Label>Solutions By Industry</Label>
           <H2>Built For How Your Business Actually Works</H2>
           <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-2xl leading-relaxed">
-            Letconvo is configured around the calls your industry actually gets. See how it works for your business.
+            Letconvo is configured around the calls your industry actually gets — from an AI receptionist for law firms and clinics (including laser clinics and other clinic-office settings) to a lead capture answering service for any business that loses opportunities to missed calls. See how it works for your business.
           </p>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
