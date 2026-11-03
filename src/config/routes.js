@@ -30,5 +30,5 @@ const NORMALIZED_PATHS = Object.fromEntries(
 
 export function pageFromPath(pathname) {
   const normalized = pathname.replace(/\/+$/, "") || "/";
-  return NORMALIZED_PATHS[normalized] || "benefits";
+  return NORMALIZED_PATHS[normalized] || "notfound";
 }

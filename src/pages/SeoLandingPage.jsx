@@ -13,7 +13,7 @@ const RELATED_GUIDES = [
 const PAGES = {
   "ai-receptionist-for-small-business": {
     eyebrow: "AI receptionist for small business",
-    title: "Answer every business call without adding another full-time role.",
+    title: "How to Set Up an AI Receptionist for Your Small Business",
     description: "Letconvo is an AI receptionist for small businesses that answers calls, captures leads, answers customer questions, and books appointments 24/7.",
     audience: "small businesses that depend on phone enquiries and appointments",
     painPoint: "Every unanswered call is a customer who found somebody else. Small teams don't have a spare person to sit by the phone, so calls that arrive mid-task, mid-lunch, or after close go to voicemail — and most callers don't leave a message, they just call the next business.",
@@ -21,12 +21,12 @@ const PAGES = {
       ["phone_in_talk", "Answer every call", "Letconvo picks up even when your team is mid-rush, with a customer, or the office is closed."],
       ["support_agent", "Sound like a real front desk", "Your greeting, hours, and services, delivered consistently, without hiring for it."],
       ["person_add", "Capture every lead", "Name, number, reason for calling — ready for your team to follow up."],
-      ["event_available", "Book without back-and-forth", "Checks your real calendar and confirms the appointment on the spot."],
+      ["event_available", "Book without back-and-forth", "Checks configured availability and confirms appointment details."],
     ],
     faq: [
       { q: "Do I need technical skills to set this up?", a: "No. You provide your business details, hours, and booking rules through a simple setup, and Letconvo handles the calls from there." },
       { q: "What happens on calls the AI can't handle?", a: "Letconvo captures the caller's details and reason for calling so your team has everything needed to follow up directly." },
-      { q: "Does it work with my existing business number?", a: "Yes. Letconvo is set up to answer calls to the number your customers already use." },
+      { q: "Does it work with my existing business number?", a: "You can forward calls from a compatible existing number. Check forwarding support and charges with your carrier, and contact us to confirm your setup." },
     ],
   },
   "ai-receptionist-for-plumbers": {
@@ -132,7 +132,7 @@ const PAGES = {
     framing: "Letconvo is an AI receptionist for small businesses — this is how it handles appointment booking automatically.",
     painPoint: "Manual scheduling means back-and-forth calls, double-booking risk, and appointments that live on a sticky note instead of a calendar.",
     benefits: [
-      ["event_available", "Books against your real calendar", "No double-bookings, no manual back-and-forth."],
+      ["event_available", "Books using configured availability", "Checks open slots against existing Letconvo bookings."],
       ["event_repeat", "Lets callers reschedule or cancel", "Without another round of calls with your team."],
       ["fact_check", "Confirms details clearly", "Service, date, and time, so nothing gets miscommunicated."],
       ["check_circle", "Reduces no-shows", "A properly confirmed appointment holds better than a scribbled note."],
@@ -176,6 +176,19 @@ export default function SeoLandingPage({ pageId, setPage }) {
         </div>
       </section>
 
+      <section className="relative px-4 sm:px-6 py-12 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="font-syne font-bold text-2xl mb-5">Set up and test your receptionist</h2>
+          <ol className="list-decimal pl-5 space-y-4 text-sm leading-relaxed text-[#4E4439]">
+            <li>Add your business services, opening hours, greeting, and the information callers need.</li>
+            <li>Choose the caller details to collect and configure your appointment availability.</li>
+            <li>Test an opening-hours question, a new booking, an unavailable slot, and a request outside your services using your 15 free minutes.</li>
+            <li>Review call records and appointment details in your dashboard before forwarding customer calls.</li>
+          </ol>
+          <p className="mt-6 text-sm leading-relaxed">Forwarding depends on your carrier. Confirm number availability and any external calendar or CRM requirement with our team before subscribing. The receptionist uses the information and booking rules you configure; calls outside that scope may need your team to follow up.</p>
+          <a className="inline-block mt-4 text-[#8B6E3C] underline" href="/contact" onClick={event => { event.preventDefault(); setPage("contact"); }}>Check your setup with us</a>
+        </div>
+      </section>
       <section className="relative px-4 sm:px-6 py-12 sm:py-16 bg-white">
         <div className="max-w-5xl mx-auto">
           {page.framing && (

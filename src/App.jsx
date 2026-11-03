@@ -1,80 +1,3 @@
-// import { useState, useEffect } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-
-// import AnimatedBg     from "./components/AnimatedBg";
-// import Navbar         from "./components/Navbar";
-// import BenefitsPage   from "./pages/BenefitsPage";
-// import PricingPage    from "./pages/PricingPage";
-// import ContactPage    from "./pages/ContactPage";
-// import LoginPage      from "./pages/LoginPage";
-// import GetStartedPage from "./pages/GetStartedPage";
-// import DashboardPage  from "./dashboard/DashboardPage";
-// import TermsPage      from "./pages/termsPage";
-
-
-// const PUBLIC_PAGES = {
-//   benefits:   { comp: BenefitsPage,   title: "Letconvo AI | Never Miss a Lead Again"  },
-//   pricing:    { comp: PricingPage,    title: "Pricing — Letconvo AI"                  },
-//   contact:    { comp: ContactPage,    title: "Contact — Letconvo AI"                  },
-//   terms:      { comp: TermsPage,      title: "Terms — Letconvo AI"                    },
-//   login:      { comp: LoginPage,      title: "Login — Letconvo AI"                    },
-//   getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI"         },
-// };
-
-// const VALID_PAGES = new Set([...Object.keys(PUBLIC_PAGES), "dashboard"]);
-
-// function getInitialPage() {
-//   // Always let the landing page load by default.
-//   // A saved token should not force the user into the dashboard because it hides the public site.
-//   const hashPage = window.location.hash?.replace("#", "").trim();
-//   return VALID_PAGES.has(hashPage) ? hashPage : "benefits";
-// }
-
-// export default function App() {
-//   const [page, setPage] = useState(getInitialPage);
-
-//   const changePage = (p) => {
-//   const nextPage = VALID_PAGES.has(p) ? p : "benefits";
-//   window.location.hash = nextPage === "benefits" ? "" : nextPage;
-//   setTimeout(() => {
-//     setPage(nextPage);
-//     // Scroll after state update, not before
-//     window.scrollTo({ top: 0, behavior: "instant" });
-//   }, 60);
-// };
-
-//   useEffect(() => {
-//     const onHashChange = () => setPage(getInitialPage());
-//     window.addEventListener("hashchange", onHashChange);
-//     return () => window.removeEventListener("hashchange", onHashChange);
-//   }, []);
-
-//   useEffect(() => {
-//     document.title = page === "dashboard" ? "Dashboard — Letconvo AI" : (PUBLIC_PAGES[page]?.title ?? "Letconvo AI");
-//   }, [page]);
-
-//   if (page === "dashboard") {
-//     const token = localStorage.getItem("token");
-//     if (!token) return <LoginPage setPage={changePage} />;
-//     return <DashboardPage setAppPage={changePage} />;
-//   }
-
-//   const Active = PUBLIC_PAGES[page]?.comp ?? BenefitsPage;
-
-//   return (
-//     <>
-//       <AnimatedBg />
-//       <Navbar page={page} setPage={changePage} />
-//       <AnimatePresence mode="wait">
-//         <motion.div key={page} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
-//           <Active setPage={changePage} />
-//         </motion.div>
-//       </AnimatePresence>
-//     </>
-//   );
-// }
-
-
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -93,14 +16,16 @@ import PrivacyPage    from "./pages/privacyPage";
 import BlogPage       from "./pages/BlogPage";
 import SeoLandingPage, { SEO_LANDING_PAGES } from "./pages/SeoLandingPage";
 import BlogPostPage, { BLOG_POSTS } from "./pages/BlogPostPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import SeoMeta        from "./components/SeoMeta";
 import { PAGE_PATHS, pageFromPath } from "./config/routes";
 import { supabase }   from "./lib/supabase";
 
 
 const PUBLIC_PAGES = {
+  notfound: { comp: NotFoundPage, title: "Page Not Found | Letconvo AI", description: "This page could not be found. Explore Letconvo features and pricing." },
   benefits:   { comp: BenefitsPage,   title: "AI Receptionist for Small Business | Letconvo AI", description: "Letconvo is an AI phone receptionist for small businesses. Answer every call, capture missed-call leads, and book appointments 24/7 — no voicemail, no lost customers." },
-  pricing:    { comp: PricingPage,    title: "Pricing — Letconvo AI",                  description: "See Letconvo AI pricing and credit plans. Pay for the calls your AI receptionist actually handles — no per-seat fees, no long-term contract." },
+  pricing: { comp: PricingPage, title: "AI Receptionist Pricing | Letconvo AI", description: "Explore Letconvo Starter pricing: $120 USD per month with 400 included minutes. Try 15 free calling minutes before subscribing." },
   contact:    { comp: ContactPage,    title: "Contact — Letconvo AI",                  description: "Get in touch with the Letconvo AI team about setup, pricing, or how the AI phone receptionist works for your business." },
   terms:      { comp: TermsPage,      title: "Terms — Letconvo AI",                    description: "Letconvo AI's terms of service — the rules and conditions for using the Letconvo AI phone receptionist platform." },
   login:      { comp: LoginPage,      title: "Login — Letconvo AI",                    description: "Log in to your Letconvo AI dashboard to manage calls, appointments, credits, and receptionist settings." },
@@ -206,11 +131,11 @@ export default function App() {
 
   const Active = PUBLIC_PAGES[page]?.comp ?? BenefitsPage;
   const seo = PUBLIC_PAGES[page] || PUBLIC_PAGES.benefits;
-  const path = PAGE_PATHS[page] || PAGE_PATHS.benefits;
+  const path = page === "notfound" ? window.location.pathname : PAGE_PATHS[page] || PAGE_PATHS.benefits;
 
   return (
     <>
-      <SeoMeta title={seo.title} description={seo.description || "Letconvo is an AI receptionist that answers calls, captures leads, answers customer questions, and books appointments 24/7."} path={path} noindex={page === "login"} />
+      <SeoMeta title={seo.title} description={seo.description || "Letconvo is an AI receptionist that answers calls, captures leads, answers customer questions, and books appointments 24/7."} path={path} noindex={page === "login" || page === "notfound"} />
       <AnimatedBg />
       <Navbar page={page} setPage={changePage} />
       <AnimatePresence mode="wait">

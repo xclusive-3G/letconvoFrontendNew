@@ -1,3 +1,4 @@
+import { trackSignup } from "../lib/analytics";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,8 +14,8 @@ const DRAFT_KEY = "getstarted_draft";
 /* ── Static data ── */
 const PLANS = [
   { id:"starter",  name:"Starter",  price:"$120/mo", desc:"Perfect for solo practices",   available:true  },
-  { id:"growth",   name:"Growth",   price:"$349/mo", desc:"For growing businesses",       available:false },
-  { id:"premium",  name:"Premium",  price:"$699+/mo",desc:"Enterprise & agencies",        available:false },
+  { id:"growth",   name:"Growth",   price:"Coming soon", desc:"For growing businesses",       available:false },
+  { id:"premium",  name:"Premium",  price:"Coming soon",desc:"Enterprise & agencies",        available:false },
 ];
 
 const PERKS = [
@@ -406,7 +407,7 @@ function Step4Plan({ data, setData, onNext }) {
           {data.plan === "starter" && ["400 minutes/month","Basic call handling","SMS follow-up","Digital call logs"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          {data.plan === "growth" && ["334 minutes/month","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
+          {data.plan === "growth" && ["Usage details at launch","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
           {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Custom AI voice","White-label dashboard"].map(f=>(
@@ -647,6 +648,7 @@ export default function GetStartedPage({ setPage }) {
     localStorage.setItem("token", res.data.access_token);
     localStorage.setItem("user", JSON.stringify(res.data.user));
 
+    trackSignup(oauthSession ? "google" : "email");
     return { success: true };
   } catch (err) {
     console.log("❌ Registration error:", err.response?.data || err.message);
@@ -677,11 +679,11 @@ export default function GetStartedPage({ setPage }) {
               🎉 15 minutes free AI calling credit
             </span>
 
-            <h2 className="font-syne font-black text-[16px] uppercase tracking-tight text-[#1A1614] leading-tight mb-2">
+            <h1 className="font-syne font-black text-[16px] uppercase tracking-tight text-[#1A1614] leading-tight mb-2">
               Start Capturing Every Lead Today
-            </h2>
+            </h1>
             <p className="text-[12px] text-[#4E4439]/65 leading-relaxed mb-3">
-              Join thousands of businesses that never miss a call. Setup in under 15 minutes, no contract required.
+              Test your AI receptionist with 15 free calling minutes. Add your business details and try real calls before subscribing.
             </p>
             <p className="text-[10.5px] text-[#8B7060] leading-relaxed mb-6 flex items-start gap-1.5">
               <span className="material-symbols-outlined text-[12px] flex-shrink-0 mt-[1px]">info</span>

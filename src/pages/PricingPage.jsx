@@ -5,12 +5,12 @@ import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
 
 const PLANS=[
-  {tier:"Starter",price:"$120",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings","Call Records","Appointments","Analytics","Live Calls","Missed-Call Callback","Appointment Rescheduling"],dim:["CRM Integration","Voice Cloning"],featured:false,available:true,cta:"Select Protocol",target:"getstarted"},
-  {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","334 Minutes Included","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:true,available:false,cta:"Coming Soon",target:"getstarted"},
-  {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","1,000 Minutes Included","Multi-Practice Support","Custom AI Voice Cloning","White-label Dashboard","API & Automations"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"contact"},
+  {tier:"Starter",price:"$120",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings","Call Records","Appointments","Analytics","Live Calls","Missed-Call Callback","Appointment Rescheduling"],dim:["CRM Integration","Voice Cloning"],featured:true,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
+  {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","Minutes announced at launch","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"getstarted"},
+  {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","Minutes announced at launch","Multi-Practice Support","Custom AI Voice Cloning","White-label Dashboard","API & Automations"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"contact"},
 ];
-const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","400","334","1,000"],["SMS follow-up","✓","✓","✓"],["Call records","✓","✓","✓"],["Appointments","✓","✓","✓"],["Appointment rescheduling","✓","✓","✓"],["Missed-call callback","✓","✓","✓"],["Live calls","✓","✓","✓"],["Analytics","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Voice cloning","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
-const FAQS=[["Can I change plans anytime?","Yes. Upgrade or downgrade at any time from your dashboard. Changes take effect at the next billing cycle."],["What if I exceed my minutes?","Additional minutes are $0.09/min Starter, $0.07/min Growth, $0.05/min Enterprise."],["Is there a free trial?","Every new signup gets 15 minutes of free AI calling credit to test Letconvo with real calls. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","Letconvo works with any existing number via call forwarding. No hardware changes required."],["What integrations are supported?","Salesforce, HubSpot, Google Calendar, Outlook, Zapier (2,000+ apps), and full API on Enterprise."]];
+const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","400","At launch","At launch"],["SMS follow-up","✓","✓","✓"],["Call records","✓","✓","✓"],["Appointments","✓","✓","✓"],["Appointment rescheduling","✓","✓","✓"],["Missed-call callback","✓","✓","✓"],["Live calls","✓","✓","✓"],["Analytics","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Voice cloning","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
+const FAQS=[["Can I change plans anytime?","Starter is currently available. Growth and Enterprise are coming soon; contact us to discuss your needs."],["What if I exceed my minutes?","Calls require an available calling balance. Review current top-up options in your dashboard or contact us before purchasing additional usage."],["Is there a free trial?","Every new signup gets 15 minutes of free AI calling credit to test Letconvo with real calls. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","You can forward calls from a compatible existing business number. Forwarding support and charges depend on your carrier; contact us to confirm your setup."],["What integrations are supported?","Starter supports appointments using your configured business hours and available slots. Contact us to confirm a specific calendar or CRM connection before subscribing."]];
 
 function S({children,bg,className=""}) {
   return <section className={`relative z-10 py-12 sm:py-14 px-4 sm:px-6 ${className}`} style={{background:bg}}><div className="max-w-5xl mx-auto">{children}</div></section>;
@@ -20,16 +20,16 @@ export default function PricingPage({setPage}) {
   const [openFaq,setOpenFaq]=useState(null);
   return (
     <main style={{position:"relative",zIndex:10}}>
-      <PageHero chip="Transparent Pricing" title="Firm Investment Protocols" hlWord="Investment"
-        sub="Scalable solutions for solo practitioners to global enterprises. All plans include neural voice processing." />
+      <PageHero chip="Transparent Pricing" title="AI Receptionist Pricing" hlWord="Pricing"
+        sub="Start with 15 free calling minutes. Starter includes 400 minutes for $120 USD per month. Growth and Enterprise are not available yet." />
 
       {/* Plans — stacked mobile, 3-col desktop */}
       <S bg="rgb(253,248,242)">
         <Reveal className="text-center mb-8 sm:mb-10">
           <h2 className="font-syne font-black uppercase tracking-tight text-[#1A1614] leading-tight" style={{fontSize:"clamp(20px,3.2vw,30px)"}}>
-            Firm <span style={{color:"#8B6E3C"}}>Investment</span>
+            Choose Your <span style={{color:"#8B6E3C"}}>Plan</span>
           </h2>
-          <p className="text-[12px] text-[#4E4439]/65 mt-2 max-w-sm mx-auto leading-relaxed">Scalable solutions tailored for professional practices and established corporations.</p>
+          <p className="text-[12px] text-[#4E4439]/65 mt-2 max-w-sm mx-auto leading-relaxed">Test with real calls before choosing Starter. Future plan details may change before launch.</p>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 items-start">
           {PLANS.map((p,i)=>(
@@ -37,15 +37,15 @@ export default function PricingPage({setPage}) {
               <div className={`relative flex flex-col bg-white border rounded-sm ${!p.available?"opacity-60":""} ${p.featured?"border-[#8B6E3C] shadow-lg shadow-[#8B6E3C]/10":"border-[#d4c8b8]/60 shadow-sm"}`}
                 style={{transform:p.featured?"translateY(-6px)":undefined}}
                 title={p.available?undefined:"This plan is still under build and isn't available yet"}>
-                {p.featured&&<div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B6E3C] text-white font-syne font-bold text-[9px] uppercase tracking-[.1em] px-4 py-1 rounded-sm whitespace-nowrap">Most Popular</div>}
+                {p.featured&&<div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B6E3C] text-white font-syne font-bold text-[9px] uppercase tracking-[.1em] px-4 py-1 rounded-sm whitespace-nowrap">Available Now</div>}
                 <div className="p-5 sm:p-6">
                   <div className="flex items-center gap-1.5 mb-2">
                     <div className={`font-syne font-bold text-[10px] uppercase tracking-[.12em] ${p.featured?"text-[#8B6E3C]":"text-[#4E4439]/55"}`}>{p.tier}</div>
                     {!p.available&&<span className="font-syne font-bold text-[8px] uppercase tracking-[.08em] text-[#8B6E3C] bg-[#8B6E3C]/10 border border-[#8B6E3C]/25 rounded-sm px-1.5 py-0.5 whitespace-nowrap">Coming Soon</span>}
                   </div>
                   <div className="flex items-baseline gap-0.5 mb-1">
-                    <span className="font-syne font-black text-[34px] sm:text-[38px] text-[#8B6E3C] leading-none tracking-tight">{p.price}</span>
-                    <span className="text-[12px] text-[#4E4439]/55 mb-0.5">/mo</span>
+                    <span className="font-syne font-black text-[34px] sm:text-[38px] text-[#8B6E3C] leading-none tracking-tight">{p.available ? p.price : "Coming soon"}</span>
+                    {p.available && <span className="text-[12px] text-[#4E4439]/55 mb-0.5">USD / month</span>}
                   </div>
                   <p className="text-[11.5px] text-[#4E4439]/60 mb-4 leading-relaxed">{p.available?p.desc:"Still under build — not available yet"}</p>
                   <div className="h-px bg-[#d4c8b8]/50 mb-4"/>

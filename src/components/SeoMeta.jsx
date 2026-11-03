@@ -46,10 +46,19 @@ export default function SeoMeta({ title, description, path, schema, noindex = fa
     }
     structuredData.textContent = JSON.stringify(schema || {
       "@context": "https://schema.org",
+      "@graph": [{
+        "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Letconvo AI", url: `${SITE_URL}/`, logo: `${SITE_URL}/logo512.png`
+      }, {
+      "@context": "https://schema.org",
       "@type": "WebPage",
       name: title,
       description,
       url: canonicalUrl,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      }, ...(path === "/" ? [] : [{ "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+        { "@type": "ListItem", position: 2, name: title.split("|")[0].trim(), item: canonicalUrl },
+      ] }])],
     });
   }, [title, description, path, schema, noindex]);
 

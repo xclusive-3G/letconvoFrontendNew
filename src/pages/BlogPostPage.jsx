@@ -71,7 +71,7 @@ const POSTS = {
       {
         heading: "What it looks like in practice",
         paragraphs: [
-          "An AI phone answering service for a trade business answers every call using whatever you've set up — your services, service area, pricing approach, availability — and runs the conversation the way a solid front-desk person would: greets the caller, answers the obvious questions (\"do you cover my area,\" \"can you come this week\"), gets the job details and contact info, and books straight onto your real calendar instead of just jotting down a message.",
+          "An AI phone answering service for a trade business answers every call using whatever you've set up — your services, service area, pricing approach, availability — and runs the conversation the way a solid front-desk person would: greets the caller, answers the obvious questions (\"do you cover my area,\" \"can you come this week\"), gets the job details and contact info, and books straight onto your configured booking availability instead of just jotting down a message.",
           "Because it answers the instant the phone rings no matter what the crew is doing, it erases the usual tradeoff between being on a job and being reachable. Both just happen at once.",
         ],
       },
@@ -110,7 +110,7 @@ const POSTS = {
       {
         heading: "What is an AI receptionist?",
         paragraphs: [
-          "An AI receptionist is software that answers your business calls the way a trained front-desk person would — greeting callers, answering the usual questions about your services, hours, and pricing, taking down a lead's name and number, handing off anything complicated to a person, and for appointment-based businesses, booking straight onto your real calendar. It's on 24/7, so a call at 11pm gets the same response as one at 11am.",
+          "An AI receptionist is software that answers your business calls the way a trained front-desk person would — greeting callers, answering the usual questions about your services, hours, and pricing, taking down a lead's name and number, handing off anything complicated to a person, and for appointment-based businesses, booking straight onto your configured booking availability. It's on 24/7, so a call at 11pm gets the same response as one at 11am.",
           "Letconvo works exactly this way: set up your business details once, and every call after that gets answered using them — no staffing decision required per call.",
         ],
       },
@@ -118,7 +118,7 @@ const POSTS = {
         heading: "How much does an AI receptionist cost?",
         paragraphs: [
           "There's no standard price tag in this category, so it helps to know what you're actually comparing. You'll run into flat monthly subscriptions that bundle a set number of minutes, pay-per-minute or pay-per-call rates with no base fee, usage tiers that scale with volume, setup or onboarding fees, charges for extra numbers or overflow calls, and premium add-ons like CRM syncing or custom voice cloning.",
-          "As a concrete example: Letconvo's Starter plan runs $120/month and includes 400 minutes of AI-answered calls, with anything past that billed at $0.09/minute — no setup fee, cancel or change anytime from the dashboard. Pricing climbs from there if you want calendar booking, CRM integration, or multi-location support.",
+          "Letconvo Starter is listed at $120 USD per month with 400 included calling minutes. Calls require an available balance; review top-up options in the dashboard. Growth and Enterprise are coming soon. Confirm external calendar or CRM requirements before subscribing.",
         ],
       },
       {
@@ -234,7 +234,7 @@ const POSTS = {
       {
         heading: "Where an AI receptionist wins",
         paragraphs: [
-          "An AI receptionist pulls ahead on the calls that are frequent, time-sensitive, and don't need judgment — answering instantly at 2am, handling several calls at once instead of stacking people on hold, giving the same correct answer every single time instead of a tired or inconsistent one, booking straight onto your real calendar with nobody typing it in later. It doesn't take lunch, call in sick, quit for a better offer, or need two weeks of training before it gets your hours right.",
+          "An AI receptionist pulls ahead on the calls that are frequent, time-sensitive, and don't need judgment — answering instantly at 2am, handling several calls at once instead of stacking people on hold, giving the same correct answer every single time instead of a tired or inconsistent one, booking straight onto your configured booking availability with nobody typing it in later. It doesn't take lunch, call in sick, quit for a better offer, or need two weeks of training before it gets your hours right.",
           "That matters most on the calls that quietly cost small businesses the most money: a new customer calling after hours, or calling at the exact moment the one person who could answer is already on another line.",
         ],
       },
@@ -280,80 +280,15 @@ const POSTS = {
   },
   "best-ai-receptionist-small-business-usa": {
     eyebrow: "Buyer's Guide",
-    title: "Best AI Receptionist for Small Businesses in the USA: Top Options for 2027",
-    description: "A practical look at the AI receptionist options US small businesses actually run into, what each one's really built for, and how to tell which one fits your calls instead of picking whichever ranks highest.",
+    title: "How to Choose an AI Receptionist for a US Small Business",
+    description: "Compare call answering, booking, forwarding requirements, and total costs before choosing an AI receptionist for your US business.",
     sections: [
-      {
-        heading: "Why \"best\" depends on your calls, not a ranking",
-        paragraphs: [
-          "A fair warning before you read any \"best AI receptionist\" list, including this one: most of them are written by a company selling one of the options on the list. That doesn't make the information useless, but it's worth knowing going in — especially since the \"best\" option for a solo barbershop fielding booking questions looks nothing like the \"best\" one for a law firm that wants a human on every sensitive call.",
-          "Below is an honest rundown of the options small businesses in the US actually run into, grouped by what each one's really built for — including where Letconvo fits, and where it doesn't.",
-        ],
-      },
-      {
-        heading: "What to check before you pick one",
-        paragraphs: [
-          "A few things matter more than any marketing page: does it actually book appointments against a real calendar, or just take a message and leave the calling back to you? Is it AI-only, or AI with live humans on standby for anything complicated? Are you billed by the minute, by the call, or by unique caller — and does that match how your phone actually rings? And can you test it with real calls before paying for a full month, or does it want a card upfront?",
-        ],
-      },
-      {
-        heading: "The options at a glance",
-        paragraphs: [
-          "Pricing in this space changes often and some providers quote per-call rather than a flat rate, so treat the numbers below as a starting point and confirm current pricing directly with whichever one you're considering.",
-        ],
-        table: {
-          headers: ["", "Best for", "Starting price", "Type"],
-          rows: [
-            ["Letconvo", "Appointment booking, AI-first", "$120/mo (15 min free to test)", "AI, with live transfer option"],
-            ["Rosie", "Tightest budget", "$49/mo for 250 min", "AI-only"],
-            ["Goodcall", "Steady storefront call volume", "$79/mo, billed per caller", "AI-only"],
-            ["Smith.ai", "AI with a human safety net", "Call-based, quote varies", "AI + live human"],
-            ["Ruby", "A live person on every call", "From $250/mo for 50 min", "Human-only"],
-          ],
-        },
-      },
-      {
-        heading: "Letconvo — best for appointment-based businesses that want AI to actually book the job",
-        paragraphs: [
-          "Letconvo answers every call using the specifics you give it — your services, hours, and booking rules — and can check real availability and book directly instead of just taking a message. Plans start at $120/month with 400 included minutes, and every new signup gets 15 minutes of free AI calling credit to test it with real calls first. It's the strongest fit for salons, clinics, home-service businesses, and anyone else whose calls are mostly \"can I get an appointment\" rather than open-ended support.",
-        ],
-      },
-      {
-        heading: "Rosie — best for the tightest budget",
-        paragraphs: [
-          "Rosie's entry plan runs $49/month for 250 minutes, with higher tiers adding calendar booking and warm transfers to a person. It's built around simple, affordable call answering and message-taking, with a 7-day free trial to try it out. If the goal is just not missing calls on the smallest possible budget, it's worth a look — though you'll need one of the pricier tiers to get real appointment booking rather than message-taking alone.",
-        ],
-      },
-      {
-        heading: "Goodcall — best for storefronts with steady call patterns",
-        paragraphs: [
-          "Goodcall charges by unique caller rather than by the minute — plans start at $79/month for up to 100 unique callers, with no per-minute metering. That fits a shop with a steady trickle of short, similar calls well, since a long call doesn't cost more than a short one. It also lets you build and test the AI agent for free before connecting a phone number, which is a low-risk way to try it out.",
-        ],
-      },
-      {
-        heading: "Smith.ai — best for businesses that want AI with a human safety net",
-        paragraphs: [
-          "Smith.ai pairs AI call handling with live human agents who can step in on calls the AI shouldn't take alone, which is the main reason to pick it over an AI-only option. Pricing is call-based and varies by which tier of their service you're looking at — AI-only versus AI-plus-live — so it's worth getting a current quote directly from them rather than trusting a specific number here; their pricing structure is one of the more layered on this list.",
-        ],
-      },
-      {
-        heading: "Ruby — best if you want a live person, not AI, answering every call",
-        paragraphs: [
-          "Ruby isn't actually an AI receptionist — it's a live, human-staffed answering service, with AI used only for extras like transcripts and sentiment analysis. Plans are priced by the minute, starting around $250/month for 50 minutes. If what you actually want is a real person on every call rather than AI with occasional human backup, Ruby is answering a different question than the rest of this list.",
-        ],
-      },
-      {
-        heading: "How to actually choose",
-        paragraphs: [
-          "None of this is really a ranking — it's closer to matching. If your calls are routine and appointment-driven, an AI-first option like Letconvo or Rosie will probably get you furthest for the money. If a meaningful share of your calls need a human's judgment, something with live backup — Smith.ai, or a fully live service like Ruby — is worth the extra cost. And since every provider here, including us, changes pricing and plans over time, the only way to know for sure is to test the one you're leaning toward with a handful of your own real calls before committing.",
-        ],
-      },
-      {
-        heading: "Getting started",
-        paragraphs: [
-          "If an AI-first option sounds like the right fit, Letconvo gives every new signup 15 minutes of free AI calling credit — no card required — so you can hear exactly how it handles your calls before deciding on anything.",
-        ],
-      },
+      { heading: "Start with the calls you need to handle", paragraphs: ["List your five most common caller questions, the details you need for a lead, and what should happen when a caller wants an appointment. Use these same scenarios to evaluate each provider. This guide is written by Letconvo, which sells an AI receptionist; it is a buying checklist rather than an independent product ranking."] },
+      { heading: "Test booking and follow-up with real scenarios", paragraphs: ["Ask for an available appointment, then request an unavailable time and reschedule an existing booking. Confirm where the appointment appears and how your team receives caller details. Distinguish booking against configured business availability from synchronizing an external calendar; confirm the exact integration and plan before purchasing."] },
+      { heading: "Confirm US number support and forwarding", paragraphs: ["Before moving a business line, confirm number availability, carrier forwarding support, possible carrier charges, and what happens if the AI cannot complete a request. Verify these details for your own number and business requirements with the provider."] },
+      { heading: "Compare total monthly cost", paragraphs: ["Check the subscription price, included usage, top-up rules, number charges, and cancellation terms. A low headline price is only useful if the plan covers the calls and features you need. Confirm current prices directly with each provider rather than relying on an old comparison table."] },
+      { heading: "What you can test with Letconvo", paragraphs: ["Letconvo offers 15 free calling minutes to test answering, lead capture, and appointments using configured business availability. Starter is listed at $120 USD per month with 400 included minutes. Growth and Enterprise are coming soon. Contact us to confirm number support and any external calendar or CRM requirement before subscribing."] },
+      { heading: "Choose using a repeatable test", paragraphs: ["Run the same greeting, opening-hours question, booking request, and difficult question with each shortlisted service. Check the recorded outcome, clarity of the response, and follow-up information. Choose the service that performs well on your actual calls and fits your budget."] },
     ],
   },
 };
@@ -371,6 +306,9 @@ export default function BlogPostPage({ pageId, setPage }) {
     "@type": "BlogPosting",
     headline: post.title,
     description: post.description,
+    url: `https://letconvo.live${PAGE_PATHS[activeId]}`,
+    mainEntityOfPage: `https://letconvo.live${PAGE_PATHS[activeId]}`,
+    publisher: { "@type": "Organization", name: "Letconvo AI", url: "https://letconvo.live/" },
     author: { "@type": "Organization", name: "Letconvo AI" },
   };
 
@@ -378,6 +316,7 @@ export default function BlogPostPage({ pageId, setPage }) {
     <main className="relative z-10 pt-[52px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <article>
+        <p className="max-w-3xl mx-auto px-4 pt-8 text-sm text-[#4E4439]">By the Letconvo AI team ? Product guidance from the service provider</p>
         <section className="px-4 sm:px-6 py-14 sm:py-20 bg-[#fdf8f3] border-b border-[#d4c8b8]/45">
           <div className="max-w-3xl mx-auto">
             <Reveal>

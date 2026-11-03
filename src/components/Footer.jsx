@@ -21,7 +21,7 @@ export default function Footer({ setPage }) {
           <div>
             <img src={letconvoLogo} alt="Letconvo AI" className="h-8 mx-auto sm:mx-0" />
             <p className="text-[11px] text-[#4E4439]/50 mt-3 max-w-[220px] mx-auto sm:mx-0 leading-relaxed">
-              AI receptionist for small businesses — answer every call, capture missed-call leads, and book appointments 24/7.
+              AI receptionist for small businesses in the USA and Canada — answer every call, capture missed-call leads, and book appointments 24/7.
             </p>
           </div>
           <nav aria-label="Solutions">
@@ -48,7 +48,7 @@ export default function Footer({ setPage }) {
           </nav>
         </div>
         <div className="flex flex-col sm:flex-row flex-wrap justify-between items-center gap-4 pt-5">
-          <div className="text-[11px] text-[#4E4439]/50">© 2025 Letconvo AI. Excellence in reception automation.</div>
+          <div className="text-[11px] text-[#4E4439]/50">© {new Date().getFullYear()} Letconvo AI. Excellence in reception automation.</div>
           <div className="flex gap-2">
             {["share", "hub"].map(ic => (
               <div key={ic} className="w-8 h-8 rounded-sm border border-[#d4c8b8]/60 flex items-center justify-center text-[#4E4439]/50 hover:bg-[#8B6E3C] hover:text-white hover:border-[#8B6E3C] transition-all cursor-pointer">

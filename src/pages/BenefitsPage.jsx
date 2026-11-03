@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import PageHero  from "../components/PageHero";
 import Reveal    from "../components/Reveal";
-import Counter   from "../components/Counter";
+
 import Footer    from "../components/Footer";
 import { PAGE_PATHS } from "../config/routes";
 import { SEO_LANDING_PAGES } from "./SeoLandingPage";
@@ -10,26 +10,13 @@ import { SEO_LANDING_PAGES } from "./SeoLandingPage";
 
 const BENEFITS = [
   { icon:"contact_emergency", title:"Maximize Revenue",   desc:"No more voicemails. Every caller speaks to a polished AI ready to qualify and convert." },
-  { icon:"calendar_month",    title:"Automated Booking",  desc:"Direct integration with your calendar allows the AI to manage schedules autonomously." },
+  { icon:"calendar_month",    title:"Automated Booking",  desc:"The AI checks your configured business hours and available slots to book appointments." },
   { icon:"phone_disabled",    title:"Eternal Uptime",     desc:"24/7/365 availability. Letconvo maintains your professional image round the clock." },
   { icon:"payments",          title:"Optimized Overhead", desc:"Drastically reduce staffing costs while increasing output and response times." },
 ];
 
-const STATS = [
-  { val:35,   suf:"%",  lbl:"Avg. booking increase" },
-  { val:80,   suf:"%",  lbl:"Cost savings vs. staff" },
-  { val:4.8,  suf:"/5", lbl:"Customer satisfaction"  },
-  { val:99.9, suf:"%",  lbl:"System uptime"           },
-];
-
-const TESTS = [
-  { q:"Within 2 weeks, our missed call rate dropped to zero and bookings were up 42%. Letconvo paid for itself on day one.", name:"Dr. Sarah Okonkwo", role:"Medical Director, Apex Health",  grad:"from-amber-600 to-cyan-600" },
-  { q:"The ROI was immediate. My receptionist now focuses on in-office experience while Letconvo handles every inbound call.", name:"Marcus Adebayo",   role:"Principal, Adebayo Law Group", grad:"from-slate-600 to-amber-600" },
-  { q:"Setup took under 15 minutes. The AI voice is indistinguishable from human — clients love it.",                        name:"Chioma Eze",       role:"CEO, Lagos Growth Partners",   grad:"from-cyan-600 to-slate-600" },
-];
-
 const WITHOUT = ["Missed calls after hours","Staff overwhelmed at peak times","Manual appointment scheduling","Inconsistent customer experience","High staffing overhead","No data on call performance"];
-const WITH    = ["Every call answered instantly, 24/7","Unlimited concurrent call handling","Automatic calendar booking","Consistent, branded interactions","Up to 80% cost savings","Full analytics dashboard"];
+const WITH    = ["Every call answered instantly, 24/7","Live answering or missed-call callback","Booking with configured availability","Consistent, branded interactions","Less manual call handling","Full analytics dashboard"];
 
 const WHAT_LETCONVO_DOES = [
   { icon: "phone_in_talk", title: "Answers every call", desc: "Letconvo answers incoming calls when your team is busy, unavailable, or closed—so a missed call does not become a missed opportunity." },
@@ -94,17 +81,17 @@ export default function BenefitsPage({ setPage }) {
   return (
     <main style={{ position:"relative", zIndex:10 }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <PageHero chip="Corporate Intelligence" title="Never Miss a Lead Again."
-        hlWord="Lead"
-        sub="Letconvo AI captures every call, books appointments, and greets your customers with corporate precision."
-        primaryBtn="Deploy AI Now"   primaryAction={() => setPage("getstarted")}
-        secondaryBtn="View Demo"     secondaryAction={() => setPage("pricing")} />
+      <PageHero chip="Answer calls. Capture leads. Book appointments." title="AI Receptionist for Small Businesses"
+        hlWord="AI Receptionist"
+        sub="For small businesses in the USA and Canada. Answer calls, capture caller details, and book appointments using your configured availability, even when your team is busy."
+        primaryBtn="Try 15 Free Minutes"   primaryAction={() => setPage("getstarted")}
+        secondaryBtn="View Pricing"     secondaryAction={() => setPage("pricing")} />
 
       {/* Benefits */}
       <S bg="rgb(255,255,255)">
         <Reveal className="mb-8 sm:mb-10">
           <Label>Why Letconvo AI</Label>
-          <H2>Corporate Precision</H2>
+          <H2>Keep Your Business Calls Moving</H2>
           <p className="text-[#4E4439]/65 text-[12.5px] mt-2 max-w-lg leading-relaxed">We've engineered a receptionist that integrates seamlessly with your existing professional workflow.</p>
         </Reveal>
         {/* 2-col on mobile → 4-col on md */}
@@ -195,20 +182,6 @@ export default function BenefitsPage({ setPage }) {
         </div>
       </S>
 
-      {/* Stats — 2-col on mobile, 4-col on md */}
-      <div className="relative py-10 sm:py-12 px-4 sm:px-6 border-y border-[#ccc5ba]/50" style={{ background:"rgb(255,252,248)", zIndex:10, position:"relative" }}>
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-0 sm:divide-x sm:divide-[#ccc5ba]/50">
-          {STATS.map((s,i)=>(
-            <Reveal key={s.lbl} delay={i*.08} className={`sm:px-6 sm:first:pl-0`}>
-              <div className="font-syne font-black text-[#8B6E3C] leading-none" style={{ fontSize:"clamp(28px,3.8vw,42px)" }}>
-                <Counter to={s.val} suffix={s.suf}/>
-              </div>
-              <div className="text-[#4E4439]/60 mt-1.5 text-[11px] sm:text-[12px]">{s.lbl}</div>
-            </Reveal>
-          ))}
-        </div>
-      </div>
-
       {/* Comparison — stacked on mobile, 2-col on md */}
       <S bg="rgb(253,248,243)">
         <Reveal className="mb-7 sm:mb-8">
@@ -237,31 +210,6 @@ export default function BenefitsPage({ setPage }) {
               ))}
             </div>
           </Reveal>
-        </div>
-      </S>
-
-      {/* Testimonials — stacked on mobile, 3-col on md */}
-      <S bg="rgb(255,255,255)">
-        <Reveal className="mb-7 sm:mb-8">
-          <Label>Social Proof</Label>
-          <H2>Trusted Worldwide</H2>
-        </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6">
-          {TESTS.map((t,i)=>(
-            <Reveal key={t.name} delay={i*.09}>
-              <div className="border-l-[3px] border-[#8B6E3C] pl-4 sm:pl-5 py-1 flex flex-col h-full">
-                <div className="text-[#8B6E3C] tracking-widest mb-2 text-[11px]">★★★★★</div>
-                <p className="text-[#4E4439]/80 leading-relaxed mb-4 italic text-[12.5px] sm:text-[13px] flex-1">"{t.q}"</p>
-                <div className="flex items-center gap-2.5 mt-auto">
-                  <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${t.grad} flex-shrink-0`}/>
-                  <div>
-                    <div className="font-syne font-bold text-[#1A1614] text-[11px]">{t.name}</div>
-                    <div className="text-[#4E4439]/50 mt-0.5 text-[10px]">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
         </div>
       </S>
 
@@ -321,10 +269,10 @@ export default function BenefitsPage({ setPage }) {
         <Reveal>
           <Label>Get Started</Label>
           <h2 className="font-syne font-black uppercase tracking-[-0.02em] text-[#1A1614] leading-[1.0] mb-5 sm:mb-6" style={{ fontSize:"clamp(28px,5.5vw,52px)" }}>
-            Professional<br/>Transformation.
+            Put Your Next<br/>Call to the Test.
           </h2>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-5 flex-wrap mb-7 sm:mb-8">
-            {[["verified_user","Implementation","Standardized Setup"],["support_agent","Support","Priority Account Manager"]].map(([ic,lbl,val])=>(
+            {[["verified_user","Implementation","Standardized Setup"],["support_agent","Support","Contact Our Team"]].map(([ic,lbl,val])=>(
               <div key={lbl} className="flex items-center gap-3 text-left bg-[#f7f2ec] border border-[#ccc5ba]/50 px-4 py-3 rounded-sm">
                 <div className="w-8 h-8 rounded-full bg-[#8B6E3C]/10 flex items-center justify-center text-[#8B6E3C] flex-shrink-0">
                   <span className="material-symbols-outlined text-[15px]">{ic}</span>
@@ -338,7 +286,7 @@ export default function BenefitsPage({ setPage }) {
           </div>
           <motion.button whileHover={{ scale:1.04 }} whileTap={{ scale:.97 }} onClick={() => setPage("getstarted")}
             className="bg-[#8B6E3C] text-white font-syne font-bold uppercase tracking-[.12em] px-8 sm:px-12 py-3.5 sm:py-4 hover:bg-[#6b5228] transition-colors text-[11px] sm:text-[12px] w-full sm:w-auto">
-            Activate Letconvo AI
+            Try 15 Free Minutes
           </motion.button>
           <p className="text-[10.5px] text-[#4E4439]/45 mt-4">15 minutes of free AI calling credit · No commitment required</p>
         </Reveal>
