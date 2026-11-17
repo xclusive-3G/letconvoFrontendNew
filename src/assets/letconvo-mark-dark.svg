@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="Letconvo AI"><title>Letconvo AI</title>
+  <defs><mask id="lc-gap-md" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+    <rect width="48" height="48" fill="#fff"/>
+    <rect x="13.25" y="12.25" width="35.5" height="29.5" rx="10.75" fill="#000"/>
+    <path d="M40 33 L44.6 48.4 L28.6 39 Z" fill="#000"/>
+  </mask></defs>
+  <g mask="url(#lc-gap-md)">
+    <rect x="2" y="4" width="28" height="22" rx="8" fill="#10B981"/>
+    <path d="M7 23 L5 31 L15 25 Z" fill="#10B981"/>
+  </g>
+  <rect x="16" y="15" width="30" height="24" rx="8" fill="#F4F0EB"/>
+  <path d="M40 36 L43 45 L32 39 Z" fill="#F4F0EB"/>
+  <circle cx="24.5" cy="27" r="2.2" fill="#1A1614"/><circle cx="31" cy="27" r="2.2" fill="#1A1614"/><circle cx="37.5" cy="27" r="2.2" fill="#1A1614"/></svg>

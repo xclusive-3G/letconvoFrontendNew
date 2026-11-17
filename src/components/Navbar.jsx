@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PAGE_PATHS } from "../config/routes";
-import letconvoLogo from "../assets/letconvo-logo.png";
+import letconvoLogo from "../assets/letconvo-logo.svg";
 
 const NAV_LINKS = [
   { id:"benefits", label:"Features" },

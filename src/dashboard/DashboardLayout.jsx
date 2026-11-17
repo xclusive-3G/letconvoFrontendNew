@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { API_BASE } from "../config/apiBase";
 import { ADMIN_EMAILS } from "../config/adminEmails";
+import letconvoMark from "../assets/letconvo-mark-dark.svg";
 
 
 const Pr = "#8B6E3C";
@@ -166,9 +167,7 @@ const markAllNotificationsRead = async () => {
       >
         {/* Logo */}
         <div style={{ padding:"18px 16px 12px", borderBottom:"1px solid rgba(255,255,255,0.07)", display:"flex", alignItems:"center", gap:10, overflow:"hidden", flexShrink:0 }}>
-          <div style={{ width:30, height:30, background:Pr, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-            <span style={{ color:"#fff", fontSize:13, fontFamily:"Syne,sans-serif", fontWeight:900 }}>L</span>
-          </div>
+          <img src={letconvoMark} alt="Letconvo AI" width={30} height={30} style={{ flexShrink:0 }} />
           <AnimatePresence>
             {desktopOpen && (
               <motion.span initial={{opacity:0,x:-10}} animate={{opacity:1,x:0}} exit={{opacity:0,x:-10}} transition={{duration:0.2}}
@@ -380,9 +379,7 @@ const markAllNotificationsRead = async () => {
               {/* Header */}
               <div style={{ padding:"18px 16px 14px", borderBottom:"1px solid rgba(255,255,255,0.07)", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
                 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                  <div style={{ width:30, height:30, background:Pr, borderRadius:6, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                    <span style={{ color:"#fff", fontSize:13, fontFamily:"Syne,sans-serif", fontWeight:900 }}>L</span>
-                  </div>
+                  <img src={letconvoMark} alt="Letconvo AI" width={30} height={30} style={{ flexShrink:0 }} />
                   <span style={{ fontFamily:"Syne,sans-serif", fontWeight:800, fontSize:12, color:Pr, letterSpacing:"0.1em", textTransform:"uppercase" }}>Letconvo AI</span>
                 </div>
                 <button onClick={() => setMobileNav(false)} style={{ background:"none", border:"none", cursor:"pointer", color:"rgba(255,255,255,0.4)", fontSize:20 }}>✕</button>

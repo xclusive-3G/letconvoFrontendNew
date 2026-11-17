@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import letconvoMark from "../assets/letconvo-mark-dark.svg";
 
 const Pr = "#8B6E3C";
 
@@ -26,9 +27,7 @@ export default function AdminLayout({ children, activePage, setActivePage, setAp
         style={{ height: "100%", flexShrink: 0, background: "#1a1410", flexDirection: "column", overflow: "hidden", position: "relative", zIndex: 20 }}
       >
         <div style={{ padding: "18px 16px 12px", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 10, overflow: "hidden", flexShrink: 0 }}>
-          <div style={{ width: 30, height: 30, background: Pr, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-            <span style={{ color: "#fff", fontSize: 13, fontFamily: "Syne,sans-serif", fontWeight: 900 }}>L</span>
-          </div>
+          <img src={letconvoMark} alt="Letconvo AI" width={30} height={30} style={{ flexShrink: 0 }} />
           <AnimatePresence>
             {desktopOpen && (
               <motion.span initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.2 }}

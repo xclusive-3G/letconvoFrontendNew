@@ -1,5 +1,5 @@
 import { PAGE_PATHS } from "../config/routes";
-import letconvoLogo from "../assets/letconvo-logo.png";
+import letconvoLogo from "../assets/letconvo-logo.svg";
 
 const SOLUTIONS = [
   { id: "ai-receptionist-for-small-business", label: "AI Receptionist for Small Business" },
@@ -19,7 +19,7 @@ export default function Footer({ setPage }) {
       <div className="max-w-5xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 pb-8 sm:pb-9 border-b border-[#d4c8b8]/40 text-center sm:text-left">
           <div>
-            <img src={letconvoLogo} alt="Letconvo AI" className="h-8 mx-auto sm:mx-0" />
+            <img src={letconvoLogo} alt="Letconvo AI" className="h-8 w-auto mx-auto sm:mx-0" />
             <p className="text-[11px] text-[#4E4439]/50 mt-3 max-w-[220px] mx-auto sm:mx-0 leading-relaxed">
               AI receptionist for small businesses in the USA and Canada — answer every call, capture missed-call leads, and book appointments 24/7.
             </p>
