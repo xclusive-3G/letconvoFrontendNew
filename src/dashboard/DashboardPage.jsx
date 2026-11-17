@@ -23,8 +23,13 @@ const PAGE_MAP = {
   settings:     SettingsPage,
 };
 
+function getInitialActivePage() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("settings") ? "settings" : "overview";
+}
+
 export default function DashboardPage({ setAppPage }) {
-  const [activePage, setActivePage] = useState("overview");
+  const [activePage, setActivePage] = useState(getInitialActivePage);
   const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");

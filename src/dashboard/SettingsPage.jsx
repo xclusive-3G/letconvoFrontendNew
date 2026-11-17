@@ -143,7 +143,26 @@ const {
 const letconvoNumber = phoneSetup?.letconvo_number || null;
 const forwardingVerified = phoneSetup?.forwarding_verified || false;
 
-  const [tab, setTab] = useState("account");
+  const [tab, setTab] = useState(() =>
+    new URLSearchParams(window.location.search).get("settings") ? "integrations" : "account"
+  );
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const result = params.get("settings");
+    if (!result) return;
+
+    if (result === "success") alert("Google Calendar connected!");
+    else if (result === "error") alert("Couldn't connect Google Calendar — please try again.");
+
+    params.delete("settings");
+    const newSearch = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + (newSearch ? `?${newSearch}` : "") + window.location.hash
+    );
+  }, []);
 
 
   // const [tab, setTab] = useState("account");
@@ -152,6 +171,8 @@ const forwardingVerified = phoneSetup?.forwarding_verified || false;
   const [businessAddress, setBusinessAddress] = useState('123 Wellness Ave, California, united states');
 
   const [calendarSync, setCalendarSync] = useState(true);
+  const [calendarConnected, setCalendarConnected] = useState(false);
+  const [calendarEmail, setCalendarEmail] = useState(null);
   const [crmSync, setCrmSync] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState("");
   const [zapierKey, setZapierKey] = useState("");
@@ -267,6 +288,8 @@ useEffect(() => {
   setTimezone(settingsData.timezone || "Africa/Lagos");
 
   setCalendarSync(settingsData.calendarSync);
+  setCalendarConnected(settingsData.calendarConnected);
+  setCalendarEmail(settingsData.calendarEmail);
   setCrmSync(settingsData.crmSync);
   setWebhookUrl(settingsData.webhookUrl || "");
   setZapierKey(settingsData.zapierKey || "");
@@ -312,12 +335,17 @@ if (isLoading) {
 
       {tab === "integrations" && (
         <>
-          <Sec title="Calendar Integration" icon="calendar_month" locked>
+          <Sec title="Calendar Integration" icon="calendar_month">
             <Toggle value={calendarSync} onChange={setCalendarSync} label="Google Calendar Sync" sub="AI automatically books appointments into your calendar." />
-            {calendarSync && (
+            {calendarConnected ? (
   <div style={{ marginTop: 10, padding: "12px 14px", background: "#ecfdf5", border: "1px solid #a7f3d0", borderRadius: 7, display: "flex", alignItems: "center", gap: 8 }}>
     <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#10b981" }}>check_circle</span>
-    <span style={{ fontSize: 12, color: "#065f46" }}>Connected: apex-health@gmail.com · Last sync 2 min ago</span>
+    <span style={{ fontSize: 12, color: "#065f46" }}>Connected: {calendarEmail}</span>
+  </div>
+) : (
+  <div style={{ marginTop: 10, padding: "12px 14px", background: "#fdf9f5", border: "1px solid #e8e2d8", borderRadius: 7, display: "flex", alignItems: "center", gap: 8 }}>
+    <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#8B7060" }}>info</span>
+    <span style={{ fontSize: 12, color: "#8B7060" }}>Not connected yet — click Google Calendar below to connect.</span>
   </div>
 )}
 <div style={{ marginTop: 12, display: "flex", gap: 10 }}>
