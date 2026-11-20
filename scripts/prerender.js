@@ -29,6 +29,7 @@ const ROUTES = [
   "/blog",
   "/terms",
   "/privacy",
+  "/refund-policy",
   "/login",
   "/get-started",
   "/ai-receptionist-for-small-business",

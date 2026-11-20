@@ -44,6 +44,7 @@ export default function Footer({ setPage }) {
               <li><a href={PAGE_PATHS.contact} onClick={go("contact")} className="text-[11.5px] text-[#4E4439]/60 hover:text-[#8B6E3C] transition-colors">Contact</a></li>
               <li><a href={PAGE_PATHS.terms} onClick={go("terms")} className="text-[11.5px] text-[#4E4439]/60 hover:text-[#8B6E3C] transition-colors">Terms</a></li>
               <li><a href={PAGE_PATHS.privacy} onClick={go("privacy")} className="text-[11.5px] text-[#4E4439]/60 hover:text-[#8B6E3C] transition-colors">Privacy</a></li>
+              <li><a href={PAGE_PATHS["refund-policy"]} onClick={go("refund-policy")} className="text-[11.5px] text-[#4E4439]/60 hover:text-[#8B6E3C] transition-colors">Refund Policy</a></li>
             </ul>
           </nav>
         </div>

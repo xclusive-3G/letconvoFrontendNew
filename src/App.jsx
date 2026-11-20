@@ -13,6 +13,7 @@ import DashboardPage  from "./dashboard/DashboardPage";
 import AdminPage      from "./admin/AdminPage";
 import TermsPage      from "./pages/termsPage"; // ← fix casing
 import PrivacyPage    from "./pages/privacyPage";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
 import BlogPage       from "./pages/BlogPage";
 import SeoLandingPage, { SEO_LANDING_PAGES } from "./pages/SeoLandingPage";
 import BlogPostPage, { BLOG_POSTS } from "./pages/BlogPostPage";
@@ -31,7 +32,8 @@ const PUBLIC_PAGES = {
   login:      { comp: LoginPage,      title: "Login — Letconvo AI",                    description: "Log in to your Letconvo AI dashboard to manage calls, appointments, credits, and receptionist settings." },
   getstarted: { comp: GetStartedPage, title: "Get Started Free — Letconvo AI",         description: "Start free with Letconvo AI. Set up your AI phone receptionist in minutes and start capturing every call, lead, and appointment." },
   privacy:    { comp: PrivacyPage,    title: "Privacy — Letconvo AI",                  description: "Letconvo AI's privacy policy — how we collect, use, and protect the data of businesses and callers using the Letconvo AI receptionist." },
-  blog:       { comp: BlogPage,       title: "AI Receptionist Blog — Letconvo AI",     description: "Guides on missed calls, AI receptionists, and phone answering for small businesses, from the Letconvo AI team." },
+  "refund-policy": { comp: RefundPolicyPage, title: "Refund Policy — Letconvo AI", description: "Letconvo AI's refund policy — every payment is covered by a 14-day, no-questions-asked money-back guarantee." },
+  blog:       { comp: BlogPage,      title: "AI Receptionist Blog — Letconvo AI",     description: "Guides on missed calls, AI receptionists, and phone answering for small businesses, from the Letconvo AI team." },
 };
 
 Object.entries(SEO_LANDING_PAGES).forEach(([pageId, page]) => {

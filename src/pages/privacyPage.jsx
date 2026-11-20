@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
+import { BRAND, LEGAL_ENTITY, SITE, LEGAL_LAST_UPDATED } from "../config/legal";
 
-const LAST_UPDATED = "June 15, 2025";
-const COMPANY = "LetConvo AI";
-const SITE = "letconvo.live";
+const LAST_UPDATED = LEGAL_LAST_UPDATED;
+const COMPANY = BRAND;
 const CONTACT_EMAIL = "privacy@letconvo.live";
 
 const SECTIONS = [
@@ -12,7 +12,7 @@ const SECTIONS = [
     id: "overview",
     title: "1. Overview",
     content: [
-      `${COMPANY} ("we", "our", or "us") operates the website ${SITE} and provides AI-powered receptionist and call management services. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our platform.`,
+      `${COMPANY} is operated by ${LEGAL_ENTITY} ("we", "our", or "us"), which runs the website ${SITE} and provides AI-powered receptionist and call management services. This Privacy Policy explains how we collect, use, disclose, and safeguard your personal information when you use our platform.`,
       "By using our Services, you consent to the data practices described in this Privacy Policy. If you do not agree, please discontinue use immediately.",
     ],
   },
@@ -113,7 +113,7 @@ const SECTIONS = [
         heading: "Service providers (data processors):",
         items: [
           "Cloud hosting and infrastructure providers (e.g. AWS, Google Cloud)",
-          "Payment processors (e.g. Paystack) — they handle card data under their own PCI-DSS compliance",
+          "Paddle.com, our Merchant of Record, which processes all payments, invoices, and taxes and handles card data under its own PCI-DSS compliance and privacy policy",
           "SMS/communication providers for sending confirmation messages",
           "Analytics tools for aggregated, anonymised usage statistics",
         ],

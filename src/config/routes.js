@@ -5,6 +5,7 @@ export const PAGE_PATHS = {
   blog: "/blog",
   terms: "/terms",
   privacy: "/privacy",
+  "refund-policy": "/refund-policy",
   login: "/login",
   getstarted: "/get-started",
   dashboard: "/dashboard",

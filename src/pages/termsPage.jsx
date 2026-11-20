@@ -1,17 +1,26 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
+import {
+  BRAND,
+  LEGAL_ENTITY,
+  LEGAL_EMAIL,
+  SITE,
+  REFUND_WINDOW_DAYS,
+  LEGAL_LAST_UPDATED,
+  PADDLE_MOR_NOTICE
+} from "../config/legal";
 
-const LAST_UPDATED = "June 15, 2025";
-const COMPANY = "LetConvo AI";
-const CONTACT_EMAIL = "legal@letconvo.live";
-const SITE = "letconvo.live";
+const LAST_UPDATED = LEGAL_LAST_UPDATED;
+const COMPANY = BRAND;
+const CONTACT_EMAIL = LEGAL_EMAIL;
 
 const SECTIONS = [
   {
     id: "acceptance",
     title: "1. Acceptance of Terms",
     content: [
+      `${COMPANY} (the website at ${SITE} and the AI receptionist platform) is operated by ${LEGAL_ENTITY} ("we", "us", or "our"). References to "${COMPANY}" in these Terms mean ${LEGAL_ENTITY}.`,
       `By accessing or using ${COMPANY}'s website, platform, or AI receptionist services (collectively, the "Services"), you ("User", "you", or "your") agree to be legally bound by these Terms and Conditions ("Terms"). If you are using our Services on behalf of a business or organization, you represent and warrant that you have the authority to bind that entity to these Terms.`,
       "If you do not agree to these Terms in their entirety, you must immediately cease all use of our Services. Your continued use of the Services constitutes your ongoing acceptance of any updates or amendments to these Terms.",
     ],
@@ -59,7 +68,7 @@ const SECTIONS = [
         ],
       },
     ],
-    footer: "We reserve the right to investigate any suspected violation of this policy and take appropriate action, including immediate account suspension without refund.",
+    footer: "We reserve the right to investigate any suspected violation of this policy and take appropriate action, including immediate account suspension.",
   },
   {
     id: "call-recording",
@@ -89,12 +98,14 @@ const SECTIONS = [
     id: "payment",
     title: "7. Payment, Billing & Refunds",
     items: [
+      PADDLE_MOR_NOTICE,
+      "Prices are shown in your local currency where available (US dollars for customers in the United States, Canadian dollars for customers in Canada).",
       "All subscription fees are billed in advance on a monthly or annual basis, depending on your chosen plan.",
-      "You authorize us to charge your designated payment method on each billing cycle renewal date.",
-      "All fees are exclusive of applicable taxes (including VAT, GST, or sales tax), which you are responsible for paying.",
+      "You authorize Paddle, on our behalf, to charge your designated payment method on each billing cycle renewal date.",
+      "Applicable taxes (including sales tax, GST, or HST) are calculated and collected by Paddle at checkout.",
       "Minute overages beyond your plan's included allowance will be billed at the applicable per-minute rate shown in your account dashboard.",
       "We offer 15 minutes of free AI calling credit for new accounts. No credit card is required. This free credit is limited to one per business or individual.",
-      "Refunds are generally not provided for monthly subscriptions. Annual subscriptions may be eligible for a prorated refund if cancelled within 30 days of the annual renewal date, at our discretion.",
+      `Every payment is covered by a ${REFUND_WINDOW_DAYS}-day money-back guarantee: you can request a full refund within ${REFUND_WINDOW_DAYS} days of any payment, for any reason. See our Refund Policy at ${SITE}/refund-policy for details.`,
       "Failed payments may result in service interruption. We will attempt to notify you before suspending your account.",
       "We reserve the right to modify pricing with 30 days' written notice. Continued use after the effective date of any price change constitutes acceptance.",
     ],
@@ -164,7 +175,7 @@ const SECTIONS = [
     id: "general",
     title: "15. General Provisions",
     items: [
-      "Entire Agreement: These Terms, together with our Privacy Policy, constitute the entire agreement between you and LetConvo AI regarding the Services.",
+      `Entire Agreement: These Terms, together with our Privacy Policy and Refund Policy, constitute the entire agreement between you and ${LEGAL_ENTITY} regarding the Services.`,
       "Severability: If any provision of these Terms is found to be unenforceable, the remaining provisions shall remain in full force and effect.",
       "Waiver: Our failure to enforce any right or provision of these Terms shall not constitute a waiver of such right or provision.",
       "Assignment: You may not assign or transfer your rights or obligations under these Terms without our prior written consent. We may assign our rights and obligations without restriction.",
@@ -321,6 +332,8 @@ export default function TermsPage({ setPage }) {
                     ["warning","You're responsible for call recording consent laws"],
                     ["warning","AI outputs may contain errors — verify critical info"],
                     ["info","Cancel anytime from your dashboard"],
+                    ["check_circle",`${REFUND_WINDOW_DAYS}-day money-back guarantee on every payment`],
+                    ["info","Payments are processed by Paddle.com, our Merchant of Record"],
                     ["info","Governed by Nigerian law, Lagos courts"],
                   ].map(([icon,text],i) => (
                     <div key={i} className="flex items-start gap-2 text-[12px] text-[#4E4439]/80">
