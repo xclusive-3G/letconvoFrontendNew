@@ -39,6 +39,10 @@ const FAQS = [
     a: "Yes. Letconvo is designed to answer calls around the clock, so callers can share their name, phone number, reason for calling, and other details your team needs to follow up."
   },
   {
+    q: "Does Letconvo clone voices or imitate real people?",
+    a: "No. Letconvo's AI receptionist uses a standard, pre-built synthetic voice. It does not clone, copy, or imitate any real person's voice, and it does not create images or videos. It speaks only on behalf of your business, and it confirms it is an automated AI assistant whenever a caller asks."
+  },
+  {
     q: "Can Letconvo book and reschedule appointments?",
     a: "Yes. The AI can check your configured business hours and available slots, create appointments, look up an existing booking, and help callers update or reschedule it without making your team manage every call manually."
   },

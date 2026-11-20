@@ -32,6 +32,7 @@ const SECTIONS = [
       `${COMPANY} provides AI-powered receptionist and call management services, including but not limited to: automated call answering, appointment scheduling, message taking, call recording and transcription, CRM integrations, analytics dashboards, and related business automation tools.`,
       "We reserve the right to modify, suspend, or discontinue any part of the Services at any time, with or without prior notice. We shall not be liable to you or any third party for any modification, suspension, or discontinuation of Services.",
       "Access to certain features may require a paid subscription. Features available to you depend on the plan you have selected and your compliance with these Terms.",
+      `${COMPANY}'s AI receptionist speaks using standard, pre-built synthetic voices only. ${COMPANY} does not offer voice cloning or any feature that generates audio, images, or video imitating a real person, and the AI confirms it is an automated assistant whenever a caller asks.`,
     ],
   },
   {
@@ -62,6 +63,7 @@ const SECTIONS = [
           "Violate any applicable telemarketing, do-not-call, or consumer protection laws (including NDPR, GDPR, TCPA, or equivalent)",
           "Distribute spam, malware, or engage in phishing activities",
           "Impersonate any person, business, or legal entity",
+          "Make the AI receptionist claim to be, or imitate the voice of, a real person (including any celebrity or public figure)",
           "Attempt to gain unauthorized access to our systems or those of third parties",
           "Use the Services for any purpose that infringes the intellectual property rights of others",
           "Reverse engineer, decompile, or disassemble any part of our platform",

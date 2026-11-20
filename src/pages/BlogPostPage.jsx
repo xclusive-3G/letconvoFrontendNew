@@ -45,7 +45,7 @@ const POSTS = {
         heading: "AI receptionist vs. traditional answering service",
         paragraphs: [
           "A traditional live answering service staffs a call center in shifts, which does cover the after-hours gap — but usually with a generic script, per-minute pricing, and a message that just gets relayed to you rather than resolved on the call.",
-          "An AI receptionist like Letconvo works from the specifics you give it — your services, hours, policies, FAQs — and answers every caller in your business's own voice, at any hour, not just during a shift someone happened to schedule. It can check real availability and book on the spot instead of taking a message, which matters most exactly when nobody's around to follow up quickly.",
+          "An AI receptionist like Letconvo works from the specifics you give it — your services, hours, policies, FAQs — and answers every caller with your business's own information, at any hour, not just during a shift someone happened to schedule. It can check real availability and book on the spot instead of taking a message, which matters most exactly when nobody's around to follow up quickly.",
         ],
       },
       {
