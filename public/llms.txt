@@ -2,6 +2,8 @@
 
 > Letconvo is an AI phone receptionist for small businesses. It answers inbound business calls 24/7, answers caller questions using the business's own services/hours/FAQs, captures missed-call leads, and books appointments using configured business availability.
 
+Letconvo is a business phone receptionist only. It is not an image, video, or audio generation tool: it does not create images or videos, does not clone voices, and does not imitate celebrities or any other real person. Calls are answered with a standard, pre-built synthetic voice that speaks on behalf of the business.
+
 Letconvo works by call forwarding — a business keeps its existing phone number and forwards calls to Letconvo, subject to carrier support and forwarding charges. Confirm number availability and integrations with the Letconvo team.
 
 ## Pricing

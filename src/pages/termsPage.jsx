@@ -32,6 +32,7 @@ const SECTIONS = [
       `${COMPANY} provides AI-powered receptionist and call management services, including but not limited to: automated call answering, appointment scheduling, message taking, call recording and transcription, CRM integrations, analytics dashboards, and related business automation tools.`,
       "We reserve the right to modify, suspend, or discontinue any part of the Services at any time, with or without prior notice. We shall not be liable to you or any third party for any modification, suspension, or discontinuation of Services.",
       "Access to certain features may require a paid subscription. Features available to you depend on the plan you have selected and your compliance with these Terms.",
+      `${COMPANY} is a business phone receptionist service only. It is not an image, video, or audio generation tool, and it cannot be used to create images, videos, or audio of celebrities or any other real person.`,
       `${COMPANY}'s AI receptionist speaks using standard, pre-built synthetic voices only. ${COMPANY} does not offer voice cloning or any feature that generates audio, images, or video imitating a real person, and the AI confirms it is an automated assistant whenever a caller asks.`,
     ],
   },

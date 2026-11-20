@@ -410,7 +410,7 @@ function Step4Plan({ data, setData, onNext }) {
           {data.plan === "growth" && ["Usage details at launch","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Custom AI voice","White-label dashboard"].map(f=>(
+          {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Priority support","White-label dashboard"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
           <p className="text-[10px] text-[#8B7060] mt-1.5">15 minutes of free AI calling credit · No commitment required</p>

@@ -136,6 +136,15 @@ export default function BenefitsPage({ setPage }) {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={0.2}>
+          <div className="mt-6 sm:mt-8 flex items-start gap-3 bg-white border border-[#d4c8b8]/55 p-4 sm:p-5">
+            <span className="material-symbols-outlined text-[#8B6E3C] text-[20px] flex-shrink-0">info</span>
+            <p className="text-[#4E4439]/80 leading-relaxed text-[11.5px] sm:text-[12.5px]">
+              <strong className="font-semibold text-[#1A1614]">Letconvo is a business phone receptionist only — it is not an image, video, or audio generation tool.</strong>{" "}
+              It does not create images or videos, and it does not clone voices or imitate celebrities or any other real person. Calls are answered with a standard, pre-built synthetic voice that speaks on behalf of your business.
+            </p>
+          </div>
+        </Reveal>
       </S>
 
       {/* Bento grid — stacked on mobile, 12-col on md */}
@@ -179,7 +188,7 @@ export default function BenefitsPage({ setPage }) {
               <div className="absolute inset-0 bg-gradient-to-t from-white/97 via-white/55 to-transparent"/>
               <div className="absolute bottom-0 left-0 p-4 sm:p-6">
                 <h3 className="font-syne font-black text-[#1A1614] uppercase tracking-tight mb-1 text-[13px] sm:text-[14px]">Seamless Transition</h3>
-                <p className="text-[#4E4439]/75 max-w-sm text-[11.5px] sm:text-[12.5px] leading-relaxed">Letconvo identifies high-value opportunities for immediate human intervention.</p>
+                <p className="text-[#4E4439]/75 max-w-sm text-[11.5px] sm:text-[12.5px] leading-relaxed">When a caller needs a person, Letconvo passes their details to your team for a quick follow-up.</p>
               </div>
             </div>
           </Reveal>
