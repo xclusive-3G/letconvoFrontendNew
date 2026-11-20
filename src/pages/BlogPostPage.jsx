@@ -78,7 +78,7 @@ const POSTS = {
       {
         heading: "Where it fits alongside your team, not instead of it",
         paragraphs: [
-          "The setups that actually work aren't \"AI replaces the phone\" — they're AI picking up the second a call comes in, so nothing goes to voicemail, while your team still handles what genuinely needs a person: quoting an odd job, smoothing over a complaint, or a customer who specifically wants a callback from someone on staff. Letconvo is built around exactly that split — it answers, qualifies, books what it can, and hands a person the context they need for anything it can't close out itself.",
+          "The setups that actually work aren't \"AI replaces the phone\" — they're AI picking up the second a call comes in, so nothing goes to voicemail, while your team still handles what genuinely needs a person: quoting an odd job, smoothing over a complaint, or a customer who specifically wants a callback from someone on staff. Letconvo is built around exactly that split — it answers, takes down the details, books what it can, and hands a person the context they need for anything it can't close out itself.",
         ],
       },
       {
@@ -117,7 +117,7 @@ const POSTS = {
       {
         heading: "How much does an AI receptionist cost?",
         paragraphs: [
-          "There's no standard price tag in this category, so it helps to know what you're actually comparing. You'll run into flat monthly subscriptions that bundle a set number of minutes, pay-per-minute or pay-per-call rates with no base fee, usage tiers that scale with volume, setup or onboarding fees, charges for extra numbers or overflow calls, and premium add-ons like CRM syncing or custom voice cloning.",
+          "There's no standard price tag in this category, so it helps to know what you're actually comparing. You'll run into flat monthly subscriptions that bundle a set number of minutes, pay-per-minute or pay-per-call rates with no base fee, usage tiers that scale with volume, setup or onboarding fees, charges for extra numbers or overflow calls, and premium add-ons like CRM syncing or extra integrations.",
           "Letconvo Starter is listed at $120 USD per month with 400 included calling minutes. Calls require an available balance; review top-up options in the dashboard. Growth and Enterprise are coming soon. Confirm external calendar or CRM requirements before subscribing.",
         ],
       },
@@ -259,8 +259,8 @@ const POSTS = {
       {
         heading: "The hybrid model most small businesses actually land on",
         paragraphs: [
-          "In practice, the businesses getting the best results don't pick one — they let the AI receptionist answer the instant the phone rings, handle whatever it can (FAQs, booking, basic qualifying questions), and pass anything that genuinely needs judgment straight to a person. Nothing goes to voicemail, and the calls that really need a human still get one.",
-          "Letconvo's built around exactly that split: it answers, qualifies, and books what it can on its own, then hands a person exactly the context they'd need for anything it can't close out.",
+          "In practice, the businesses getting the best results don't pick one — they let the AI receptionist answer the instant the phone rings, handle whatever it can (FAQs, booking, taking down the caller's details), and pass anything that genuinely needs judgment straight to a person. Nothing goes to voicemail, and the calls that really need a human still get one.",
+          "Letconvo's built around exactly that split: it answers, takes down the details, and books what it can on its own, then hands a person exactly the context they'd need for anything it can't close out.",
         ],
       },
       {

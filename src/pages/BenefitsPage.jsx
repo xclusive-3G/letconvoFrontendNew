@@ -9,7 +9,7 @@ import { SEO_LANDING_PAGES } from "./SeoLandingPage";
 // const Pr = "#8B6E3C";
 
 const BENEFITS = [
-  { icon:"contact_emergency", title:"Maximize Revenue",   desc:"No more voicemails. Every caller speaks to a polished AI ready to qualify and convert." },
+  { icon:"contact_emergency", title:"Maximize Revenue",   desc:"No more voicemails. Every caller gets answered, gets their questions handled, and can book on the spot." },
   { icon:"calendar_month",    title:"Automated Booking",  desc:"The AI checks your configured business hours and available slots to book appointments." },
   { icon:"phone_disabled",    title:"Eternal Uptime",     desc:"24/7/365 availability. Letconvo maintains your professional image round the clock." },
   { icon:"payments",          title:"Optimized Overhead", desc:"Drastically reduce staffing costs while increasing output and response times." },
@@ -36,7 +36,7 @@ const FAQS = [
   },
   {
     q: "Can an AI receptionist capture leads after business hours?",
-    a: "Yes. Letconvo is designed to answer calls around the clock, so callers can share their name, phone number, reason for calling, and other details your team needs to follow up on qualified leads."
+    a: "Yes. Letconvo is designed to answer calls around the clock, so callers can share their name, phone number, reason for calling, and other details your team needs to follow up."
   },
   {
     q: "Can Letconvo book and reschedule appointments?",

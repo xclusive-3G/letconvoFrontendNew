@@ -379,7 +379,7 @@ if (isLoading) {
             </div>
           </Sec>
           <Sec title="Webhook & API" icon="code">
-            <Inp label="Webhook URL" value={webhookUrl} onChange={setWebhookUrl} placeholder="https://your-server.com/webhook" sub="Receive real-time events for every call, booking, and lead qualification." />
+            <Inp label="Webhook URL" value={webhookUrl} onChange={setWebhookUrl} placeholder="https://your-server.com/webhook" sub="Receive real-time events for every call, booking, and captured lead." />
             <Inp label="Zapier API Key" value={zapierKey} onChange={setZapierKey} placeholder="zap_xxxxxxxxxxxxxxxxx" type="password" sub="Connect to 2,000+ apps via Zapier." />
             <div style={{ marginTop: 14, padding: "12px 14px", background: "#fdf9f5", borderRadius: 7, border: "1px solid #f0ebe4" }}>
               <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8B7060", marginBottom: 6 }}>Your API Key</div>

@@ -65,7 +65,7 @@ const SECTIONS = [
       "To provide, operate, and maintain our AI receptionist Services",
       "To process and manage your account, subscription, and payments",
       "To configure and personalise your AI receptionist based on your preferences",
-      "To handle and route calls, book appointments, and qualify leads on your behalf",
+      "To answer calls, book appointments, and take messages on your behalf",
       "To generate call transcripts, summaries, and analytics for your dashboard",
       "To send transactional emails (account confirmations, billing receipts, service alerts)",
       "To respond to your customer support enquiries",

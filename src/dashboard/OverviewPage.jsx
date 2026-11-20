@@ -312,7 +312,7 @@ if (error) {
                 : Pr
           }
         />        <StatCard icon="calendar_month" label="Booked Today" value={dashboardData?.stats?.appointmentsBooked || 0} sub="Appointments confirmed" delay={0.06} color="#0097A7" />
-        <StatCard icon="person_add" label="Leads Qualified" value={dashboardData?.stats?.leadsQualified || 0} sub="From inbound calls" delay={0.12} color="#6366f1" />
+        <StatCard icon="person_add" label="Leads Captured" value={dashboardData?.stats?.leadsQualified || 0} sub="From inbound calls" delay={0.12} color="#6366f1" />
         {/* <StatCard icon="phone" label="Lives Calls" value={dashboardData?.stats?.missedCalls || 0} sub="All have voicemails" delay={0.18} color="#ef4444" /> */}
         {/* <StatCard
           icon="phone"

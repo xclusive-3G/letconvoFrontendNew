@@ -3,14 +3,14 @@ export const CALL_RECORDS=[
   {id:"c002",caller:"Mrs. Fatima Bello",number:"+234 905 123 4567",duration:"2:14",time:"18 min ago",status:"completed",sentiment:"neutral",transcript:"Caller asked about office hours and location. AI provided full details and offered to schedule a callback.",recording:true,tags:["inquiry","hours"]},
   {id:"c003",caller:"Mr. James Adewale",number:"+234 701 987 6543",duration:"6:01",time:"35 min ago",status:"transferred",sentiment:"positive",transcript:"Complex billing inquiry. AI collected details and transferred to accounts team with full context.",recording:true,tags:["billing","transferred"]},
   {id:"c004",caller:"Unknown",number:"+44 20 7946 0958",duration:"0:45",time:"52 min ago",status:"missed",sentiment:"neutral",transcript:"Caller disconnected before AI could respond. Voicemail left.",recording:false,tags:["missed","voicemail"]},
-  {id:"c005",caller:"Chidi Enterprises",number:"+234 812 345 6789",duration:"8:22",time:"1 hr ago",status:"completed",sentiment:"positive",transcript:"New business inquiry. AI qualified lead, collected requirements, and scheduled a demo call for Friday 2pm.",recording:true,tags:["lead","demo","qualified"]},
+  {id:"c005",caller:"Chidi Enterprises",number:"+234 812 345 6789",duration:"8:22",time:"1 hr ago",status:"completed",sentiment:"positive",transcript:"New business inquiry. AI took the details, collected requirements, and scheduled a demo call for Friday 2pm.",recording:true,tags:["lead","demo"]},
   {id:"c006",caller:"Dr. Ngozi Adeyemi",number:"+234 803 222 3333",duration:"3:15",time:"2 hrs ago",status:"completed",sentiment:"neutral",transcript:"Follow-up on prescription renewal. AI noted urgency and escalated to duty pharmacist.",recording:true,tags:["follow-up","escalated"]},
   {id:"c007",caller:"Lagos Motors Ltd",number:"+234 701 555 6666",duration:"1:50",time:"3 hrs ago",status:"completed",sentiment:"negative",transcript:"Caller frustrated with wait times. AI apologised, offered priority callback, and escalated to manager.",recording:true,tags:["complaint","escalated"]},
   {id:"c008",caller:"Mr. Tunde Fashola",number:"+234 808 777 8888",duration:"5:40",time:"4 hrs ago",status:"completed",sentiment:"positive",transcript:"Appointment rescheduling request. AI handled smoothly, updated calendar, and sent confirmation.",recording:true,tags:["appointment","rescheduled"]},
   {id:"c009",caller:"Kemi Bakare",number:"+234 905 444 5555",duration:"2:33",time:"5 hrs ago",status:"completed",sentiment:"neutral",transcript:"Asked about service pricing. AI provided full breakdown and sent brochure via WhatsApp.",recording:true,tags:["pricing","inquiry"]},
   {id:"c010",caller:"Zenith Bank Plc",number:"+234 700 100 0000",duration:"0:22",time:"6 hrs ago",status:"missed",sentiment:"neutral",transcript:"Automated IVR call — AI identified and logged. No action required.",recording:false,tags:["spam","logged"]},
   {id:"c011",caller:"Ada Okonkwo",number:"+234 813 222 4444",duration:"4:10",time:"Yesterday",status:"completed",sentiment:"positive",transcript:"New patient registration. AI collected all details, assigned patient ID, and booked intake appointment.",recording:true,tags:["new-patient","booked"]},
-  {id:"c012",caller:"GlobalTech Solutions",number:"+234 902 888 9999",duration:"9:05",time:"Yesterday",status:"transferred",sentiment:"positive",transcript:"Partnership inquiry from large tech firm. AI qualified, collected contact details, and routed to BD team.",recording:true,tags:["partnership","BD"]},
+  {id:"c012",caller:"GlobalTech Solutions",number:"+234 902 888 9999",duration:"9:05",time:"Yesterday",status:"transferred",sentiment:"positive",transcript:"Partnership inquiry from large tech firm. AI collected contact details, and routed to BD team.",recording:true,tags:["partnership","BD"]},
 ];
 
 export const APPOINTMENTS=[
@@ -34,7 +34,7 @@ export const CHART_DATA={
 export const NOTIFICATIONS=[
   {id:"n1",type:"call",text:"New call from +234 701 234 5678",time:"Just now",read:false},
   {id:"n2",type:"appointment",text:"Appointment confirmed: Dr. Obi 10:30am",time:"5 min ago",read:false},
-  {id:"n3",type:"lead",text:"New lead qualified: Chidi Enterprises",time:"18 min ago",read:false},
+  {id:"n3",type:"lead",text:"New lead captured: Chidi Enterprises",time:"18 min ago",read:false},
   {id:"n4",type:"transfer",text:"Call transferred to accounts team",time:"35 min ago",read:true},
   {id:"n5",type:"alert",text:"Low minutes balance — 45 mins remaining",time:"1 hr ago",read:true},
 ];
@@ -66,7 +66,7 @@ export const TRANSACTIONS=[
 export const PLANS_UPGRADE=[
   {name:"Starter",price:149,minutes:300,perMin:0.30,features:["300 minutes/month","Basic call handling","SMS follow-up","Digital call logs"],current:false},
   {name:"Growth",price:349,minutes:1000,perMin:0.22,features:["1,000 minutes/month","Google Calendar booking","Full CRM integration","Advanced analytics","Custom logic scripts"],current:true},
-  {name:"Enterprise",price:699,minutes:3000,perMin:0.15,features:["3,000+ minutes/month","Multi-location support","Custom AI voice cloning","White-label dashboard","API access & automations"],current:false},
+  {name:"Enterprise",price:699,minutes:3000,perMin:0.15,features:["3,000+ minutes/month","Multi-location support","Priority support","White-label dashboard","API access & automations"],current:false},
 ];
 
 export const PAYMENT_METHODS=[

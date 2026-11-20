@@ -19,7 +19,7 @@ const PAGES = {
     painPoint: "Every unanswered call is a customer who found somebody else. Small teams don't have a spare person to sit by the phone, so calls that arrive mid-task, mid-lunch, or after close go to voicemail — and most callers don't leave a message, they just call the next business.",
     benefits: [
       ["phone_in_talk", "Answer every call", "Letconvo picks up even when your team is mid-rush, with a customer, or the office is closed."],
-      ["support_agent", "Sound like a real front desk", "Your greeting, hours, and services, delivered consistently, without hiring for it."],
+      ["support_agent", "A professional front desk, every call", "Your greeting, hours, and services, delivered consistently, without hiring for it."],
       ["person_add", "Capture every lead", "Name, number, reason for calling — ready for your team to follow up."],
       ["event_available", "Book without back-and-forth", "Checks configured availability and confirms appointment details."],
     ],
@@ -39,11 +39,11 @@ const PAGES = {
     benefits: [
       ["phone_in_talk", "Answers while your team is on-site", "Captures the address, issue, and urgency without pulling anyone off the job."],
       ["location_on", "Knows your service area", "Tells callers upfront whether you cover their location."],
-      ["emergency", "Triages real emergencies", "Flags urgency — burst pipe vs. routine fix — so you know what to call back first."],
+      ["emergency", "Captures what's going on", "Notes the problem in the caller's own words — burst pipe or routine fix — so you can decide what to call back first."],
       ["event_available", "Books the job", "Checks open slots and locks in an appointment, not just a message."],
     ],
     faq: [
-      { q: "Can it tell an emergency from a routine call?", a: "Yes. Letconvo asks about the issue and captures how urgent it is, so your team can prioritize call-backs correctly." },
+      { q: "Will I know which calls are urgent?", a: "Yes. Letconvo asks the caller what the issue is and writes down what they tell you, including how urgent they say it is, so your team can decide which call-backs to make first." },
       { q: "Does it know which areas I service?", a: "Yes. You configure your service area, and Letconvo lets callers know upfront whether you cover their location." },
       { q: "What if a customer wants a quote over the phone?", a: "Letconvo captures the job details needed for a quote and passes them to your team — it doesn't guess at pricing on your behalf." },
     ],
@@ -97,7 +97,7 @@ const PAGES = {
       ["phone_in_talk", "Answers immediately", "Prospective clients call around; the first firm to respond often wins the matter."],
       ["assignment", "Captures real intake details", "Name, contact info, and the nature of the matter, ready for attorney review."],
       ["gavel", "Represents your firm consistently", "Practice areas and next steps, on every call."],
-      ["filter_alt", "Filters and prioritizes", "So your team focuses first on the calls that matter most."],
+      ["summarize", "Clear call summaries", "Every call written up so your attorneys can review and decide who to call back."],
     ],
     faq: [
       { q: "Can it give legal advice?", a: "No. Letconvo captures intake details only — it does not provide legal advice to callers." },
