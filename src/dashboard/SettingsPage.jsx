@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_BASE, API_ROOT } from "../config/apiBase";
+import { supabase } from "../lib/supabase";
 
 const Pr = "#8B6E3C";
 
@@ -172,6 +173,12 @@ const forwardingVerified = phoneSetup?.forwarding_verified || false;
 
   const [calendarSync, setCalendarSync] = useState(true);
   const [calendarConnected, setCalendarConnected] = useState(false);
+  const [receptionistPaused, setReceptionistPaused] = useState(false);
+  const [pausing, setPausing] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteText, setDeleteText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
   const [calendarEmail, setCalendarEmail] = useState(null);
   const [crmSync, setCrmSync] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState("");
@@ -189,6 +196,60 @@ const forwardingVerified = phoneSetup?.forwarding_verified || false;
 const [subscription, setSubscription] = useState(null);
 const [verifying, setVerifying] = useState(false);
 const queryClient = useQueryClient();
+
+  // ── Danger zone ──
+  const togglePause = async () => {
+    const pausing_ = !receptionistPaused;
+    const ok = window.confirm(
+      pausing_
+        ? "Pause your AI receptionist? It will stop answering calls, making missed-call callbacks and sending appointment reminder calls until you resume it."
+        : "Resume your AI receptionist? It will start answering calls again."
+    );
+    if (!ok) return;
+
+    try {
+      setPausing(true);
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        `${API_BASE}/me/receptionist/pause`,
+        { paused: pausing_ },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setReceptionistPaused(res.data.paused);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["settings"] }),
+        queryClient.invalidateQueries({ queryKey: ["overview"] })
+      ]);
+      if (res.data.lowCredits) {
+        alert("Your AI receptionist is resumed, but it can't take calls until you add credits. Top up from the Balance page.");
+      }
+    } catch (err) {
+      alert(err.response?.data?.error || "Couldn't update your AI receptionist. Please try again.");
+    } finally {
+      setPausing(false);
+    }
+  };
+
+  const deleteAccount = async () => {
+    if (deleteText !== "DELETE") return;
+    try {
+      setDeleting(true);
+      setDeleteError("");
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_BASE}/me/account`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { confirm: "DELETE" }
+      });
+      try { await supabase.auth.signOut(); } catch (_) {}
+      localStorage.removeItem("token");
+      localStorage.removeItem("clientId");
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    } catch (err) {
+      setDeleteError(err.response?.data?.error || "Couldn't delete your account. Please try again or contact support.");
+      setDeleting(false);
+    }
+  };
 
 
 
@@ -289,6 +350,7 @@ useEffect(() => {
 
   setCalendarSync(settingsData.calendarSync);
   setCalendarConnected(settingsData.calendarConnected);
+  setReceptionistPaused(Boolean(settingsData.receptionistPaused));
   setCalendarEmail(settingsData.calendarEmail);
   setCrmSync(settingsData.crmSync);
   setWebhookUrl(settingsData.webhookUrl || "");
@@ -685,10 +747,51 @@ if (isLoading) {
             </div>
           </Sec>
           <Sec title="Danger Zone" icon="warning">
-            <div style={{ display: "flex", gap: 10 }}>
-              <button style={{ padding: "8px 16px", background: "#fef2f2", color: "#ef4444", border: "1px solid #fecaca", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>Pause AI Receptionist</button>
-              <button style={{ padding: "8px 16px", background: "#fff", color: "#ef4444", border: "1px solid #fecaca", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>Delete Account</button>
+            {receptionistPaused && (
+              <div style={{ marginBottom: 12, padding: "10px 12px", background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 6, fontSize: 12, color: "#92400e" }}>
+                Your AI receptionist is paused. It isn't answering calls, making callbacks or sending reminders.
+              </div>
+            )}
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button type="button" onClick={togglePause} disabled={pausing}
+                style={{ padding: "8px 16px", background: receptionistPaused ? "#ecfdf5" : "#fef2f2", color: receptionistPaused ? "#047857" : "#ef4444", border: `1px solid ${receptionistPaused ? "#a7f3d0" : "#fecaca"}`, borderRadius: 5, cursor: pausing ? "wait" : "pointer", opacity: pausing ? 0.6 : 1, fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                {pausing ? "Saving…" : receptionistPaused ? "Resume AI Receptionist" : "Pause AI Receptionist"}
+              </button>
+              <button type="button" onClick={() => { setShowDelete(true); setDeleteText(""); setDeleteError(""); }}
+                style={{ padding: "8px 16px", background: "#fff", color: "#ef4444", border: "1px solid #fecaca", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                Delete Account
+              </button>
             </div>
+
+            {showDelete && (
+              <div role="dialog" aria-modal="true" aria-labelledby="delete-account-title"
+                style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 100, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}
+                onClick={() => !deleting && setShowDelete(false)}>
+                <div onClick={e => e.stopPropagation()}
+                  style={{ background: "#fff", borderRadius: 10, padding: 24, maxWidth: 440, width: "100%", boxShadow: "0 20px 50px rgba(0,0,0,0.25)" }}>
+                  <h3 id="delete-account-title" style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 16, color: "#1A1614", margin: 0 }}>Delete your account?</h3>
+                  <p style={{ fontSize: 13, color: "#4E4439", lineHeight: 1.6, marginTop: 10 }}>
+                    This permanently deletes your business, settings, call history, appointments, credits and login. Your AI receptionist stops immediately. <strong>This can't be undone.</strong>
+                  </p>
+                  <label style={{ display: "block", fontSize: 12, color: "#4E4439", marginTop: 14, marginBottom: 6 }}>
+                    Type <strong>DELETE</strong> to confirm
+                  </label>
+                  <input value={deleteText} onChange={e => setDeleteText(e.target.value)} autoFocus disabled={deleting}
+                    style={{ width: "100%", padding: "9px 12px", border: "1px solid #e8e2d8", borderRadius: 6, fontSize: 13, outline: "none", boxSizing: "border-box" }} />
+                  {deleteError && <p style={{ fontSize: 12, color: "#ef4444", marginTop: 8 }}>{deleteError}</p>}
+                  <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 18 }}>
+                    <button type="button" onClick={() => setShowDelete(false)} disabled={deleting}
+                      style={{ padding: "8px 16px", background: "#fff", color: "#4E4439", border: "1px solid #e8e2d8", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                      Cancel
+                    </button>
+                    <button type="button" onClick={deleteAccount} disabled={deleteText !== "DELETE" || deleting}
+                      style={{ padding: "8px 16px", background: deleteText === "DELETE" ? "#ef4444" : "#fca5a5", color: "#fff", border: "none", borderRadius: 5, cursor: deleteText === "DELETE" && !deleting ? "pointer" : "not-allowed", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                      {deleting ? "Deleting…" : "Delete account"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </Sec>
         </>
       )}

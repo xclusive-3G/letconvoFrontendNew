@@ -205,6 +205,7 @@ const callHistory = data?.callHistory || [];
 const performanceData = data?.performanceData;
 const balanceData = data?.balanceData;
 const isPaused = dashboardData?.stats?.status === "paused";
+const pausedByOwner = Boolean(dashboardData?.stats?.pausedByOwner);
 
   const weeklyData = dashboardData?.weeklyData || [
     { day: "Sun", calls: 0, booked: 0, missed: 0 },
@@ -250,7 +251,7 @@ if (error) {
     <div style={{ padding: "24px", maxWidth: 1400, margin: "0 auto" }}>
       <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 20, color: "#1A1614", textTransform: "uppercase", letterSpacing: "-0.01em" }}>Dashboard Overview</h1>
-        <p style={{ fontSize: 12, color: "#8B7060", marginTop: 3 }}>{currentDate} · Letconvo AI is {isPaused ? "paused — low credits" : "active and handling calls"}</p>
+        <p style={{ fontSize: 12, color: "#8B7060", marginTop: 3 }}>{currentDate} · Letconvo AI is {isPaused ? (pausedByOwner ? "paused by you" : "paused — low credits") : "active and handling calls"}</p>
         <p style={{ fontSize: 12, color: "#8B7060", marginTop: 2 }}>
           {callHistory.length} calls recorded · {activeCount} active caller{activeCount !== 1 ? "s" : ""} live
         </p>
@@ -266,7 +267,9 @@ if (error) {
           </span>
           <span style={{ fontSize: 12, color: "rgba(255,255,255,.7)" }}>
             {isPaused ? (
-              "Low credits — top up or subscribe to resume service."
+              pausedByOwner
+                ? "You paused it — resume any time from Settings → Danger Zone."
+                : "Low credits — top up or subscribe to resume service."
             ) : (
               <>
                 Currently handling
@@ -288,7 +291,13 @@ if (error) {
             <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 13, color: "#c4a97a" }}>{Math.round(balanceData?.minutesRemaining ?? 0)}</div>
           </div>
         </div>
-        {isPaused && (
+        {isPaused && pausedByOwner && (
+          <button onClick={() => setActivePage("settings")}
+            style={{ background: "#8B6E3C", border: "none", borderRadius: 5, padding: "8px 14px", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, color: "#fff", cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
+            Resume →
+          </button>
+        )}
+        {isPaused && !pausedByOwner && (
           <button onClick={() => setActivePage("balance")}
             style={{ background: "#8B6E3C", border: "none", borderRadius: 5, padding: "8px 14px", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, color: "#fff", cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em", whiteSpace: "nowrap" }}>
             Top Up →
