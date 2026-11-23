@@ -18,7 +18,14 @@ const EMPTY_FORM = { firstName:"", lastName:"", email:"", phone:"", companyName:
 
 export default function ContactPage({setPage}) {
   const [sent,setSent]=useState(false);
-  const [form,setForm]=useState(EMPTY_FORM);
+  const [form,setForm]=useState(()=>{
+    // Pricing page's "Contact Sales" (Enterprise) preselects the interest.
+    try {
+      const pre=sessionStorage.getItem("contact_interest");
+      if (pre && INTERESTS.includes(pre)) { sessionStorage.removeItem("contact_interest"); return { ...EMPTY_FORM, interest:pre }; }
+    } catch (e) {}
+    return EMPTY_FORM;
+  });
   const [submitting,setSubmitting]=useState(false);
   const [error,setError]=useState("");
   const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }));

@@ -636,11 +636,12 @@ export default function BalancePage({ setActivePage }) {
             const isDowngrade = currentPlan && p.price < currentPlan.price;
             const busy = subscribingPlan === p.slug;
             const available = p.slug === "starter" || p.slug === "growth";
+            const contact = p.slug === "premium";
             return (
-            <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff", opacity: available || p.current ? 1 : 0.6 }}
-              title={available || p.current ? undefined : "This plan is still under build and isn't available yet"}>
+            <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff", opacity: available || contact || p.current ? 1 : 0.6 }}
+              title={available || contact || p.current ? undefined : "This plan is still under build and isn't available yet"}>
               {p.current && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: Pr, color: "#fff", fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>Current Plan</div>}
-              {!available && !p.current && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: "#fff", color: Pr, border: `1px solid ${Pr}40`, fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>Coming Soon</div>}
+              {!available && !p.current && <div style={{ position: "absolute", top: -10, left: "50%", transform: "translateX(-50%)", background: "#fff", color: Pr, border: `1px solid ${Pr}40`, fontSize: 9, fontFamily: "Syne,sans-serif", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap" }}>{contact ? "Contact Us" : "Coming Soon"}</div>}
               <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 14, color: p.current ? Pr : "#1A1614", marginBottom: 4 }}>{p.name}</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 3, marginBottom: 8 }}>
                 <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 800, fontSize: 26, color: "#1A1614" }}>${p.price}</span>
@@ -654,9 +655,9 @@ export default function BalancePage({ setActivePage }) {
                 </div>
               ))}
               {!p.current && (
-                <button onClick={() => available && handleSubscribe(p.slug)} disabled={busy || !available}
-                  style={{ marginTop: 12, width: "100%", padding: "7px", border: `1.5px solid ${available ? Pr : "#d4c8b8"}`, background: "transparent", color: available ? Pr : "#8B7060", borderRadius: 5, cursor: !available ? "not-allowed" : busy ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                  {!available ? "Coming Soon" : busy ? "Redirecting…" : isDowngrade ? "Downgrade" : "Upgrade →"}
+                <button onClick={() => { if (contact) { try { sessionStorage.setItem("contact_interest", "Enterprise / Agency"); } catch (e) {} window.location.href = "/contact"; return; } if (available) handleSubscribe(p.slug); }} disabled={busy || (!available && !contact)}
+                  style={{ marginTop: 12, width: "100%", padding: "7px", border: `1.5px solid ${available || contact ? Pr : "#d4c8b8"}`, background: "transparent", color: available || contact ? Pr : "#8B7060", borderRadius: 5, cursor: !available && !contact ? "not-allowed" : busy ? "wait" : "pointer", fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  {contact ? "Contact Sales" : !available ? "Coming Soon" : busy ? "Redirecting…" : isDowngrade ? "Downgrade" : "Upgrade →"}
                 </button>
               )}
             </div>

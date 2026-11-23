@@ -9,7 +9,7 @@ Letconvo works by call forwarding — a business keeps its existing phone number
 ## Pricing
 
 - Starter: $60/month, 150 included minutes of AI-answered calls, review current top-up options in the dashboard. Available for signup.
-- Growth: $149/month, 500 included minutes. Available for signup. Enterprise: $399/month, 1,500 included minutes — announced but not yet available (waitlist only) — do not state it is purchasable.
+- Growth: $149/month, 500 included minutes. Available for signup. Enterprise: $399/month, 1,500 included minutes — set up by contacting sales (letconvo.live/contact), not self-serve signup.
 - New signups get 15 minutes of free AI calling credit to test the product with real calls, no credit card required.
 - Full current pricing: https://letconvo.live/pricing
 

@@ -7,10 +7,10 @@ import Footer from "../components/Footer";
 const PLANS=[
   {tier:"Starter",price:"$60",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","150 Minutes Included","Professional Greetings","Call Records","Appointments","Analytics","Live Calls","Missed-Call Callback","Appointment Rescheduling"],dim:["CRM Integration","White-label Dashboard"],featured:true,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
   {tier:"Growth",price:"$149",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","500 Minutes Included","Lowest per-minute rate","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:false,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
-  {tier:"Enterprise",price:"$399",desc:"White-label solutions at scale.",feats:["Everything in Growth","1,500 Minutes Included","Multi-Practice Support","Priority Support","White-label Dashboard","API & Automations"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"contact"},
+  {tier:"Enterprise",price:"$399",contact:true,desc:"White-label solutions at scale.",feats:["Everything in Growth","1,500 Minutes Included","Multi-Practice Support","Priority Support","White-label Dashboard","API & Automations"],dim:[],featured:false,available:true,cta:"Contact Sales",target:"contact"},
 ];
 const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","150","500","1,500"],["SMS follow-up","✓","✓","✓"],["Call records","✓","✓","✓"],["Appointments","✓","✓","✓"],["Appointment rescheduling","✓","✓","✓"],["Missed-call callback","✓","✓","✓"],["Live calls","✓","✓","✓"],["Analytics","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Priority support","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
-const FAQS=[["Can I change plans anytime?","Starter and Growth are available now. Enterprise is coming soon; contact us to discuss your needs."],["What if I exceed my minutes?","Calls require an available calling balance. Review current top-up options in your dashboard or contact us before purchasing additional usage."],["Is there a free trial?","Every new signup gets 15 minutes of free AI calling credit to test Letconvo with real calls. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","You can forward calls from a compatible existing business number. Forwarding support and charges depend on your carrier; contact us to confirm your setup."],["What integrations are supported?","Starter supports appointments using your configured business hours and available slots. Contact us to confirm a specific calendar or CRM connection before subscribing."]];
+const FAQS=[["Can I change plans anytime?","Starter and Growth are available now. Enterprise ($399, 1,500 minutes) is set up with our team — contact us to get started."],["What if I exceed my minutes?","Calls require an available calling balance. Review current top-up options in your dashboard or contact us before purchasing additional usage."],["Is there a free trial?","Every new signup gets 15 minutes of free AI calling credit to test Letconvo with real calls. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","You can forward calls from a compatible existing business number. Forwarding support and charges depend on your carrier; contact us to confirm your setup."],["What integrations are supported?","Starter supports appointments using your configured business hours and available slots. Contact us to confirm a specific calendar or CRM connection before subscribing."]];
 
 function S({children,bg,className=""}) {
   return <section className={`relative z-10 py-12 sm:py-14 px-4 sm:px-6 ${className}`} style={{background:bg}}><div className="max-w-5xl mx-auto">{children}</div></section>;
@@ -21,7 +21,7 @@ export default function PricingPage({setPage}) {
   return (
     <main style={{position:"relative",zIndex:10}}>
       <PageHero chip="Transparent Pricing" title="AI Receptionist Pricing" hlWord="Pricing"
-        sub="Start with 15 free calling minutes. Starter includes 150 minutes for $60 USD per month; Growth includes 500 minutes for $149. Enterprise is not available yet." />
+        sub="Start with 15 free calling minutes. Starter includes 150 minutes for $60 USD per month; Growth includes 500 minutes for $149. Enterprise is $399 for 1,500 minutes — contact us to set it up." />
 
       {/* Plans — stacked mobile, 3-col desktop */}
       <S bg="rgb(253,248,242)">
@@ -37,6 +37,7 @@ export default function PricingPage({setPage}) {
               <div className={`relative flex flex-col bg-white border rounded-sm ${!p.available?"opacity-60":""} ${p.featured?"border-[#8B6E3C] shadow-lg shadow-[#8B6E3C]/10":"border-[#d4c8b8]/60 shadow-sm"}`}
                 style={{transform:p.featured?"translateY(-6px)":undefined}}
                 title={p.available?undefined:"This plan is still under build and isn't available yet"}>
+                {p.contact&&<div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-[#8B6E3C] border border-[#8B6E3C]/40 font-syne font-bold text-[9px] uppercase tracking-[.1em] px-4 py-1 rounded-sm whitespace-nowrap">Contact Us</div>}
                 {p.featured&&<div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#8B6E3C] text-white font-syne font-bold text-[9px] uppercase tracking-[.1em] px-4 py-1 rounded-sm whitespace-nowrap">Available Now</div>}
                 <div className="p-5 sm:p-6">
                   <div className="flex items-center gap-1.5 mb-2">
@@ -62,7 +63,7 @@ export default function PricingPage({setPage}) {
                     ))}
                   </div>
                   <motion.button whileHover={p.available?{scale:1.02}:{}} whileTap={p.available?{scale:.97}:{}}
-                    onClick={()=>p.available&&setPage(p.target)} disabled={!p.available}
+                    onClick={()=>{ if(!p.available) return; if(p.contact){ try{ sessionStorage.setItem("contact_interest","Enterprise / Agency"); }catch(e){} } setPage(p.target); }} disabled={!p.available}
                     className={`mt-5 sm:mt-6 w-full py-2.5 font-syne font-bold text-[11px] uppercase tracking-[.08em] transition-colors rounded-sm ${!p.available?"border border-[#d4c8b8] text-[#8B7060] cursor-not-allowed":p.featured?"bg-[#8B6E3C] text-white hover:bg-[#6b5228]":"border border-[#8B6E3C] text-[#8B6E3C] hover:bg-[#8B6E3C]/5"}`}>
                     {p.cta}
                   </motion.button>
@@ -85,9 +86,9 @@ export default function PricingPage({setPage}) {
                 <thead>
                   <tr className="bg-[#f7f2ec] border-b-2 border-[#d4c8b8]/50">
                     <th className="text-left px-4 sm:px-5 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-[#4E4439]">Feature</th>
-                    {[["Starter",true],["Growth",true],["Enterprise",false]].map(([h,available])=>(
+                    {[["Starter",""],["Growth",""],["Enterprise","(Contact us)"]].map(([h,note])=>(
                       <th key={h} className="px-3 sm:px-4 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-center text-[#4E4439]">
-                        {h}{!available&&<div className="text-[8px] font-normal normal-case tracking-normal text-[#8B7060] mt-0.5">(Coming Soon)</div>}
+                        {h}{note&&<div className="text-[8px] font-normal normal-case tracking-normal text-[#8B7060] mt-0.5">{note}</div>}
                       </th>
                     ))}
                   </tr>

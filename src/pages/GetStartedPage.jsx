@@ -15,7 +15,7 @@ const DRAFT_KEY = "getstarted_draft";
 const PLANS = [
   { id:"starter",  name:"Starter",  price:"$60/mo", desc:"Perfect for solo practices",   available:true  },
   { id:"growth",   name:"Growth",   price:"$149/mo", desc:"For growing businesses",       available:true  },
-  { id:"premium",  name:"Premium",  price:"Coming soon",desc:"Enterprise & agencies",        available:false },
+  { id:"premium",  name:"Enterprise",  price:"$399/mo",desc:"Enterprise & agencies",        available:false, contact:true },
 ];
 
 const PERKS = [
@@ -385,15 +385,15 @@ function Step4Plan({ data, setData, onNext }) {
                   <div className="font-syne font-bold text-[12px] text-[#1A1614]">{p.name}</div>
                   {!p.available && (
                     <span className="font-syne font-bold text-[8px] uppercase tracking-[.08em] text-[#8B6E3C] bg-[#8B6E3C]/10 border border-[#8B6E3C]/25 rounded-sm px-1.5 py-0.5">
-                      Coming Soon
+                      {p.contact ? "Contact Us" : "Coming Soon"}
                     </span>
                   )}
                 </div>
                 <div className="text-[10.5px] text-[#8B7060] mt-0.5">
-                  {p.available ? p.desc : "Still under build — not available yet"}
+                  {p.available ? p.desc : p.contact ? "Set up with our team — contact us at letconvo.live/contact" : "Still under build — not available yet"}
                 </div>
               </div>
-              <div className="font-syne font-black text-[13px] text-[#8B6E3C] flex-shrink-0">{p.available ? p.price : "—"}</div>
+              <div className="font-syne font-black text-[13px] text-[#8B6E3C] flex-shrink-0">{p.available || p.contact ? p.price : "—"}</div>
             </motion.label>
           ))}
         </div>
