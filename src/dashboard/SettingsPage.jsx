@@ -182,7 +182,8 @@ const forwardingVerified = phoneSetup?.forwarding_verified || false;
   const [calendarEmail, setCalendarEmail] = useState(null);
   const [crmSync, setCrmSync] = useState(false);
   const [webhookUrl, setWebhookUrl] = useState("");
-  const [zapierKey, setZapierKey] = useState("");
+  const [testingWebhook, setTestingWebhook] = useState(false);
+  const [webhookTest, setWebhookTest] = useState(null);
   const [emailNotif, setEmailNotif] = useState(true);
   const [smsNotif, setSmsNotif] = useState(true);
   const [missedAlerts, setMissedAlerts] = useState(true);
@@ -268,7 +269,6 @@ const queryClient = useQueryClient();
           calendarSync,
           crmSync,
           webhookUrl,
-          zapierKey,
           emailNotif,
           smsNotif,
           missedAlerts,
@@ -294,6 +294,23 @@ const queryClient = useQueryClient();
 
 
 
+
+  const sendWebhookTest = async () => {
+    try {
+      setTestingWebhook(true);
+      setWebhookTest(null);
+      await axios.post(
+        `${API_BASE}/me/webhook/test`,
+        { webhookUrl },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setWebhookTest({ ok: true, message: "Test event delivered." });
+    } catch (err) {
+      setWebhookTest({ ok: false, message: err.response?.data?.error || "Couldn't send the test event." });
+    } finally {
+      setTestingWebhook(false);
+    }
+  };
 
   const verifyForwarding = async () => {
     try {
@@ -354,7 +371,6 @@ useEffect(() => {
   setCalendarEmail(settingsData.calendarEmail);
   setCrmSync(settingsData.crmSync);
   setWebhookUrl(settingsData.webhookUrl || "");
-  setZapierKey(settingsData.zapierKey || "");
 
   setEmailNotif(settingsData.emailNotif);
   setSmsNotif(settingsData.smsNotif);
@@ -440,16 +456,19 @@ if (isLoading) {
               ))}
             </div>
           </Sec>
-          <Sec title="Webhook & API" icon="code">
-            <Inp label="Webhook URL" value={webhookUrl} onChange={setWebhookUrl} placeholder="https://your-server.com/webhook" sub="Receive real-time events for every call, booking, and captured lead." />
-            <Inp label="Zapier API Key" value={zapierKey} onChange={setZapierKey} placeholder="zap_xxxxxxxxxxxxxxxxx" type="password" sub="Connect to 2,000+ apps via Zapier." />
-            <div style={{ marginTop: 14, padding: "12px 14px", background: "#fdf9f5", borderRadius: 7, border: "1px solid #f0ebe4" }}>
-              <div style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: "#8B7060", marginBottom: 6 }}>Your API Key</div>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <code style={{ flex: 1, fontSize: 11, background: "#f0ebe4", padding: "6px 10px", borderRadius: 5, color: "#4E4439", letterSpacing: "0.05em" }}>lum_sk_live_••••••••••••••••••••••••</code>
-                <button style={{ padding: "6px 12px", background: Pr, color: "#fff", border: "none", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 10 }}>Copy</button>
-                <button style={{ padding: "6px 12px", background: "#f7f2ec", color: "#4E4439", border: "1px solid #e8e2d8", borderRadius: 5, cursor: "pointer", fontFamily: "Syne,sans-serif", fontWeight: 600, fontSize: 10 }}>Regenerate</button>
-              </div>
+          <Sec title="Zapier, Make & Webhooks" icon="code">
+            <Inp label="Webhook URL" value={webhookUrl} onChange={v => { setWebhookUrl(v); setWebhookTest(null); }} placeholder="https://hooks.zapier.com/hooks/catch/..." sub="We send call summaries and transcripts, new bookings and booking changes to this address." />
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <button type="button" onClick={sendWebhookTest} disabled={!webhookUrl.trim() || testingWebhook}
+                style={{ padding: "8px 14px", border: `1px solid ${Pr}`, borderRadius: 6, background: "#fff", color: Pr, cursor: !webhookUrl.trim() || testingWebhook ? "not-allowed" : "pointer", opacity: !webhookUrl.trim() || testingWebhook ? 0.5 : 1, fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 11 }}>
+                {testingWebhook ? "Sending…" : "Send test event"}
+              </button>
+              {webhookTest && <span role="status" style={{ fontSize: 12, color: webhookTest.ok ? "#065f46" : "#b91c1c" }}>{webhookTest.message}</span>}
+            </div>
+            <div style={{ marginTop: 14, padding: "12px 14px", background: "#fdf9f5", borderRadius: 7, border: "1px solid #f0ebe4", fontSize: 12, color: "#4E4439", lineHeight: 1.6 }}>
+              <strong>Zapier:</strong> create a Zap with "Webhooks by Zapier" → "Catch Hook" (may need a paid Zapier plan).<br />
+              <strong>Make:</strong> add a "Custom webhook" module.<br />
+              Copy the URL it gives you, paste it above, send a test event, then click Save Changes.
             </div>
           </Sec>
         </>
