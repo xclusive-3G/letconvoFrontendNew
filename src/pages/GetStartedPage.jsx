@@ -407,7 +407,7 @@ function Step4Plan({ data, setData, onNext }) {
           {data.plan === "starter" && ["150 minutes/month","Basic call handling","SMS follow-up","Digital call logs"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          {data.plan === "growth" && ["500 minutes/month","Lowest per-minute rate","Calendar booking","Everything in Starter"].map(f=>(
+          {data.plan === "growth" && ["500 minutes/month","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
           {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Priority support","White-label dashboard"].map(f=>(
