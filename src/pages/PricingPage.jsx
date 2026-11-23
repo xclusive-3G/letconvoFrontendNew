@@ -6,11 +6,11 @@ import Footer from "../components/Footer";
 
 const PLANS=[
   {tier:"Starter",price:"$60",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","150 Minutes Included","Professional Greetings","Call Records","Appointments","Analytics","Live Calls","Missed-Call Callback","Appointment Rescheduling"],dim:["CRM Integration","White-label Dashboard"],featured:true,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
-  {tier:"Growth",price:"$149",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","500 Minutes Included","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"getstarted"},
+  {tier:"Growth",price:"$149",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","500 Minutes Included","Lowest per-minute rate","Google Calendar Booking"],dim:["CRM Integration"],featured:false,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
   {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","Minutes announced at launch","Multi-Practice Support","Priority Support","White-label Dashboard","API & Automations"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"contact"},
 ];
-const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","400","At launch","At launch"],["SMS follow-up","✓","✓","✓"],["Call records","✓","✓","✓"],["Appointments","✓","✓","✓"],["Appointment rescheduling","✓","✓","✓"],["Missed-call callback","✓","✓","✓"],["Live calls","✓","✓","✓"],["Analytics","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","✓","✓"],["Advanced analytics","—","✓","✓"],["Priority support","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
-const FAQS=[["Can I change plans anytime?","Starter is currently available. Growth and Enterprise are coming soon; contact us to discuss your needs."],["What if I exceed my minutes?","Calls require an available calling balance. Review current top-up options in your dashboard or contact us before purchasing additional usage."],["Is there a free trial?","Every new signup gets 15 minutes of free AI calling credit to test Letconvo with real calls. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","You can forward calls from a compatible existing business number. Forwarding support and charges depend on your carrier; contact us to confirm your setup."],["What integrations are supported?","Starter supports appointments using your configured business hours and available slots. Contact us to confirm a specific calendar or CRM connection before subscribing."]];
+const TABLE=[["24/7 AI answering","✓","✓","✓"],["Included minutes","150","500","At launch"],["SMS follow-up","✓","✓","✓"],["Call records","✓","✓","✓"],["Appointments","✓","✓","✓"],["Appointment rescheduling","✓","✓","✓"],["Missed-call callback","✓","✓","✓"],["Live calls","✓","✓","✓"],["Analytics","✓","✓","✓"],["Calendar booking","—","✓","✓"],["CRM integration","—","—","✓"],["Advanced analytics","—","—","✓"],["Priority support","—","—","✓"],["White-label","—","—","✓"],["Multi-location","—","—","✓"]];
+const FAQS=[["Can I change plans anytime?","Starter and Growth are available now. Enterprise is coming soon; contact us to discuss your needs."],["What if I exceed my minutes?","Calls require an available calling balance. Review current top-up options in your dashboard or contact us before purchasing additional usage."],["Is there a free trial?","Every new signup gets 15 minutes of free AI calling credit to test Letconvo with real calls. No credit card required."],["How long does setup take?","Most clients are live within 15 minutes using our guided onboarding wizard."],["Does it work with my current phone?","You can forward calls from a compatible existing business number. Forwarding support and charges depend on your carrier; contact us to confirm your setup."],["What integrations are supported?","Starter supports appointments using your configured business hours and available slots. Contact us to confirm a specific calendar or CRM connection before subscribing."]];
 
 function S({children,bg,className=""}) {
   return <section className={`relative z-10 py-12 sm:py-14 px-4 sm:px-6 ${className}`} style={{background:bg}}><div className="max-w-5xl mx-auto">{children}</div></section>;
@@ -21,7 +21,7 @@ export default function PricingPage({setPage}) {
   return (
     <main style={{position:"relative",zIndex:10}}>
       <PageHero chip="Transparent Pricing" title="AI Receptionist Pricing" hlWord="Pricing"
-        sub="Start with 15 free calling minutes. Starter includes 150 minutes for $60 USD per month. Growth and Enterprise are not available yet." />
+        sub="Start with 15 free calling minutes. Starter includes 150 minutes for $60 USD per month; Growth includes 500 minutes for $149. Enterprise is not available yet." />
 
       {/* Plans — stacked mobile, 3-col desktop */}
       <S bg="rgb(253,248,242)">
@@ -29,7 +29,7 @@ export default function PricingPage({setPage}) {
           <h2 className="font-syne font-black uppercase tracking-tight text-[#1A1614] leading-tight" style={{fontSize:"clamp(20px,3.2vw,30px)"}}>
             Choose Your <span style={{color:"#8B6E3C"}}>Plan</span>
           </h2>
-          <p className="text-[12px] text-[#4E4439]/65 mt-2 max-w-sm mx-auto leading-relaxed">Test with real calls before choosing Starter. Future plan details may change before launch.</p>
+          <p className="text-[12px] text-[#4E4439]/65 mt-2 max-w-sm mx-auto leading-relaxed">Test with real calls before choosing a plan. Future plan details may change before launch.</p>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 items-start">
           {PLANS.map((p,i)=>(
@@ -85,7 +85,7 @@ export default function PricingPage({setPage}) {
                 <thead>
                   <tr className="bg-[#f7f2ec] border-b-2 border-[#d4c8b8]/50">
                     <th className="text-left px-4 sm:px-5 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-[#4E4439]">Feature</th>
-                    {[["Starter",true],["Growth",false],["Enterprise",false]].map(([h,available])=>(
+                    {[["Starter",true],["Growth",true],["Enterprise",false]].map(([h,available])=>(
                       <th key={h} className="px-3 sm:px-4 py-3 font-syne font-bold text-[10px] uppercase tracking-[.1em] text-center text-[#4E4439]">
                         {h}{!available&&<div className="text-[8px] font-normal normal-case tracking-normal text-[#8B7060] mt-0.5">(Coming Soon)</div>}
                       </th>

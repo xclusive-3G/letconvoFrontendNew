@@ -635,7 +635,7 @@ export default function BalancePage({ setActivePage }) {
             const currentPlan = plans.find(x => x.current);
             const isDowngrade = currentPlan && p.price < currentPlan.price;
             const busy = subscribingPlan === p.slug;
-            const available = p.slug === "starter";
+            const available = p.slug === "starter" || p.slug === "growth";
             return (
             <div key={p.name} style={{ borderRadius: 8, padding: "16px 18px", position: "relative", border: p.current ? `1.5px solid ${Pr}` : "1px solid #e8e2d8", background: p.current ? `${Pr}06` : "#fff", opacity: available || p.current ? 1 : 0.6 }}
               title={available || p.current ? undefined : "This plan is still under build and isn't available yet"}>

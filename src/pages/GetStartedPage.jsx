@@ -14,7 +14,7 @@ const DRAFT_KEY = "getstarted_draft";
 /* ── Static data ── */
 const PLANS = [
   { id:"starter",  name:"Starter",  price:"$60/mo", desc:"Perfect for solo practices",   available:true  },
-  { id:"growth",   name:"Growth",   price:"Coming soon", desc:"For growing businesses",       available:false },
+  { id:"growth",   name:"Growth",   price:"$149/mo", desc:"For growing businesses",       available:true  },
   { id:"premium",  name:"Premium",  price:"Coming soon",desc:"Enterprise & agencies",        available:false },
 ];
 
@@ -404,10 +404,10 @@ function Step4Plan({ data, setData, onNext }) {
         <motion.div initial={{ opacity:0, y:6 }} animate={{ opacity:1, y:0 }}
           className="bg-[#fdf9f5] border border-[#d4c8b8]/60 rounded-sm p-3">
           <div className="font-syne font-bold text-[9px] uppercase tracking-[.12em] text-[#8B6E3C] mb-2">What's included</div>
-          {data.plan === "starter" && ["400 minutes/month","Basic call handling","SMS follow-up","Digital call logs"].map(f=>(
+          {data.plan === "starter" && ["150 minutes/month","Basic call handling","SMS follow-up","Digital call logs"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
-          {data.plan === "growth" && ["Usage details at launch","Calendar booking","Full CRM integration","Advanced analytics"].map(f=>(
+          {data.plan === "growth" && ["500 minutes/month","Lowest per-minute rate","Calendar booking","Everything in Starter"].map(f=>(
             <div key={f} className="flex items-center gap-2 text-[11.5px] text-[#4E4439] mb-1"><span className="material-symbols-outlined text-[#8B6E3C] text-[12px]">check_circle</span>{f}</div>
           ))}
           {data.plan === "premium" && ["1,000 minutes/month","Multi-location","Priority support","White-label dashboard"].map(f=>(
