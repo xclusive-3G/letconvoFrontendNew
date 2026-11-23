@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Footer from "../components/Footer";
-import { BRAND, LEGAL_ENTITY, SITE, LEGAL_LAST_UPDATED } from "../config/legal";
+import { BRAND, LEGAL_ENTITY, SITE } from "../config/legal";
 
-const LAST_UPDATED = LEGAL_LAST_UPDATED;
+const LAST_UPDATED = "November 23, 2026";
 const COMPANY = BRAND;
 const CONTACT_EMAIL = "privacy@letconvo.live";
 
@@ -119,6 +119,15 @@ const SECTIONS = [
         ],
       },
       {
+        heading: "Services our business customers connect:",
+        items: [
+          "A business using LetConvo AI can choose to send its call and appointment data to a service it selects, such as Zapier, Make, or its own system",
+          "This can include caller names and phone numbers, call summaries, transcripts, sentiment, recording links, and appointment details (including customer email and notes)",
+          "Data is sent only after the business adds a webhook address, over an encrypted (HTTPS) connection, and removing the address stops further sending",
+          "The business is responsible for the service it chooses and for any notice or consent its callers require; that service's own privacy policy applies to data it receives",
+        ],
+      },
+      {
         heading: "We may also disclose data:",
         items: [
           "When required by law, court order, or government authority",
@@ -231,7 +240,7 @@ const SECTIONS = [
     id: "third-party",
     title: "13. Third-Party Links & Services",
     content: [
-      "Our platform may contain links to third-party websites or integrate with third-party services (e.g. Google Calendar, CRM platforms). This Privacy Policy does not apply to those third-party services. We encourage you to review their privacy policies before sharing any personal data with them.",
+      "Our platform may contain links to third-party websites or integrate with third-party services (e.g. Google Calendar, Zapier, Make). This Privacy Policy does not apply to those third-party services. We encourage you to review their privacy policies before sharing any personal data with them.",
     ],
   },
   {

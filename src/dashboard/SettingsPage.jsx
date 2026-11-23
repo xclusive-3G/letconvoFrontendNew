@@ -52,13 +52,13 @@ const Sec = ({ title, icon, children, locked }) => (
       <span style={{ fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.08em", color: "#1A1614" }}>{title}</span>
       {locked && (
         <span style={{ marginLeft: "auto", padding: "3px 9px", borderRadius: 4, background: `${Pr}10`, border: `1px solid ${Pr}30`, color: Pr, fontFamily: "Syne,sans-serif", fontWeight: 700, fontSize: 9, textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap" }}>
-          Growth &amp; Premium
+          Coming soon
         </span>
       )}
     </div>
     {locked && (
       <div style={{ padding: "9px 20px", background: "#fdf9f5", borderBottom: "1px solid #f0ebe4", fontSize: 11.5, color: "#8B7060" }}>
-        This integration comes with the Growth and Premium plans, both still under build — not available yet.
+        Direct CRM connections are not available yet. You can send calls and bookings to your CRM through Zapier or Make below.
       </div>
     )}
     <div style={{ padding: "16px 20px", opacity: locked ? 0.45 : 1, pointerEvents: locked ? "none" : "auto" }}>{children}</div>
