@@ -5,7 +5,7 @@ import Reveal from "../components/Reveal";
 import Footer from "../components/Footer";
 
 const PLANS=[
-  {tier:"Starter",price:"$120",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","400 Minutes Included","Professional Greetings","Call Records","Appointments","Analytics","Live Calls","Missed-Call Callback","Appointment Rescheduling"],dim:["CRM Integration","White-label Dashboard"],featured:true,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
+  {tier:"Starter",price:"$60",desc:"For solo practitioners.",feats:["24/7 Response Time","Basic Call Logs","150 Minutes Included","Professional Greetings","Call Records","Appointments","Analytics","Live Calls","Missed-Call Callback","Appointment Rescheduling"],dim:["CRM Integration","White-label Dashboard"],featured:true,available:true,cta:"Try 15 Free Minutes",target:"getstarted"},
   {tier:"Growth",price:"$349",desc:"For growing businesses that demand full automation.",feats:["Everything in Starter","Minutes announced at launch","Google Calendar Booking","Custom Logic Scripts","Full CRM Integration","Advanced Analytics"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"getstarted"},
   {tier:"Enterprise",price:"$699+",desc:"White-label solutions at scale.",feats:["Everything in Growth","Minutes announced at launch","Multi-Practice Support","Priority Support","White-label Dashboard","API & Automations"],dim:[],featured:false,available:false,cta:"Coming Soon",target:"contact"},
 ];
@@ -21,7 +21,7 @@ export default function PricingPage({setPage}) {
   return (
     <main style={{position:"relative",zIndex:10}}>
       <PageHero chip="Transparent Pricing" title="AI Receptionist Pricing" hlWord="Pricing"
-        sub="Start with 15 free calling minutes. Starter includes 400 minutes for $120 USD per month. Growth and Enterprise are not available yet." />
+        sub="Start with 15 free calling minutes. Starter includes 150 minutes for $60 USD per month. Growth and Enterprise are not available yet." />
 
       {/* Plans — stacked mobile, 3-col desktop */}
       <S bg="rgb(253,248,242)">

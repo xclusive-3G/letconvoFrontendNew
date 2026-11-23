@@ -16,7 +16,7 @@ const Pr = "#8B6E3C";
 const CREDITS_PER_MINUTE = 30;
 
 // 1 credit = $0.01 (100 credits per dollar) — anchored to the Starter plan:
-// $120/mo = 12,000 credits = 400 minutes. Must match CREDITS_PER_DOLLAR in
+// $60/mo = 4,500 credits = 150 minutes (30 credits/min). Must match CREDITS_PER_DOLLAR in
 // backend/service/billing.js. Real minutes-per-dollar is therefore
 // CREDITS_PER_MINUTE / CREDITS_PER_DOLLAR, not CREDITS_PER_MINUTE itself.
 const CREDITS_PER_DOLLAR = 100;

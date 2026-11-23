@@ -26,7 +26,7 @@ import { supabase }   from "./lib/supabase";
 const PUBLIC_PAGES = {
   notfound: { comp: NotFoundPage, title: "Page Not Found | Letconvo AI", description: "This page could not be found. Explore Letconvo features and pricing." },
   benefits:   { comp: BenefitsPage,   title: "AI Receptionist for Small Business | Letconvo AI", description: "Letconvo is an AI phone receptionist for small businesses. Answer every call, capture missed-call leads, and book appointments 24/7 — no voicemail, no lost customers." },
-  pricing: { comp: PricingPage, title: "AI Receptionist Pricing | Letconvo AI", description: "Explore Letconvo Starter pricing: $120 USD per month with 400 included minutes. Try 15 free calling minutes before subscribing." },
+  pricing: { comp: PricingPage, title: "AI Receptionist Pricing | Letconvo AI", description: "Explore Letconvo Starter pricing: $60 USD per month with 150 included minutes. Try 15 free calling minutes before subscribing." },
   contact:    { comp: ContactPage,    title: "Contact — Letconvo AI",                  description: "Get in touch with the Letconvo AI team about setup, pricing, or how the AI phone receptionist works for your business." },
   terms:      { comp: TermsPage,      title: "Terms — Letconvo AI",                    description: "Letconvo AI's terms of service — the rules and conditions for using the Letconvo AI phone receptionist platform." },
   login:      { comp: LoginPage,      title: "Login — Letconvo AI",                    description: "Log in to your Letconvo AI dashboard to manage calls, appointments, credits, and receptionist settings." },

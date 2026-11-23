@@ -13,7 +13,7 @@ const DRAFT_KEY = "getstarted_draft";
 
 /* ── Static data ── */
 const PLANS = [
-  { id:"starter",  name:"Starter",  price:"$120/mo", desc:"Perfect for solo practices",   available:true  },
+  { id:"starter",  name:"Starter",  price:"$60/mo", desc:"Perfect for solo practices",   available:true  },
   { id:"growth",   name:"Growth",   price:"Coming soon", desc:"For growing businesses",       available:false },
   { id:"premium",  name:"Premium",  price:"Coming soon",desc:"Enterprise & agencies",        available:false },
 ];
