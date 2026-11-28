@@ -96,6 +96,7 @@ const POSTS = {
     ],
   },
   "ai-receptionist-cost": {
+    updated: "2026-11-23",
     eyebrow: "AI Receptionist Pricing",
     title: "How Much Does an AI Receptionist Cost? Complete Small Business Pricing Guide",
     description: "What an AI phone receptionist actually costs, the pricing models you'll run into, how it stacks up against a human receptionist's salary, and how to test one before you pay for a full month.",
@@ -279,6 +280,7 @@ const POSTS = {
     ],
   },
   "best-ai-receptionist-small-business-usa": {
+    updated: "2026-11-23",
     eyebrow: "Buyer's Guide",
     title: "How to Choose an AI Receptionist for a US Small Business",
     description: "Compare call answering, booking, forwarding requirements, and total costs before choosing an AI receptionist for your US business.",
@@ -310,13 +312,14 @@ export default function BlogPostPage({ pageId, setPage }) {
     mainEntityOfPage: `https://letconvo.live${PAGE_PATHS[activeId]}`,
     publisher: { "@type": "Organization", name: "Letconvo AI", url: "https://letconvo.live/" },
     author: { "@type": "Organization", name: "Letconvo AI" },
+    ...(post.updated ? { dateModified: post.updated } : {}),
   };
 
   return (
     <main className="relative z-10 pt-[52px]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <article>
-        <p className="max-w-3xl mx-auto px-4 pt-8 text-sm text-[#4E4439]">By the Letconvo AI team ? Product guidance from the service provider</p>
+        <p className="max-w-3xl mx-auto px-4 pt-8 text-sm text-[#4E4439]">By the Letconvo AI team · Product guidance from the service provider</p>
         <section className="px-4 sm:px-6 py-14 sm:py-20 bg-[#fdf8f3] border-b border-[#d4c8b8]/45">
           <div className="max-w-3xl mx-auto">
             <Reveal>

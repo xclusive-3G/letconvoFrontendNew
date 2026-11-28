@@ -16,10 +16,38 @@ function S({children,bg,className=""}) {
   return <section className={`relative z-10 py-12 sm:py-14 px-4 sm:px-6 ${className}`} style={{background:bg}}><div className="max-w-5xl mx-auto">{children}</div></section>;
 }
 
+const offer=(name,price,minutes,extra)=>({
+  "@type":"Offer",name,price:String(price),priceCurrency:"USD",
+  url:"https://letconvo.live/pricing",availability:"https://schema.org/InStock",
+  description:`${minutes.toLocaleString("en-US")} AI-answered call minutes included per month.${extra}`,
+  priceSpecification:{"@type":"UnitPriceSpecification",price:price,priceCurrency:"USD",unitText:"MONTH",referenceQuantity:{"@type":"QuantitativeValue",value:1,unitCode:"MON"}},
+});
+const PRICING_SCHEMA={
+  "@context":"https://schema.org",
+  "@graph":[{
+    "@type":"SoftwareApplication",
+    name:"Letconvo AI Receptionist",
+    applicationCategory:"BusinessApplication",
+    operatingSystem:"Web",
+    url:"https://letconvo.live/",
+    description:"AI phone receptionist for small businesses in the USA and Canada: answers calls 24/7, captures missed-call leads and books appointments.",
+    publisher:{"@id":"https://letconvo.live/#organization"},
+    offers:[
+      offer("Starter",60,150," Self-serve signup."),
+      offer("Growth",149,500," Self-serve signup."),
+      offer("Enterprise",399,1500," Set up by contacting sales."),
+    ],
+  },{
+    "@type":"FAQPage",
+    mainEntity:FAQS.map(([q,a])=>({"@type":"Question",name:q,acceptedAnswer:{"@type":"Answer",text:a}})),
+  }],
+};
+
 export default function PricingPage({setPage}) {
   const [openFaq,setOpenFaq]=useState(null);
   return (
     <main style={{position:"relative",zIndex:10}}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(PRICING_SCHEMA)}} />
       <PageHero chip="Transparent Pricing" title="AI Receptionist Pricing" hlWord="Pricing"
         sub="Start with 15 free calling minutes. Starter includes 150 minutes for $60 USD per month; Growth includes 500 minutes for $149. Enterprise is $399 for 1,500 minutes — contact us to set it up." />
 
